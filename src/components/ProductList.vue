@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import type { Product } from '@/interface/ProductContext'
+import type { Product } from '@/types/ProductContext'
 import ProductCard from './ProductCard.vue'
 
 defineProps({
