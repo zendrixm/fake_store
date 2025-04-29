@@ -1,20 +1,30 @@
 <template>
+  <!-- Page Header -->
   <div class="top-header">
-    <TopHeader />
-    <div class="v-spacer-15" />
-    <PageHeader @search="handleSearch" />
-    <CategoryMenu :categories="categories" @selected-category="handleSelectedCategory" />
+    <PageHeader
+      :categories="categories"
+      @selected-category="handleSelectedCategory"
+      @search="handleSearch"
+    />
   </div>
 
-  <slot />
+  <div class="v-spacer-15" />
+
+  <!-- Page Body -->
+  <el-row :gutter="20">
+    <el-col :span="4" />
+    <el-col :span="16">
+      <slot />
+    </el-col>
+    <el-col :span="4" />
+  </el-row>
+
   <!-- Footer to be added -->
   <PageFooter />
 </template>
 
 <script lang="ts" setup>
-import TopHeader from '@/components/layout/TopHeader.vue'
 import PageHeader from '@/components/PageHeader.vue'
-import CategoryMenu from '@/components/CategoryMenu.vue'
 import type { PropType } from 'vue'
 
 defineProps({
@@ -36,15 +46,6 @@ const handleSelectedCategory = (category: string) => {
 </script>
 
 <style lang="scss">
-.top-header {
-  background: linear-gradient(-180deg, #f53d2d, #f63);
-  //background: linear-gradient(-180deg, #280629, #5b1d6b);
-  height: max-content;
-  padding: 10px 30px;
-  a {
-    color: #fff !important;
-  }
-}
 
 .v-spacer-15 {
   height: 15px;
