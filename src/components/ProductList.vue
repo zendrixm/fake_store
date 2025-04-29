@@ -2,7 +2,7 @@
   <div class="main-container">
     <el-row :span="24" :gutter="20">
       <el-col v-for="product in products" :key="product.id" :md="8" :xs="24">
-        <ProductCard :product="product" class="margin-t-20" />
+        <ProductCard :product="product" />
       </el-col>
     </el-row>
   </div>

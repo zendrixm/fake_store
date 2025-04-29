@@ -1,7 +1,7 @@
 <template>
-  <el-card class="product-card">
-    <div class="product-content">
-      <div>
+  <router-link :to="`/product/${product.id}`" class="product-view">
+    <el-card class="product-card">
+      <div class="product-content">
         <img
           class="product-image"
           :src="product.image"
@@ -9,32 +9,31 @@
           :width="180"
           :height="220"
         />
+
+        <div class="v-spacer-20" />
+
+        <div>
+          <h2 class="product-title">{{ product.title }}</h2>
+
+          <el-row v-if="isRateVisible" align="middle" class="rating-section">
+            <el-rate
+              :model-value="product.rating.rate"
+              disabled
+              show-score
+              :max="5"
+              :colors="['#F7BA2A', '#F7BA2A', '#F7BA2A']"
+              style="font-size: 16px"
+            />
+            <el-divider direction="vertical" />
+            <span>({{ product.rating.count }} reviews)</span>
+          </el-row>
+        </div>
+        <div v-if="!isRateVisible" class="spacer-15" />
+
+        <div class="price-wrapper">${{ product.price }}</div>
       </div>
-
-      <div class="v-spacer-20" />
-
-      <!-- TITLE and RATING are together -->
-      <div>
-        <h2 class="product-title">{{ product.title }}</h2>
-
-        <el-row v-if="isRateVisible" align="middle" class="rating-section">
-          <el-rate
-            :model-value="product.rating.rate"
-            disabled
-            show-score
-            :max="5"
-            :colors="['#F7BA2A', '#F7BA2A', '#F7BA2A']"
-            style="font-size: 16px"
-          />
-          <el-divider direction="vertical" />
-          <span>({{ product.rating.count }} reviews)</span>
-        </el-row>
-      </div>
-      <div v-if="!isRateVisible" class="spacer-15" />
-      <!-- 👇 PRICE always stuck at the bottom -->
-      <div class="price-wrapper">${{ product.price }}</div>
-    </div>
-  </el-card>
+    </el-card>
+  </router-link>
 </template>
 
 <script setup lang="ts">
@@ -55,6 +54,7 @@ defineProps({
   &.product-card {
     height: 380px; /* 🛠 Fixed card height */
     padding: 20px;
+    margin-bottom: 10px 10px;
     border-radius: 10px;
     box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.12);
     display: flex;
@@ -99,5 +99,25 @@ defineProps({
 
 .v-spacer-20 {
   height: 20px;
+}
+
+a.product-view {
+  text-decoration: none;
+  color: inherit;
+
+  &:hover {
+    text-decoration: none;
+  }
+
+  &:hover .product-card {
+    border: 2px solid #f63;
+    transition: border 0.3s ease;
+  }
+}
+
+.product-card {
+  transition: border 0.3s ease;
+  border: 1px solid transparent;
+  margin-top: 20px;
 }
 </style>

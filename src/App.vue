@@ -17,5 +17,6 @@ body {
 html,
 body {
   overflow-x: hidden;
+  background: #f5f5f5 !important;
 }
 </style>
