@@ -7,6 +7,12 @@ const routes = [
     name: 'ProductDetails',
     component: () => import('../views/ProductView.vue'),
   },
+  {
+    path: '/cart',
+    name: 'Cart',
+    component: () => import('../views/CartView.vue'),
+  },
+
   // (other routes will come later)
 ]
 
