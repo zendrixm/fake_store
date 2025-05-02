@@ -1,7 +1,7 @@
 <template>
   <!-- Page Header -->
   <div class="top-header">
-    <PageHeader @products-changed="handleProductsChanged" />
+    <PageHeader @products-changed="handleProductsChanged" :is-login-page="isNotLoginPage" />
   </div>
 
   <div class="v-spacer-15" />
@@ -21,7 +21,12 @@
 
 <script lang="ts" setup>
 import PageHeader from '@/components/PageHeader.vue'
-
+defineProps({
+  isNotLoginPage: {
+    type: Boolean,
+    default: true,
+  },
+})
 const emit = defineEmits(['productsChanged'])
 const handleProductsChanged = (products: []) => {
   emit('productsChanged', products)
