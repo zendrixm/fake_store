@@ -1,0 +1,59 @@
+.el-form-item {
+  &.is-error {
+    .el-form-item__label {
+      color: red;
+    }
+    .el-form-item__error {
+      color: red;
+      padding-top: 5px;
+    }
+    .el-input__wrapper {
+      border: 1px solid red;
+      border-radius: 8px;
+      --el-input-border: red;
+    }
+  }
+}
+
+.el-form-item__error::before {
+  content: '';
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  background-image: url('@/assets/icons/error.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 5px;
+  vertical-align: top;
+}
+
+.el-form-item__label {
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #000;
+}
+.el-form-item {
+  &.is-required:not(.is-error) {
+    &.asterisk-left > .el-form-item__label:before {
+      color: #000;
+    }
+  }
+}
+
+.el-checkbox {
+  &.is-checked {
+    .el-checkbox__input {
+      &.is-checked,
+      &.is-indeterminate {
+        .el-checkbox__inner {
+          background: #0b2545;
+          border-color: #0b2545;
+        }
+      }
+    }
+
+    .el-checkbox__label {
+      color: #134074;
+    }
+  }
+}

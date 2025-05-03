@@ -1,13 +1,17 @@
 <template>
   <div class="page-header">
-    <TopHeader />
-    <div class="v-spacer-10" />
-    <el-row :gutter="20">
+    <TopHeader v-if="isLoginPage" />
+    <div v-if="isLoginPage" class="v-spacer-10" />
+    <el-row :gutter="20" align="middle">
       <el-col :span="4">
-        <h1 class="title-text align-right txtWhite">FakeStore</h1>
+        <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-end">
+          <img src="@/assets/img/eloura_white.png" :size="40" :width="40" :height="40" />
+          <h1 class="title-text align-right txtWhite">ELOURA</h1>
+        </div>
       </el-col>
       <el-col :span="16">
         <el-input
+          v-if="isLoginPage"
           v-model="searchProduct"
           placeholder="Search product"
           clearable
@@ -15,14 +19,18 @@
         />
       </el-col>
       <el-col :span="4">
-        <el-button class="cart-btn" @click="$router.push('/cart')">
+        <el-button v-if="isLoginPage" class="cart-btn" @click="$router.push('/cart')">
           <el-icon :size="20" color="#FFF" style="vertical-align: middle">
             <ShoppingCart />
           </el-icon>
         </el-button>
       </el-col>
     </el-row>
-    <CategoryMenu :categories="categories" @selected-category="(cat) => (selectedCategory = cat)" />
+    <CategoryMenu
+      v-if="isLoginPage"
+      :categories="categories"
+      @selected-category="(cat) => (selectedCategory = cat)"
+    />
   </div>
   <div class="v-spacer-90" />
 </template>
@@ -59,6 +67,11 @@ const filteredProducts = computed(() => {
 
 const emit = defineEmits(['productsChanged'])
 
+defineProps({
+  isLoginPage: {
+    type: Boolean,
+  },
+})
 watch(
   filteredProducts,
   (newFiltered) => {
@@ -73,7 +86,7 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .txtWhite {
   color: #fff !important;
 }
@@ -83,6 +96,8 @@ onMounted(() => {
 .title-text {
   font-size: 24px;
   margin: 0;
+  font-family: monospace;
+  letter-spacing: 3px;
 }
 .cart-btn {
   border: none;
@@ -96,10 +111,16 @@ onMounted(() => {
   height: 90px;
 }
 .page-header {
-  background: linear-gradient(-180deg, #f53d2d, #f63);
+  background: #0b2545;
   position: fixed;
   width: 100%;
   z-index: 1000;
-  padding: 10px 30px;
+  padding: 10px;
+}
+
+a,
+.el-link {
+  color: #eef4ed;
+  --el-link-text-color: #eef4ed;
 }
 </style>

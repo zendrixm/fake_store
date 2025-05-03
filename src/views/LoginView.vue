@@ -7,28 +7,39 @@
         </div>
 
         <el-form :model="form" :rules="rules" ref="formRef" label-position="top">
+          <!-- Email (only shows if sign up)-->
+          <el-form-item v-if="!isLogin" label="Email" prop="email">
+            <el-input v-model="form.email" />
+          </el-form-item>
+
+          <!-- Username -->
           <el-form-item label="Username" prop="username">
             <el-input v-model="form.username" />
           </el-form-item>
 
+          <!-- Password -->
           <el-form-item label="Password" prop="password">
             <el-input v-model="form.password" show-password />
           </el-form-item>
 
-          <el-form-item>
+          <!-- Confirm Password (only shows if sign up)-->
+          <el-form-item v-if="!isLogin" label="Confirm password" prop="confirmPassword">
+            <el-input v-model="form.confirmPassword" show-password />
+          </el-form-item>
+
+          <!-- Remember my username -->
+          <el-form-item v-if="isLogin">
             <el-checkbox v-model="form.remember">Remember my username</el-checkbox>
           </el-form-item>
 
-          <el-form-item>
-            <el-button class="btn-solid-primary" @click="handleLogin" :loading="loading" round>
-              Log in
-            </el-button>
-          </el-form-item>
+          <el-button class="btn-solid-primary" @click="handleLoginSignup" :loading="loading" round>
+            {{ isLogin ? 'Login' : 'Sign up' }}
+          </el-button>
 
           <div class="login-links">
-            <a href="#">Forgot username or password?</a>
+            <router-link to="/forgotUsernamePassword">Forgot username or password?</router-link>
             <br />
-            <a href="#">Register now</a>
+            <a @click="toggleLoginSignup">{{ isLogin ? 'Sign up' : 'Already have an account' }}</a>
           </div>
         </el-form>
       </div>
@@ -47,29 +58,46 @@ const authStore = useAuthStore()
 const router = useRouter()
 const formRef = ref()
 const loading = ref(false)
+const isLogin = ref(true)
 
 const form = ref({
+  email: '',
   username: '',
   password: '',
+  confirmPassword: '',
   remember: false,
 })
 
 const rules = {
+  email: [{ required: true, message: 'This information is required.', trigger: 'blur' }],
   username: [{ required: true, message: 'This information is required.', trigger: 'blur' }],
   password: [{ required: true, message: 'This information is required.', trigger: 'blur' }],
+  confirmPassword: [{ required: true, message: 'This information is required.', trigger: 'blur' }],
 }
 
-const handleLogin = async () => {
+const handleAuth = async (action: 'login' | 'signup') => {
   await formRef.value.validate(async (valid: boolean) => {
     if (!valid) return
+
     loading.value = true
     try {
-      const success = await authStore.login(form.value.username, form.value.password)
+      let success = false
+
+      if (action === 'login') {
+        success = await authStore.login(form.value.username, form.value.password)
+      } else {
+        const payload = {
+          username: form.value.username,
+          password: form.value.password,
+          email: form.value.email,
+        }
+        success = await authStore.signup(payload)
+      }
 
       if (success) {
         router.push('/')
       } else {
-        ElMessage.error(authStore.error || 'Login failed')
+        ElMessage.error(authStore.error || (action === 'login' ? 'Login failed' : 'Sign up failed'))
       }
     } catch {
       ElMessage.error('Invalid credentials')
@@ -77,6 +105,17 @@ const handleLogin = async () => {
       loading.value = false
     }
   })
+}
+
+const handleLoginSignup = () => {
+  handleAuth(isLogin.value ? 'login' : 'signup')
+}
+
+const toggleLoginSignup = () => {
+  isLogin.value = !isLogin.value
+
+  form.value.username = ''
+  form.value.password = ''
 }
 </script>
 
@@ -115,12 +154,12 @@ const handleLogin = async () => {
 .login-links {
   font-size: 12px;
   color: #134074;
-  text-align: center;
   margin-top: 15px;
 }
 .login-links a {
   color: #134074;
   text-decoration: none;
+  margin-top: 10px;
   &:hover {
     text-decoration: underline;
   }

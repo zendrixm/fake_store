@@ -4,7 +4,7 @@
 
 <script setup lang="ts"></script>
 
-<style>
+<style lang="scss">
 * {
   box-sizing: border-box;
 }

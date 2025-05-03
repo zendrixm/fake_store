@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
-import { userLogin, fetchAllUsers } from '@/api/Auth'
-import type { User } from '@/types/UserContext'
+import { userSignup, userLogin, fetchAllUsers } from '@/api/Auth'
+import type { User, SignUpUser } from '@/types/UserContext'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -11,6 +11,21 @@ export const useAuthStore = defineStore('auth', {
   }),
 
   actions: {
+    async signup(userData: SignUpUser) {
+      this.loading = true
+      this.error = null
+
+      try {
+        const { data } = await userSignup(userData)
+        return data
+      } catch (err) {
+        this.error = 'Signup failed.'
+        console.error('Signup error:', err)
+        throw err
+      } finally {
+        this.loading = false
+      }
+    },
     async login(username: string, password: string) {
       this.loading = true
       this.error = null
