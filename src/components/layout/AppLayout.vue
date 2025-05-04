@@ -46,7 +46,7 @@ import PageHeader from '@/components/PageHeader.vue'
 }
 
 .el-main {
-  --el-main-padding: 0px;
+  --el-main-padding: 0px !important;
   margin-top: 116px;
 }
 </style>
