@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import type { Product } from '@/interface/ProductContext'
+import type { Product } from '@/types/ProductContext'
 import axios from 'axios'
 
 interface State {
@@ -7,6 +7,8 @@ interface State {
   product: Product | null
   loading: boolean
   error: string | null
+  searchQuery: string
+  selectedCategory: string
 }
 
 export const useProductStore = defineStore('product', {
@@ -15,8 +17,25 @@ export const useProductStore = defineStore('product', {
     product: null,
     loading: false,
     error: null,
+    searchQuery: '',
+    selectedCategory: '',
   }),
 
+  getters: {
+    filteredProducts: (state) => {
+      return state.products.filter((p) => {
+        const matchesCategory = state.selectedCategory
+          ? p.category === state.selectedCategory
+          : true
+
+        const matchesSearch = state.searchQuery
+          ? p.title.toLowerCase().includes(state.searchQuery.toLowerCase())
+          : true
+
+        return matchesCategory && matchesSearch
+      })
+    },
+  },
   actions: {
     async fetchProducts() {
       this.loading = true
@@ -27,6 +46,45 @@ export const useProductStore = defineStore('product', {
         this.error = (err as Error).message
       } finally {
         this.loading = false
+      }
+    },
+
+    async fetchProduct(id: number) {
+      this.loading = true
+      try {
+        const res = await axios.get<Product>(`https://fakestoreapi.com/products/${id}`)
+        this.product = res.data
+      } catch (err) {
+        this.error = (err as Error).message
+      } finally {
+        this.loading = false
+      }
+    },
+
+    async createProduct(productData: Partial<Product>) {
+      try {
+        await axios.post('https://fakestoreapi.com/products', productData)
+        await this.fetchProducts()
+      } catch (err) {
+        console.error(err)
+      }
+    },
+
+    async updateProduct(id: number, productData: Partial<Product>) {
+      try {
+        await axios.put(`https://fakestoreapi.com/products/${id}`, productData)
+        await this.fetchProducts()
+      } catch (err) {
+        console.error(err)
+      }
+    },
+
+    async deleteProduct(id: number) {
+      try {
+        await axios.delete(`https://fakestoreapi.com/products/${id}`)
+        await this.fetchProducts()
+      } catch (err) {
+        console.error(err)
       }
     },
   },

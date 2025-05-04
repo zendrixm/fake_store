@@ -1,126 +1,177 @@
 <template>
-  <div class="page-header">
-    <TopHeader v-if="isLoginPage" />
-    <div v-if="isLoginPage" class="v-spacer-10" />
-    <el-row :gutter="20" align="middle">
-      <el-col :span="4">
-        <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-end">
+  <div class="bg-dark-blue">
+    <!-- Left Container -->
+    <div class="common-container header-container">
+      <div class="flex-space-around">
+        <div class="side-container">
           <img src="@/assets/img/eloura_white.png" :size="40" :width="40" :height="40" />
-          <h1 class="title-text align-right txtWhite">ELOURA</h1>
+          <h1 class="logo-text">ELOURA</h1>
         </div>
-      </el-col>
-      <el-col :span="16">
+
+        <!-- Middle Container -->
+        <div class="middle-container">
+          <el-input
+            v-if="!isMobile"
+            v-model="searchProduct"
+            placeholder="Search product"
+            clearable
+            :suffix-icon="Search"
+            class="search-product"
+          />
+        </div>
+        <!-- Right Container -->
+        <div class="side-container">
+          <el-button v-if="isMobile" class="icon-btn" @click="toggleSearch">
+            <el-icon :size="18" color="#FFF">
+              <Search />
+            </el-icon>
+          </el-button>
+          <el-button class="icon-btn">
+            <el-icon :size="18" color="#FFF">
+              <ShoppingCart />
+            </el-icon>
+            <span v-if="!isMobile" class="btn-label"> Shopping cart </span>
+          </el-button>
+        </div>
+      </div>
+      <div v-if="isMobileSearch" class="flex-space-around">
         <el-input
-          v-if="isLoginPage"
           v-model="searchProduct"
           placeholder="Search product"
           clearable
           :suffix-icon="Search"
+          class="search-product"
         />
-      </el-col>
-      <el-col :span="4">
-        <el-button v-if="isLoginPage" class="cart-btn" @click="$router.push('/cart')">
-          <el-icon :size="20" color="#FFF" style="vertical-align: middle">
-            <ShoppingCart />
-          </el-icon>
-        </el-button>
-      </el-col>
-    </el-row>
+      </div>
+    </div>
     <CategoryMenu
-      v-if="isLoginPage"
       :categories="categories"
+      :selected="selectedCategory"
       @selected-category="(cat) => (selectedCategory = cat)"
     />
   </div>
-  <div class="v-spacer-90" />
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { Search, ShoppingCart } from '@element-plus/icons-vue'
 import { useProductStore } from '@/stores/FakeProductStore'
-
-import TopHeader from '@/components/layout/TopHeader.vue'
 import CategoryMenu from '@/components/CategoryMenu.vue'
 
-const searchProduct = ref('')
-const selectedCategory = ref('')
+const isMobile = ref(false)
+const isMobileSearch = ref(false)
 
+const checkMobile = () => {
+  isMobile.value = window.matchMedia('(max-width: 540px)').matches
+}
 const store = useProductStore()
 const fetchProducts = store.fetchProducts
+
+const searchProduct = computed({
+  get: () => store.searchQuery,
+  set: (val) => (store.searchQuery = val),
+})
+
+const selectedCategory = computed({
+  get: () => store.selectedCategory,
+  set: (val) => (store.selectedCategory = val),
+})
+
 const productList = computed(() => store.products)
 
 const categories = computed(() => {
-  const seen = new Set<string>()
-  return productList.value.map((p) => p.category).filter((c) => !!c && !seen.has(c) && seen.add(c))
+  const list = new Set<string>()
+  const cats = productList.value
+    .map((p) => p.category)
+    .filter((c) => !!c && !list.has(c) && list.add(c))
+  return ['All', ...cats]
 })
 
-const filteredProducts = computed(() => {
-  return productList.value.filter((p) => {
-    const matchesCategory = selectedCategory.value ? p.category === selectedCategory.value : true
-    const matchesSearch = searchProduct.value
-      ? p.title.toLowerCase().includes(searchProduct.value.toLowerCase())
-      : true
-    return matchesCategory && matchesSearch
-  })
-})
-
-const emit = defineEmits(['productsChanged'])
-
-defineProps({
-  isLoginPage: {
-    type: Boolean,
-  },
-})
-watch(
-  filteredProducts,
-  (newFiltered) => {
-    console.log('Filtered Products:', newFiltered)
-    emit('productsChanged', newFiltered)
-  },
-  { immediate: true },
-)
+const toggleSearch = () => {
+  isMobileSearch.value = !isMobileSearch.value
+}
 
 onMounted(() => {
   fetchProducts().catch((err) => console.error('Error fetching products:', err))
+  checkMobile()
+  window.addEventListener('resize', checkMobile)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', checkMobile)
 })
 </script>
 
 <style lang="scss">
-.txtWhite {
-  color: #fff !important;
-}
-.align-right {
-  text-align: right;
-}
-.title-text {
-  font-size: 24px;
-  margin: 0;
-  font-family: monospace;
-  letter-spacing: 3px;
-}
-.cart-btn {
-  border: none;
-  background: transparent;
-  padding: 0;
-}
-.v-spacer-10 {
-  height: 10px;
-}
-.v-spacer-90 {
-  height: 90px;
-}
-.page-header {
-  background: #0b2545;
-  position: fixed;
-  width: 100%;
-  z-index: 1000;
-  padding: 10px;
+@use '@/assets/styles/breakpoint.scss' as breakpoint;
+
+.common-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px 30px;
+  @include breakpoint.xs {
+    padding: 10px;
+  }
 }
 
-a,
-.el-link {
-  color: #eef4ed;
-  --el-link-text-color: #eef4ed;
+.bg-dark-blue {
+  background: #0b2545;
+}
+
+.logo-text {
+  margin: 0px;
+  color: #fff;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  @include breakpoint.xs {
+    flex-wrap: wrap;
+    flex-direction: column;
+  }
+}
+
+.side-container {
+  display: inline-flex;
+  max-width: 200px;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+}
+
+.middle-container {
+  max-width: 785px;
+  width: 100%;
+}
+
+.icon-btn {
+  border: none !important;
+  background: transparent !important;
+  padding: 10px;
+  &:hover {
+    border: 1px solid #fff;
+    background: transparent;
+  }
+
+  @include breakpoint.xs {
+    padding: 0px !important;
+    margin-left: 0px !important;
+  }
+}
+
+.btn-label {
+  color: #fff;
+  margin-left: 5px;
+}
+
+.flex-space-around {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  gap: 30px;
 }
 </style>

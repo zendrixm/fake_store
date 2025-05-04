@@ -1,25 +1,19 @@
 <template>
-  <PageLayout @products-changed="handleProductDisplay">
-    <!-- <DailyDiscoverSection /> -->
-    <ProductList :products="productList" />
-  </PageLayout>
+  <ProductList :products="filteredProducts" />
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import PageLayout from '@/layouts/PageLayout.vue'
-//import DailyDiscoverSection from '@/components/DailyDiscoverSection.vue'
 import ProductList from '@/components/ProductList.vue'
+import { computed } from 'vue'
+import { useProductStore } from '@/stores/FakeProductStore'
 
-const productList = ref([])
-const handleProductDisplay = (products: []) => {
-  console.log('handleProductDisplay', products)
-  productList.value = products
+const store = useProductStore()
+
+// Optional: If fetchProducts might not be called already
+if (store.products.length === 0) {
+  store.fetchProducts()
 }
+
+// Default view should show all products or apply filter logic again here
+const filteredProducts = computed(() => store.filteredProducts)
 </script>
-
-<style lang="scss">
-.el-link {
-  --el-link-hover-text-color: none;
-}
-</style>

@@ -1,20 +1,27 @@
 <template>
-  <el-row :gutter="20">
-    <el-col :span="4" />
-    <el-col :span="16">
-      <el-row>
-        <div v-for="(category, id) in categories" :key="id">
-          <el-link class="category-text" @click="() => handleSelectedCategory(category)">
-            {{ toCamelCase(category) }}
-          </el-link>
-        </div>
-      </el-row>
-    </el-col>
-    <el-col :span="4" />
-  </el-row>
+  <div class="common-container category-wrapper">
+    <!-- Left Arrow -->
+    <button class="scroll-arrow left" @click="scrollLeft" v-if="showLeftArrow">‹</button>
+
+    <div ref="scrollContainer" class="category-container" @scroll="checkArrows">
+      <div v-for="(category, id) in categories" :key="id" class="category-item">
+        <el-link
+          class="category-text"
+          :class="{ active: selected === category }"
+          @click="() => handleSelectedCategory(category)"
+        >
+          {{ toCamelCase(category) }}
+        </el-link>
+      </div>
+    </div>
+
+    <!-- Right Arrow -->
+    <button class="scroll-arrow right" @click="scrollRight" v-if="showRightArrow">›</button>
+  </div>
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
 import type { PropType } from 'vue'
 
 defineProps({
@@ -22,7 +29,17 @@ defineProps({
     type: Array as PropType<string[]>,
     default: () => [],
   },
+  selected: {
+    type: String,
+    default: '',
+  },
 })
+
+const emits = defineEmits(['selectedCategory'])
+
+const handleSelectedCategory = (category: string) => {
+  emits('selectedCategory', category === 'All' ? '' : category)
+}
 
 const toCamelCase = (str: string) => {
   return str
@@ -31,17 +48,96 @@ const toCamelCase = (str: string) => {
     .join(' ')
 }
 
-const emits = defineEmits(['selectedCategory'])
+const scrollContainer = ref<HTMLDivElement | null>(null)
+const showLeftArrow = ref(false)
+const showRightArrow = ref(false)
 
-const handleSelectedCategory = (category: string) => {
-  emits('selectedCategory', category)
+const checkArrows = () => {
+  const el = scrollContainer.value
+  if (!el) return
+
+  showLeftArrow.value = el.scrollLeft > 0
+  showRightArrow.value = el.scrollLeft + el.clientWidth < el.scrollWidth
 }
+
+const scrollLeft = () => {
+  scrollContainer.value?.scrollBy({ left: -100, behavior: 'smooth' })
+}
+
+const scrollRight = () => {
+  scrollContainer.value?.scrollBy({ left: 100, behavior: 'smooth' })
+}
+
+onMounted(() => {
+  if (scrollContainer.value) {
+    checkArrows()
+
+    scrollContainer.value.addEventListener('scroll', checkArrows)
+    window.addEventListener('resize', checkArrows)
+  }
+})
 </script>
 
 <style lang="scss">
+.category-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: 0px 30px 10px !important;
+}
+
+.category-container {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-behavior: smooth;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  .category-item {
+    flex: 0 0 auto;
+  }
+}
+
 .category-text {
-  &.el-link {
-    padding: 10px 10px 0px 0px;
+  white-space: nowrap;
+
+  &.active {
+    font-weight: bold;
+    text-decoration: underline !important;
+    text-underline-offset: 3px;
+  }
+}
+
+.scroll-arrow {
+  width: 30px;
+  padding: 0;
+  background: linear-gradient(to left, #0b2545 70%, transparent);
+  border: none;
+  font-size: 24px;
+  color: #fff;
+  cursor: pointer;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.right {
+    right: 0;
+  }
+
+  &.left {
+    left: 0;
+  }
+
+  @media (min-width: 541px) {
+    display: none;
   }
 }
 </style>
