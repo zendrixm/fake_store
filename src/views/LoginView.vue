@@ -1,50 +1,48 @@
 <template>
-  <PageLayout :is-not-login-page="false">
-    <div class="auth-wrapper">
-      <div class="auth-card">
-        <div class="login-header">
-          <img src="@/assets/img/eloura_blue.png" alt="Eloura Logo" :height="135" :width="170" />
-        </div>
-
-        <el-form :model="form" :rules="rules" ref="formRef" label-position="top">
-          <!-- Email (only shows if sign up)-->
-          <el-form-item v-if="!isLogin" label="Email" prop="email">
-            <el-input v-model="form.email" />
-          </el-form-item>
-
-          <!-- Username -->
-          <el-form-item label="Username" prop="username">
-            <el-input v-model="form.username" />
-          </el-form-item>
-
-          <!-- Password -->
-          <el-form-item label="Password" prop="password">
-            <el-input v-model="form.password" show-password />
-          </el-form-item>
-
-          <!-- Confirm Password (only shows if sign up)-->
-          <el-form-item v-if="!isLogin" label="Confirm password" prop="confirmPassword">
-            <el-input v-model="form.confirmPassword" show-password />
-          </el-form-item>
-
-          <!-- Remember my username -->
-          <el-form-item v-if="isLogin">
-            <el-checkbox v-model="form.remember">Remember my username</el-checkbox>
-          </el-form-item>
-
-          <el-button class="btn-solid-primary" @click="handleLoginSignup" :loading="loading" round>
-            {{ isLogin ? 'Login' : 'Sign up' }}
-          </el-button>
-
-          <div class="login-links">
-            <router-link to="/forgotUsernamePassword">Forgot username or password?</router-link>
-            <br />
-            <a @click="toggleLoginSignup">{{ isLogin ? 'Sign up' : 'Already have an account' }}</a>
-          </div>
-        </el-form>
+  <div class="auth-wrapper">
+    <div class="auth-card">
+      <div class="login-header">
+        <img src="@/assets/img/eloura_blue.png" alt="Eloura Logo" :height="135" :width="170" />
       </div>
+
+      <el-form :model="form" :rules="rules" ref="formRef" label-position="top">
+        <!-- Email (only shows if sign up)-->
+        <el-form-item v-if="!isLogin" label="Email" prop="email">
+          <el-input v-model="form.email" />
+        </el-form-item>
+
+        <!-- Username -->
+        <el-form-item label="Username" prop="username">
+          <el-input v-model="form.username" />
+        </el-form-item>
+
+        <!-- Password -->
+        <el-form-item label="Password" prop="password">
+          <el-input v-model="form.password" show-password />
+        </el-form-item>
+
+        <!-- Confirm Password (only shows if sign up)-->
+        <el-form-item v-if="!isLogin" label="Confirm password" prop="confirmPassword">
+          <el-input v-model="form.confirmPassword" show-password />
+        </el-form-item>
+
+        <!-- Remember my username -->
+        <el-form-item v-if="isLogin">
+          <el-checkbox v-model="form.remember">Remember my username</el-checkbox>
+        </el-form-item>
+
+        <el-button class="btn-solid-primary" @click="handleLoginSignup" :loading="loading" round>
+          {{ isLogin ? 'Login' : 'Sign up' }}
+        </el-button>
+
+        <div class="login-links">
+          <router-link to="/forgotUsernamePassword">Forgot username or password?</router-link>
+          <br />
+          <a @click="toggleLoginSignup">{{ isLogin ? 'Sign up' : 'Already have an account' }}</a>
+        </div>
+      </el-form>
     </div>
-  </PageLayout>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -52,7 +50,6 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { useAuthStore } from '@/stores/AuthStore'
-import PageLayout from '@/layouts/PageLayout.vue'
 
 const authStore = useAuthStore()
 const router = useRouter()
@@ -120,21 +117,31 @@ const toggleLoginSignup = () => {
 </script>
 
 <style lang="scss">
+@use '@/assets/styles/breakpoint.scss' as breakpoint;
 .auth-wrapper {
   display: flex;
   justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+  align-items: flex-start;
+  margin-top: 20px;
+  max-height: 600px;
+  width: 100%;
   background-color: #f5f7fa;
+  @include breakpoint.xs {
+    margin-top: 0px;
+  }
 }
 
 .auth-card {
   background: #fff;
   padding: 40px;
   border-radius: 10px;
-  width: 100%;
-  max-width: 400px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+  width: 400px;
+  @include breakpoint.xs {
+    max-width: 100%;
+    padding: 10px;
+  }
 }
 
 .login-header {
