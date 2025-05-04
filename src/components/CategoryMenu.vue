@@ -79,12 +79,16 @@ onMounted(() => {
 </script>
 
 <style lang="scss">
+@use '@/assets/styles/breakpoint.scss' as breakpoint;
 .category-wrapper {
   position: relative;
   display: flex;
   align-items: center;
   overflow: hidden;
   padding: 0px 30px 10px !important;
+  @include breakpoint.xs {
+    padding: 0px 10px 10px !important;
+  }
 }
 
 .category-container {

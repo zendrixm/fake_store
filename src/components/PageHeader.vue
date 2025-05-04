@@ -45,6 +45,7 @@
       </div>
     </div>
     <CategoryMenu
+      v-if="isAuthenticated"
       :categories="categories"
       :selected="selectedCategory"
       @selected-category="(cat) => (selectedCategory = cat)"
@@ -56,6 +57,7 @@
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { Search, ShoppingCart } from '@element-plus/icons-vue'
 import { useProductStore } from '@/stores/FakeProductStore'
+import { useAuthStore } from '@/stores/AuthStore'
 import CategoryMenu from '@/components/CategoryMenu.vue'
 
 const isMobile = ref(false)
@@ -66,6 +68,9 @@ const checkMobile = () => {
 }
 const store = useProductStore()
 const fetchProducts = store.fetchProducts
+
+const authStore = useAuthStore()
+const isAuthenticated = computed(() => authStore.isAuthenticated)
 
 const searchProduct = computed({
   get: () => store.searchQuery,
