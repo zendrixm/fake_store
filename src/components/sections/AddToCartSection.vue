@@ -1,6 +1,6 @@
 <template>
   <div class="cart-wrapper">
-    <h2 class="txtOrange">Shopping Cart</h2>
+    <h2 class="txtDarkBlue">Shopping Cart</h2>
     <el-table
       v-if="products.length"
       :data="products"
@@ -34,7 +34,7 @@
       <el-table-column label="Action" align="center" width="80">
         <template #default="{ row }">
           <el-button class="cart-btn" @click="removeProduct(row.id)">
-            <el-icon :size="18" color="#F63">
+            <el-icon :size="18" color="#00549a">
               <Delete />
             </el-icon>
           </el-button>
@@ -43,7 +43,7 @@
     </el-table>
     <div class="cart-total">
       <el-text>Total ({{ selectedIds.length }} items): </el-text>
-      <el-text class="txtOrange">
+      <el-text class="txtDarkBlue">
         ${{
           products
             .filter((p) => selectedIds.includes(p.id))
@@ -86,8 +86,8 @@ const removeProduct = (id: number) => {
 
 <style lang="scss">
 .cart-wrapper {
-  max-width: 1000px;
-  margin: 30px auto;
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 20px;
   background: #fff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -104,24 +104,25 @@ const removeProduct = (id: number) => {
   padding: 0;
 }
 
-.txtOrange {
-  color: #f63 !important;
+.txtDarkBlue {
+  color: #0b2545 !important;
 }
 
 .el-checkbox__input {
   &.is-checked,
   &.is-indeterminate {
     .el-checkbox__inner {
-      background: #ee4d2d;
-      border-color: #ee4d2d;
+      background: #0b2545;
+      border-color: #0b2545;
     }
   }
 }
 
 .el-input-number {
   .el-input__inner {
-    color: #f63;
+    color: #0b2545;
     font-size: 14px;
+    font-weight: bold;
   }
 }
 </style>
