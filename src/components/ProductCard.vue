@@ -2,13 +2,7 @@
   <router-link :to="`/product/${product.id}`" class="product-view">
     <el-card class="product-card">
       <div class="product-content">
-        <img
-          class="product-image"
-          :src="product.image"
-          :alt="product.title"
-          :width="180"
-          :height="220"
-        />
+        <img class="product-image" :src="product.image" :alt="product.title" />
 
         <div class="v-spacer-20" />
 
@@ -50,15 +44,23 @@ defineProps({
 </script>
 
 <style lang="scss">
+@use '@/assets/styles/breakpoint.scss' as breakpoint;
+
 .el-card {
   &.product-card {
-    height: 380px; /* 🛠 Fixed card height */
+    height: auto;
     padding: 20px;
     margin-bottom: 10px 10px;
     border-radius: 10px;
     box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.12);
     display: flex;
     flex-direction: column;
+    .el-card__body {
+      padding: 10px;
+    }
+    @include breakpoint.xs {
+      padding: 20px;
+    }
   }
 }
 
@@ -66,11 +68,22 @@ defineProps({
   display: flex;
   flex-direction: column;
   height: 100%;
+  @include breakpoint.xs {
+    border: 1px solid #e5e5e5;
+    padding: 20px;
+    border-radius: 10px;
+  }
 }
 
 .product-image {
   display: flex;
   margin: 0 auto;
+  height: 220px;
+  width: 180px;
+  @include breakpoint.xs {
+    height: 140px;
+    width: 120px;
+  }
 }
 
 .product-title {
@@ -83,6 +96,9 @@ defineProps({
   text-overflow: ellipsis;
   margin-bottom: 0px;
   height: 45px;
+  @include breakpoint.xs {
+    font-size: 14px;
+  }
 }
 
 .rating-section {
@@ -91,10 +107,13 @@ defineProps({
 
 .price-wrapper {
   font-weight: bold;
-  font-size: 20px;
-  color: #f63;
+  font-size: 18px;
+  color: #00549a;
   text-align: left;
   margin-top: 10px;
+  @include breakpoint.xs {
+    font-size: 14px;
+  }
 }
 
 .v-spacer-20 {
@@ -107,17 +126,14 @@ a.product-view {
 
   &:hover {
     text-decoration: none;
-  }
-
-  &:hover .product-card {
-    border: 2px solid #f63;
-    transition: border 0.3s ease;
+    .product-card {
+      border: 2px solid #00549a;
+    }
   }
 }
 
 .product-card {
-  transition: border 0.3s ease;
   border: 1px solid transparent;
-  margin-top: 20px;
+  margin-bottom: 20px;
 }
 </style>
