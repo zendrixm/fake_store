@@ -98,12 +98,9 @@ onMounted(async () => {
     width: 180px;
     height: 220px;
     @include breakpoint.xs {
-      width: 100px;
-      height: auto;
       padding: 30px 0px 0px;
     }
     @include breakpoint.sm {
-      height: auto;
       padding: 30px 0px 0px;
     }
     @include breakpoint.lg {
