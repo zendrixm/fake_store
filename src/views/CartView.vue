@@ -1,12 +1,10 @@
 <template>
-  <PageLayout @products-changed="handleProductDisplay">
-    <AddToCartSection
-      :products="products"
-      @handleQuantityChange="handleQtyChange"
-      @removeProduct="handleRemove"
-      @selectionChange="handleSelected"
-    />
-  </PageLayout>
+  <AddToCartSection
+    :products="products"
+    @handleQuantityChange="handleQtyChange"
+    @removeProduct="handleRemove"
+    @selectionChange="handleSelected"
+  />
 </template>
 
 <script setup lang="ts">
@@ -22,7 +20,6 @@
 import { ref, onMounted } from 'vue'
 import type { CartProduct } from '@/types/ProductContext'
 import axios from 'axios'
-import PageLayout from '@/layouts/PageLayout.vue'
 import AddToCartSection from '@/components/sections/AddToCartSection.vue'
 
 const products = ref<CartProduct[]>([])
@@ -67,11 +64,5 @@ const handleQtyChange = (val: number, row: CartProduct) => {
 const handleRemove = (id: number) => {
   products.value = products.value.filter((p) => p.id !== id)
   selectedProductIds.value = selectedProductIds.value.filter((pid) => pid !== id)
-}
-
-const productList = ref([])
-const handleProductDisplay = (products: []) => {
-  console.log('handleProductDisplay', products)
-  productList.value = products
 }
 </script>
