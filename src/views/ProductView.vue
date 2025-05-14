@@ -3,7 +3,6 @@ import { onMounted, computed, ref } from 'vue'
 import { ShoppingCart } from '@element-plus/icons-vue'
 import { useRoute } from 'vue-router'
 import { useProductStore } from '@/stores/FakeProductStore'
-import PageLayout from '@/layouts/PageLayout.vue'
 
 const route = useRoute()
 const store = useProductStore()
@@ -11,15 +10,10 @@ const product = computed(() => store.product)
 
 const isLoading = ref(false)
 const quantity = ref(1)
-const productList = ref([])
 
 const handleAddToCart = async () => {
   // logic to add to cart (or emit to parent)
   console.log('Adding to cart:', product)
-}
-
-const handleProductDisplay = (products: []) => {
-  productList.value = products
 }
 
 onMounted(async () => {
@@ -37,73 +31,85 @@ onMounted(async () => {
 </script>
 
 <template>
-  <PageLayout @products-changed="handleProductDisplay">
-    <div v-loading="isLoading" element-loading-text="Loading... Please wait">
-      <div class="product-view-wrapper">
-        <el-row v-if="product">
-          <el-col :md="10" class="image-column">
-            <img :src="product.image" :alt="product.title" :width="180" :height="220" />
-          </el-col>
+  <div v-loading="isLoading" element-loading-text="Loading... Please wait">
+    <div class="product-view-wrapper">
+      <el-row v-if="product">
+        <el-col :md="10" class="image-column">
+          <img :src="product.image" :alt="product.title" class="product-image" />
+        </el-col>
 
-          <el-col :md="14" class="info-column">
-            <h1>{{ product.title }}</h1>
-            <el-text>{{ product.description }}</el-text>
+        <el-col :md="14" class="info-column">
+          <h1>{{ product.title }}</h1>
+          <el-text>{{ product.description }}</el-text>
 
-            <el-row v-if="product.rating" align="middle" class="rating-section">
-              <el-rate
-                :model-value="product.rating.rate"
-                disabled
-                show-score
-                :max="5"
-                :colors="['#F7BA2A', '#F7BA2A', '#F7BA2A']"
-                class="rating-stars"
-              />
-              <el-divider direction="vertical" />
-              <span class="txtSize14">{{ product.rating.count }} Sold</span>
-            </el-row>
+          <el-row v-if="product.rating" align="middle" class="rating-section">
+            <el-rate
+              :model-value="product.rating.rate"
+              disabled
+              show-score
+              :max="5"
+              :colors="['#F7BA2A', '#F7BA2A', '#F7BA2A']"
+              class="rating-stars"
+            />
+            <el-divider direction="vertical" />
+            <span class="txtSize14">{{ product.rating.count }} Sold</span>
+          </el-row>
 
-            <p class="txtOrange txtBold txtSize18">${{ product.price }}</p>
+          <p class="txtBlue txtBold txtSize18">${{ product.price }}</p>
 
-            <!-- Quantity Selector -->
-            <el-row align="middle" class="v-spacer-15 quantity-row">
-              <span class="qty-label"><strong>Quantity:</strong></span>
-              <el-input-number v-model="quantity" :min="1" :max="100" size="small" />
-            </el-row>
+          <!-- Quantity Selector -->
+          <el-row align="middle" class="v-spacer-15 quantity-row">
+            <span class="qty-label"><strong>Quantity:</strong></span>
+            <el-input-number v-model="quantity" :min="1" :max="100" size="small" />
+          </el-row>
 
-            <div class="v-spacer-20" />
+          <div class="v-spacer-20" />
 
-            <!-- Action Buttons -->
-            <div class="action-buttons">
-              <el-button class="btn-secondary" @click="handleAddToCart">
-                <el-icon :size="20" color="#ee4d2d" class="icon-align">
-                  <ShoppingCart />
-                </el-icon>
-                <span>Add to Cart</span>
-              </el-button>
+          <!-- Action Buttons -->
+          <div class="action-buttons">
+            <el-button class="btn-secondary" @click="handleAddToCart">
+              <el-icon :size="20" color="#134074" class="icon-align">
+                <ShoppingCart />
+              </el-icon>
+              <span>Add to Cart</span>
+            </el-button>
 
-              <el-button class="btn-solid-primary">Buy Now</el-button>
-              <el-button class="cart-btn" @click="$router.push('/cart')">
-                <el-icon :size="20" color="#FFF" style="vertical-align: middle">
-                  <ShoppingCart />
-                </el-icon>
-              </el-button>
-            </div>
-          </el-col>
-        </el-row>
-      </div>
+            <el-button class="btn-solid-primary">Buy Now</el-button>
+          </div>
+        </el-col>
+      </el-row>
     </div>
-  </PageLayout>
+  </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
+@use '@/assets/styles/breakpoint.scss' as breakpoint;
+
 .product-view-wrapper {
   max-width: 1200px;
   padding: 0;
-  margin: 10px auto;
+  margin: 0px auto;
   border: 1px solid #e5e5e5;
   border-radius: 4px;
   box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.12);
   background-color: #fff;
+
+  .product-image {
+    width: 180px;
+    height: 220px;
+    @include breakpoint.xs {
+      width: 100px;
+      height: auto;
+      padding: 30px 0px 0px;
+    }
+    @include breakpoint.sm {
+      height: auto;
+      padding: 30px 0px 0px;
+    }
+    @include breakpoint.lg {
+      padding: 0px;
+    }
+  }
 }
 
 .image-column {
@@ -136,8 +142,8 @@ onMounted(async () => {
   font-size: 18px;
 }
 
-.txtOrange {
-  color: #f63;
+.txtBlue {
+  color: #00549a;
 }
 
 .txtBold {
@@ -157,40 +163,53 @@ onMounted(async () => {
   margin-top: 30px;
   display: flex;
   gap: 12px;
+  .el-button + .el-button {
+    @include breakpoint.xs {
+      flex-direction: column;
+      margin-left: 0px;
+    }
+  }
+  @include breakpoint.xs {
+    flex-direction: column;
+  }
 }
 
 .btn-secondary {
-  background: rgba(255, 87, 34, 0.1);
-  border: 1px solid #ee4d2d;
+  background: transparent;
+  border: 1px solid #134074;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.03);
-  color: #ee4d2d;
+  color: #134074;
   padding: 15px;
 
   &:hover {
-    background: rgba(255, 87, 34, 0.1) !important;
-    border: 1px solid #ee4d2d;
-    color: #ee4d2d !important;
+    background: #8da9c4 !important;
+    border: 1px solid #8da9c4;
+    color: #134074 !important;
   }
 }
 
 .btn-solid-primary {
-  background: #ee4d2d;
-  border: 1px solid #ee4d2d;
+  background: #134074;
+  border: 1px solid #134074;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.03);
   color: #fff;
   padding: 15px;
 
   &:hover {
-    background: #ee4d2d;
-    border: 1px solid #ee4d2d;
+    background: #8da9c4;
+    border: 1px solid #8da9c4;
     color: #fff;
   }
 }
+</style>
 
-.el-input-number {
-  .el-input__inner {
-    color: #f63;
-    font-size: 14px;
+<style lang="scss">
+.product-view-wrapper {
+  .el-input-number {
+    .el-input__inner {
+      color: #134074;
+      font-size: 14px;
+    }
   }
 }
 </style>
