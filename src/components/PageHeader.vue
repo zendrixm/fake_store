@@ -26,7 +26,7 @@
               <Search />
             </el-icon>
           </el-button>
-          <el-button class="icon-btn">
+          <el-button class="icon-btn" @click="$router.push('/cart')">
             <el-icon :size="18" color="#FFF">
               <ShoppingCart />
             </el-icon>
