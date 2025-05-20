@@ -96,16 +96,18 @@
             />
           </div>
           <div class="total-wrapper">
-            <el-text>Total: </el-text>
-            <div class="spacer-5" />
-            <el-text class="txtDarkBlue txtBold">
-              ${{
-                products
-                  .filter((p) => selectedIds.includes(p.id))
-                  .reduce((sum, p) => sum + p.price * p.quantity, 0)
-                  .toFixed(2)
-              }}
-            </el-text>
+            <div class="flex">
+              <el-text>Total: </el-text>
+              <el-text class="txtDarkBlue txtBold">
+                ${{
+                  products
+                    .filter((p) => selectedIds.includes(p.id))
+                    .reduce((sum, p) => sum + p.price * p.quantity, 0)
+                    .toFixed(2)
+                }}
+              </el-text>
+            </div>
+            <el-button class="btn-solid-primary" @click="handleCheckout"> Checkout </el-button>
           </div>
         </div>
       </el-col>
@@ -117,6 +119,12 @@
 import { ref, type PropType, computed } from 'vue'
 import type { CartProduct } from '@/types/ProductContext'
 import { Delete } from '@element-plus/icons-vue'
+import { useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
+import { useProductStore } from '@/stores/FakeProductStore'
+
+const router = useRouter()
+const store = useProductStore()
 
 const props = defineProps({
   products: {
@@ -128,7 +136,7 @@ const props = defineProps({
 const emits = defineEmits(['handleQuantityChange', 'removeProduct', 'selectionChange'])
 
 const selectedIds = ref<number[]>([])
-
+const userId = ref(2) // Replace with value from auth store when ready
 const isAllSelected = computed(() => selectedIds.value.length === props.products.length)
 const isIndeterminate = computed(() => selectedIds.value.length > 0 && !isAllSelected.value)
 
@@ -148,6 +156,18 @@ const removeProduct = (id: number) => {
 const handleCheckAll = (val: boolean) => {
   selectedIds.value = val ? props.products.map((p) => p.id) : []
   emits('selectionChange', selectedIds.value)
+}
+
+const handleCheckout = async () => {
+  if (selectedIds.value.length === 0) {
+    ElMessage.warning('Please select at least one product to checkout.')
+    return
+  }
+
+  await store.checkoutSelectedProducts(userId.value, selectedIds.value)
+
+  // Navigate to confirmation page or show a message
+  router.push('/confirmation')
 }
 </script>
 
@@ -327,6 +347,7 @@ const handleCheckAll = (val: boolean) => {
 .total-wrapper {
   display: flex;
   justify-content: flex-end;
+  gap: 30px;
 }
 .txtDarkBlue {
   color: #0b2545 !important;
@@ -338,5 +359,24 @@ const handleCheckAll = (val: boolean) => {
 
 .spacer-5 {
   width: 5px;
+}
+
+.flex {
+  display: flex;
+  gap: 5px;
+}
+
+.btn-solid-primary {
+  background: #134074;
+  border: 1px solid #134074;
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.03);
+  color: #fff;
+  padding: 15px;
+
+  &:hover {
+    background: #8da9c4;
+    border: 1px solid #8da9c4;
+    color: #fff;
+  }
 }
 </style>

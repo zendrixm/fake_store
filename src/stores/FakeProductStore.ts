@@ -219,6 +219,37 @@ export const useProductStore = defineStore('product', {
       }
     },
 
+    async checkoutSelectedProducts(userId: number, selectedIds: number[]) {
+      const remainingProducts = this.cartList.filter((p) => !selectedIds.includes(p.id))
+
+      const cartProducts = remainingProducts.map((p) => ({
+        productId: p.id,
+        title: p.title,
+        price: p.price,
+        description: p.description,
+        category: p.category,
+        image: p.image,
+        quantity: p.quantity,
+      }))
+
+      const payload = {
+        userId,
+        products: cartProducts,
+      }
+
+      const res = await axios.get<Cart[]>(`${API_BASE}/carts/user/${userId}`)
+      const latestCart = res.data.sort(
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+      )[0]
+
+      if (latestCart) {
+        await axios.put(`${API_BASE}/carts/${latestCart.id}`, payload)
+      }
+
+      // Update local cart
+      this.cartList = remainingProducts
+    },
+
     async createProduct(productData: Partial<Product>) {
       try {
         await axios.post(`${API_BASE}/products`, productData)
