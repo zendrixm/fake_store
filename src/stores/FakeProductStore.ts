@@ -148,6 +148,36 @@ export const useProductStore = defineStore('product', {
       }
     },
 
+    async removeFromCartAndSync(userId: number, productId: number) {
+      this.cartList = this.cartList.filter((p) => p.id !== productId)
+
+      const cartProducts = this.cartList.map((p) => ({
+        productId: p.id,
+        title: p.title,
+        price: p.price,
+        description: p.description,
+        category: p.category,
+        image: p.image,
+        quantity: p.quantity,
+      }))
+
+      const payload = {
+        userId,
+        products: cartProducts,
+      }
+
+      const res = await axios.get<Cart[]>(`${API_BASE}/carts/user/${userId}`)
+      const latestCart = res.data.sort(
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+      )[0]
+
+      if (latestCart) {
+        await axios.put(`${API_BASE}/carts/${latestCart.id}`, payload)
+      } else {
+        await axios.post(`${API_BASE}/carts`, payload)
+      }
+    },
+
     async createProduct(productData: Partial<Product>) {
       try {
         await axios.post(`${API_BASE}/products`, productData)

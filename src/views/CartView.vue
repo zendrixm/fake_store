@@ -13,7 +13,6 @@ import type { CartProduct } from '@/types/ProductContext'
 import { useProductStore } from '@/stores/FakeProductStore'
 import AddToCartSection from '@/components/sections/AddToCartSection.vue'
 
-const products = ref<CartProduct[]>([])
 const selectedProductIds = ref<number[]>([])
 // TEMP: Replace with dynamic user ID from auth later
 const userId = 2
@@ -28,9 +27,9 @@ const handleQtyChange = (val: number, row: CartProduct) => {
   row.quantity = val
 }
 
-const handleRemove = (id: number) => {
-  products.value = products.value.filter((p) => p.id !== id)
+const handleRemove = async (id: number) => {
   selectedProductIds.value = selectedProductIds.value.filter((pid) => pid !== id)
+  await productStore.removeFromCartAndSync(userId, id)
 }
 
 onMounted(() => {
