@@ -26,7 +26,7 @@
             <el-input-number
               v-model="row.quantity"
               :min="1"
-              @change="(val: number) => handleQuantityChange(val, row)"
+              @change="(val: number) => $emit('handleQuantityChange', val, row)"
             />
           </template>
         </el-table-column>

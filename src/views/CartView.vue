@@ -23,8 +23,12 @@ const handleSelected = (ids: number[]) => {
   selectedProductIds.value = ids
 }
 
-const handleQtyChange = (val: number, row: CartProduct) => {
+const handleQtyChange = async (val: number, row: CartProduct) => {
+  console.log('Row', row)
+  if (!row) return
+
   row.quantity = val
+  await productStore.updateCartProduct(userId, row.id, val)
 }
 
 const handleRemove = async (id: number) => {

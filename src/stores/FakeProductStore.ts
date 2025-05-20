@@ -178,6 +178,47 @@ export const useProductStore = defineStore('product', {
       }
     },
 
+    async updateCartProduct(userId: number, productId: number, newQuantity: number) {
+      try {
+        // Find the product in cartList and update quantity
+        const index = this.cartList.findIndex((p) => p.id === productId)
+        if (index !== -1) {
+          this.cartList[index].quantity = newQuantity
+        }
+
+        // Sync updated cart to API
+        const cartProducts = this.cartList.map((p) => ({
+          productId: p.id,
+          title: p.title,
+          price: p.price,
+          description: p.description,
+          category: p.category,
+          image: p.image,
+          quantity: p.quantity,
+        }))
+
+        const payload = {
+          userId,
+          products: cartProducts,
+        }
+
+        // Get the latest cart to update
+        const res = await axios.get<Cart[]>(`${API_BASE}/carts/user/${userId}`)
+        const latestCart = res.data.sort(
+          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+        )[0]
+
+        if (latestCart) {
+          await axios.put(`${API_BASE}/carts/${latestCart.id}`, payload)
+        } else {
+          await axios.post(`${API_BASE}/carts`, payload)
+        }
+      } catch (error) {
+        console.error('Failed to update cart product:', error)
+        this.error = (error as Error).message
+      }
+    },
+
     async createProduct(productData: Partial<Product>) {
       try {
         await axios.post(`${API_BASE}/products`, productData)
