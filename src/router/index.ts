@@ -13,6 +13,11 @@ const routes = [
     name: 'Cart',
     component: () => import('../views/CartView.vue'),
   },
+  {
+    path: '/confirmation',
+    name: 'Confirmation',
+    component: () => import('../views/ConfirmationPage.vue'),
+  },
 
   // (other routes will come later)
 ]
