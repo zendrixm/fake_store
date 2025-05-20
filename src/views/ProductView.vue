@@ -3,17 +3,28 @@ import { onMounted, computed, ref } from 'vue'
 import { ShoppingCart } from '@element-plus/icons-vue'
 import { useRoute } from 'vue-router'
 import { useProductStore } from '@/stores/FakeProductStore'
+import { ElMessage } from 'element-plus'
+
+import type { Product } from '@/types/ProductContext'
 
 const route = useRoute()
 const store = useProductStore()
-const product = computed(() => store.product)
+const product = computed(() => store.product as Product)
 
 const isLoading = ref(false)
 const quantity = ref(1)
 
+const userId = ref(2) // Replace with value from auth store when ready
+
 const handleAddToCart = async () => {
-  // logic to add to cart (or emit to parent)
-  console.log('Adding to cart:', product)
+  if (!store.isCartFetched) {
+    await store.fetchCart(userId.value)
+  }
+
+  if (product.value) {
+    await store.addToCartAndSync(userId.value, product.value, quantity.value)
+    ElMessage.success('Added to cart!')
+  }
 }
 
 onMounted(async () => {
