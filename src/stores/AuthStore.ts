@@ -31,13 +31,15 @@ export const useAuthStore = defineStore('auth', {
       this.error = null
 
       try {
+        // Fetch all users just to find the one matching the provided username.
+        // This is NOT secure and should never be done in a production environment.
         const { data: users } = await fetchAllUsers()
         const foundUser = (users as User[]).find((user) => user.username === username)
 
         if (!foundUser) throw new Error('User not found')
         if (foundUser.password !== password) throw new Error('Incorrect password')
 
-        const { data: loginData } = await userLogin(username, password)
+        const { data: loginData }: { data: { token: string } } = await userLogin(username, password)
 
         if (!loginData?.token) throw new Error('Login failed')
 
@@ -45,6 +47,7 @@ export const useAuthStore = defineStore('auth', {
         this.isAuthenticated = true
         localStorage.setItem('token', loginData.token)
         localStorage.setItem('userId', foundUser.id.toString())
+        localStorage.setItem('username', foundUser.username)
 
         return true
       } catch (err) {
@@ -62,14 +65,15 @@ export const useAuthStore = defineStore('auth', {
       this.isAuthenticated = false
       localStorage.removeItem('token')
       localStorage.removeItem('userId')
+      localStorage.removeItem('username')
     },
-
     loadFromStorage() {
       const token = localStorage.getItem('token')
       const userId = localStorage.getItem('userId')
+      const username = localStorage.getItem('username')
 
-      if (token && userId) {
-        this.user = { id: parseInt(userId), username: 'User' }
+      if (token && userId && username) {
+        this.user = { id: parseInt(userId), username }
         this.isAuthenticated = true
       }
     },
