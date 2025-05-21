@@ -20,21 +20,49 @@
         <router-link to="/">Home</router-link>
         <router-link to="/about">About Us</router-link>
         <router-link to="/products">Products</router-link>
-        <router-link to="/login">Login</router-link>
+        <template v-if="isAuthenticated">
+          <el-dropdown trigger="click">
+            <span class="el-dropdown-link">Profile</span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item
+                  ><el-icon><UserFilled /></el-icon> {{ username }}</el-dropdown-item
+                >
+                <el-dropdown-item divided @click="logout">Logout</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </template>
+        <template v-else>
+          <router-link to="/login">Login</router-link>
+        </template>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
-import { Close } from '@element-plus/icons-vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { Close, UserFilled } from '@element-plus/icons-vue'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/AuthStore'
 const isMobile = ref(false)
 const isMenuOpen = ref(false)
+
+const authStore = useAuthStore()
+const router = useRouter()
+
+const isAuthenticated = computed(() => authStore.isAuthenticated)
+const username = computed(() => authStore.user?.username ?? '')
 
 const checkMobile = () => {
   isMobile.value = window.matchMedia('(max-width: 540px)').matches
   if (!isMobile.value) isMenuOpen.value = false
+}
+
+const logout = () => {
+  authStore.logout()
+  router.push('/login')
 }
 
 onMounted(() => {
@@ -93,6 +121,14 @@ onUnmounted(() => {
       display: flex;
       align-items: flex-start;
     }
+  }
+  .el-dropdown-link {
+    color: white;
+    cursor: pointer;
+    user-select: none;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
   }
 }
 
