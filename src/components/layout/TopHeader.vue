@@ -21,7 +21,7 @@
         <router-link to="/about">About Us</router-link>
         <router-link to="/products">Products</router-link>
         <template v-if="isAuthenticated">
-          <el-dropdown trigger="click">
+          <el-dropdown trigger="click" v-if="!isMobile">
             <span class="el-dropdown-link">Profile</span>
             <template #dropdown>
               <el-dropdown-menu>
@@ -32,6 +32,12 @@
               </el-dropdown-menu>
             </template>
           </el-dropdown>
+          <template v-else>
+            <el-button class="btn-nav" @click="logout">Logout</el-button>
+            <el-button class="btn-nav" @click="$router.push('/profile')">
+              <el-icon class="mar-5-r"><UserFilled /></el-icon>{{ username }}</el-button
+            >
+          </template>
         </template>
         <template v-else>
           <router-link to="/login">Login</router-link>
@@ -132,6 +138,21 @@ onUnmounted(() => {
   }
 }
 
+.btn-nav {
+  padding: 0px;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  height: auto;
+  &.el-button + .el-button {
+    margin-left: 0px;
+  }
+}
+
+.mar-5-r {
+  margin-right: 5px;
+}
 .menu-icon {
   display: none;
   cursor: pointer;
