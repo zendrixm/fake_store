@@ -34,7 +34,7 @@
           </el-dropdown>
           <template v-else>
             <el-button class="btn-nav" @click="logout">Logout</el-button>
-            <el-button class="btn-nav" @click="$router.push('/profile')">
+            <el-button class="btn-nav" @click="$router.push(`/profile/${username}`)">
               <el-icon class="mar-5-r"><UserFilled /></el-icon>{{ username }}</el-button
             >
           </template>

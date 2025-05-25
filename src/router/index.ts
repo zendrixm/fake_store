@@ -18,6 +18,11 @@ const routes = [
     name: 'Confirmation',
     component: () => import('../views/ConfirmationPage.vue'),
   },
+  {
+    path: '/profile/:username',
+    name: 'UserProfile',
+    component: () => import('../views/UserProfile.vue'),
+  },
 
   // (other routes will come later)
 ]

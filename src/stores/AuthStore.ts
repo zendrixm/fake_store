@@ -1,10 +1,11 @@
 import { defineStore } from 'pinia'
 import { userSignup, userLogin, fetchAllUsers } from '@/api/Auth'
-import type { User, SignUpUser } from '@/types/UserContext'
+import type { User, SignUpUser, UserProfile } from '@/types/UserContext'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     user: null as null | User,
+    userProfile: null as UserProfile | null,
     isAuthenticated: false,
     loading: false,
     error: null as string | null,
@@ -60,6 +61,19 @@ export const useAuthStore = defineStore('auth', {
         this.loading = false
       }
     },
+    async fetchUserProfile() {
+      if (!this.user?.id) return
+
+      try {
+        const { data: users } = await fetchAllUsers()
+        const profile = (users as UserProfile[]).find((u) => u.id === this.user?.id)
+        this.userProfile = profile || null
+      } catch (err) {
+        console.error('Failed to fetch full profile:', err)
+        this.userProfile = null
+      }
+    },
+
     logout() {
       this.user = null
       this.isAuthenticated = false
