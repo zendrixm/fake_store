@@ -226,12 +226,17 @@ h3 {
   justify-content: flex-end;
 }
 
+.el-button {
+  border-radius: 8px;
+}
+
 .btn-solid-primary {
   background: #134074;
   border: 1px solid #134074;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.03);
   color: #fff;
   padding: 15px;
+  width: auto;
 
   &:hover {
     background: #8da9c4;
