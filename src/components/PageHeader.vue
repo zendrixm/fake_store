@@ -2,37 +2,39 @@
   <div class="bg-dark-blue">
     <!-- Left Container -->
     <div class="common-container header-container">
-      <div class="flex-space-around">
+      <div :class="isDisplayed ? 'flex-space-around' : 'flex-space-around flex-start'">
         <div class="side-container">
           <img src="@/assets/img/eloura_white.png" :size="40" :width="40" :height="40" />
           <h1 class="logo-text">ELOURA</h1>
         </div>
 
-        <!-- Middle Container -->
-        <div class="middle-container">
-          <el-input
-            v-if="!isMobile"
-            v-model="searchProduct"
-            placeholder="Search product"
-            clearable
-            :suffix-icon="Search"
-            class="search-product"
-          />
-        </div>
-        <!-- Right Container -->
-        <div class="side-container">
-          <el-button v-if="isMobile" class="icon-btn" @click="toggleSearch">
-            <el-icon :size="18" color="#FFF">
-              <Search />
-            </el-icon>
-          </el-button>
-          <el-button class="icon-btn" @click="$router.push('/cart')">
-            <el-icon :size="18" color="#FFF">
-              <ShoppingCart />
-            </el-icon>
-            <span v-if="!isMobile" class="btn-label"> Shopping cart </span>
-          </el-button>
-        </div>
+        <template v-if="isDisplayed">
+          <!-- Middle Container -->
+          <div class="middle-container">
+            <el-input
+              v-if="!isMobile"
+              v-model="searchProduct"
+              placeholder="Search product"
+              clearable
+              :suffix-icon="Search"
+              class="search-product"
+            />
+          </div>
+          <!-- Right Container -->
+          <div class="side-container">
+            <el-button v-if="isMobile" class="icon-btn" @click="toggleSearch">
+              <el-icon :size="18" color="#FFF">
+                <Search />
+              </el-icon>
+            </el-button>
+            <el-button class="icon-btn" @click="$router.push('/cart')">
+              <el-icon :size="18" color="#FFF">
+                <ShoppingCart />
+              </el-icon>
+              <span v-if="!isMobile" class="btn-label"> Shopping cart </span>
+            </el-button>
+          </div>
+        </template>
       </div>
       <div v-if="isMobileSearch" class="flex-space-around">
         <el-input
@@ -45,7 +47,7 @@
       </div>
     </div>
     <CategoryMenu
-      v-if="isAuthenticated"
+      v-if="isDisplayed"
       :categories="categories"
       :selected="selectedCategory"
       @selected-category="(cat) => (selectedCategory = cat)"
@@ -58,6 +60,7 @@ import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { Search, ShoppingCart } from '@element-plus/icons-vue'
 import { useProductStore } from '@/stores/FakeProductStore'
 import { useAuthStore } from '@/stores/AuthStore'
+import { useRoute } from 'vue-router'
 import CategoryMenu from '@/components/CategoryMenu.vue'
 
 const isMobile = ref(false)
@@ -71,7 +74,7 @@ const fetchProducts = store.fetchProducts
 
 const authStore = useAuthStore()
 const isAuthenticated = computed(() => authStore.isAuthenticated)
-
+const route = useRoute()
 const searchProduct = computed({
   get: () => store.searchQuery,
   set: (val) => (store.searchQuery = val),
@@ -90,6 +93,10 @@ const categories = computed(() => {
     .map((p) => p.category)
     .filter((c) => !!c && !list.has(c) && list.add(c))
   return ['All', ...cats]
+})
+
+const isDisplayed = computed(() => {
+  return isAuthenticated.value && !route.meta.isDisplayed
 })
 
 const toggleSearch = () => {
@@ -178,5 +185,9 @@ onUnmounted(() => {
   align-items: center;
   width: 100%;
   gap: 30px;
+}
+
+.flex-start {
+  justify-content: flex-start;
 }
 </style>
