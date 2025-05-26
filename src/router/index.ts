@@ -9,6 +9,12 @@ const routes = [
   },
   { path: '/', name: 'Home', component: () => import('../views/HomeView.vue') },
   {
+    path: '/about',
+    name: 'About',
+    component: () => import('../views/AboutView.vue'),
+    meta: { isDisplayed: true },
+  },
+  {
     path: '/product/:id',
     name: 'ProductDetails',
     component: () => import('../views/ProductView.vue'),

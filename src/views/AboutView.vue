@@ -1,15 +1,134 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
-  </div>
+  <el-card shadow="hover">
+    <h2>About this project</h2>
+    <el-text>
+      Hi, I’m <strong>Zendrix Mae Caagbay</strong> — a frontend developer passionate about creating
+      clean, responsive, and user-friendly web applications. This project is a mock eCommerce site
+      built to demonstrate my frontend skills using modern tools and best practices.
+    </el-text>
+
+    <el-divider content-position="left"
+      ><el-text><strong>Tech Stack</strong></el-text></el-divider
+    >
+    <ul class="tech-list">
+      <li>Vue 3 + Composition API</li>
+      <li>TypeScript</li>
+      <li>Element Plus (UI Components)</li>
+      <li>Pinia (State Management)</li>
+      <li>Vue Router</li>
+      <li>SCSS</li>
+      <li>Axios</li>
+      <li>Fake Store API (for mock data)</li>
+    </ul>
+
+    <el-divider content-position="left"
+      ><el-text><strong>Key Features</strong></el-text></el-divider
+    >
+    <ul class="feature-list">
+      <li>Login & Signup with form validation</li>
+      <li>Product listing with category filtering</li>
+      <li>Product details and dynamic routing</li>
+      <li>Add to cart with quantity and syncing</li>
+      <li>Checkout with cart summary and form</li>
+      <li>Confirmation page after order</li>
+    </ul>
+
+    <el-divider content-position="left"
+      ><el-text><strong>To-Do / Developer Notes</strong></el-text></el-divider
+    >
+    <el-text><strong>General Cleanup</strong></el-text>
+    <ul class="todo-list">
+      <li>Organize SCSS: move inline classes to dedicated .scss files per component</li>
+      <li>Remove unused classes and dead code</li>
+      <li>Normalize padding, margins, font sizes using variables</li>
+      <li>Improve accessibility (labels, alt text, button roles)</li>
+    </ul>
+
+    <el-text><strong>API & Store</strong></el-text>
+    <ul class="todo-list">
+      <li>Centralize API base URL in config/api.ts (or use .env)</li>
+      <li>Move all raw fetch calls to api/ directory</li>
+      <li>Refactor store files (AuthStore, CartStore, etc.) to be cleaner and modular</li>
+      <li>Add types/interfaces for API responses</li>
+    </ul>
+
+    <el-text><strong>Validation & Forms</strong></el-text>
+    <ul class="todo-list">
+      <li>Add form validation rules (e.g. all profile fields required)</li>
+      <li>Add error states for failed updates or invalid inputs</li>
+    </ul>
+
+    <el-text><strong>UI Enhancements</strong></el-text>
+    <ul class="todo-list">
+      <li>Implement modals (confirmation before saving changes, deleting items, etc.)</li>
+      <li>Refactor notifications: use ElNotification via utils/notification.ts</li>
+      <li>Add a reusable modal component (BaseModal.vue)</li>
+      <li>Improve mobile responsiveness on profile and checkout views</li>
+      <li>Add a page footer</li>
+      <li>Utilize Tailwind CSS (e.g. for responsive design and utility classes)</li>
+    </ul>
+
+    <el-divider content-position="left"
+      ><el-text><strong>Purpose</strong></el-text></el-divider
+    >
+    <el-text>
+      I built this project to sharpen my frontend skills and simulate a realistic eCommerce
+      application. It helped me improve my understanding of Vue’s Composition API, UI component
+      libraries, and managing user interaction with clean state logic.
+    </el-text>
+
+    <el-divider content-position="left"
+      ><el-text><strong>Contact</strong></el-text></el-divider
+    >
+    <el-text>You can reach me at:</el-text>
+    <br />
+    <el-link href="mailto:zienmae@gmail.com">zienmae@gmail.com</el-link><br />
+    <el-link href="https://www.linkedin.com/in/zendrixcaagbay/" target="_blank">LinkedIn</el-link
+    ><br />
+    <el-link href="https://github.com/zendrixm/fake_store" target="_blank">GitHub</el-link>
+
+    <el-divider />
+    <el-row type="flex" align="middle">
+      <el-text class="mar-r-5"> Product data is powered by the</el-text>
+      <el-link href="https://fakestoreapi.com" target="_blank">Fake Store API</el-link>.
+    </el-row>
+  </el-card>
 </template>
 
-<style>
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
+<script setup lang="ts">
+// No script needed unless you want to fetch dynamic data later
+</script>
+
+<style scoped lang="scss">
+h2 {
+  margin: 10px 0px;
+}
+ul {
+  padding-left: 20px;
+  li {
+    line-height: 18px;
+    color: #606266;
+    font-size: 14px;
   }
+}
+.tech-list,
+.feature-list {
+  list-style-type: disc;
+}
+
+.todo-list {
+  list-style-type: '✔ ';
+}
+
+a {
+  color: #134074;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.mar-r-5 {
+  margin-right: 5px;
 }
 </style>
