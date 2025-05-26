@@ -25,7 +25,7 @@
             <span class="el-dropdown-link">Profile</span>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item
+                <el-dropdown-item @click="navigateToProfile"
                   ><el-icon><UserFilled /></el-icon> {{ username }}</el-dropdown-item
                 >
                 <el-dropdown-item divided @click="logout">Logout</el-dropdown-item>
@@ -34,8 +34,10 @@
           </el-dropdown>
           <template v-else>
             <el-button class="btn-nav" @click="logout">Logout</el-button>
-            <el-button class="btn-nav" @click="$router.push(`/profile/${username}`)">
-              <el-icon class="mar-5-r"><UserFilled /></el-icon>{{ username }}</el-button
+            <el-button class="btn-nav" @click="navigateToProfile">
+              <span
+                ><el-icon class="mar-5-r"><UserFilled /></el-icon>{{ username }}</span
+              ></el-button
             >
           </template>
         </template>
@@ -64,6 +66,12 @@ const username = computed(() => authStore.user?.username ?? '')
 const checkMobile = () => {
   isMobile.value = window.matchMedia('(max-width: 540px)').matches
   if (!isMobile.value) isMenuOpen.value = false
+}
+
+const navigateToProfile = () => {
+  if (username.value) {
+    router.push({ name: 'UserProfile', params: { username: username.value } })
+  }
 }
 
 const logout = () => {
