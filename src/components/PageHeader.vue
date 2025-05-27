@@ -14,7 +14,7 @@
             <el-input
               v-if="!isMobile"
               v-model="searchProduct"
-              placeholder="Search product"
+              :placeholder="$t('searchProduct')"
               clearable
               :suffix-icon="Search"
               class="search-product"
@@ -31,7 +31,7 @@
               <el-icon :size="18" color="#FFF">
                 <ShoppingCart />
               </el-icon>
-              <span v-if="!isMobile" class="btn-label"> Shopping cart </span>
+              <span v-if="!isMobile" class="btn-label"> {{ $t('shoppingCart') }} </span>
             </el-button>
           </div>
         </template>
@@ -39,7 +39,7 @@
       <div v-if="isMobileSearch" class="flex-space-around">
         <el-input
           v-model="searchProduct"
-          placeholder="Search product"
+          :placeholder="$t('searchProduct')"
           clearable
           :suffix-icon="Search"
           class="search-product"
@@ -62,6 +62,9 @@ import { useProductStore } from '@/stores/FakeProductStore'
 import { useAuthStore } from '@/stores/AuthStore'
 import { useRoute } from 'vue-router'
 import CategoryMenu from '@/components/CategoryMenu.vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const isMobile = ref(false)
 const isMobileSearch = ref(false)
@@ -92,7 +95,7 @@ const categories = computed(() => {
   const cats = productList.value
     .map((p) => p.category)
     .filter((c) => !!c && !list.has(c) && list.add(c))
-  return ['All', ...cats]
+  return [t('all'), ...cats]
 })
 
 const isDisplayed = computed(() => {

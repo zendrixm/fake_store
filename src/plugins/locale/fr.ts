@@ -16,6 +16,9 @@ export default {
   signUp: 'S’inscrire',
   save: 'Enregistrer',
   cancel: 'Annuler',
+  shoppingCart: 'Panier d’achat',
+  searchProduct: 'Rechercher un produit',
+  all: 'Tout',
   validation: {
     required: '{field} est requis.',
     loginFailed:

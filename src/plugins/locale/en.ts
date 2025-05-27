@@ -16,6 +16,9 @@ export default {
   signUp: 'Sign up',
   save: 'Save',
   cancel: 'Cancel',
+  shoppingCart: 'Shopping cart',
+  searchProduct: 'Search for products',
+  all: 'All',
   validation: {
     required: '{field} is required.',
     loginFailed: 'Login failed. Please check your username and password.',
