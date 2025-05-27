@@ -18,6 +18,10 @@ export default {
   cancel: 'Annuler',
   shoppingCart: 'Panier d’achat',
   searchProduct: 'Rechercher un produit',
+  addToCart: 'Ajouter au panier',
+  quantity: 'Quantité',
+  buyNow: 'Acheter maintenant',
+  sold: 'Vendu',
   all: 'Tout',
   validation: {
     required: '{field} est requis.',

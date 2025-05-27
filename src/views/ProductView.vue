@@ -63,14 +63,16 @@ onMounted(async () => {
               class="rating-stars"
             />
             <el-divider direction="vertical" />
-            <span class="txtSize14">{{ product.rating.count }} Sold</span>
+            <span class="txtSize14">{{ product.rating.count }} {{ $t('sold') }}</span>
           </el-row>
 
           <p class="txtBlue txtBold txtSize18">${{ product.price }}</p>
 
           <!-- Quantity Selector -->
           <el-row align="middle" class="v-spacer-15 quantity-row">
-            <span class="qty-label"><strong>Quantity:</strong></span>
+            <span class="qty-label"
+              ><strong>{{ $t('quantity') }}:</strong></span
+            >
             <el-input-number v-model="quantity" :min="1" :max="100" size="small" />
           </el-row>
 
@@ -82,10 +84,10 @@ onMounted(async () => {
               <el-icon :size="20" color="#134074" class="icon-align">
                 <ShoppingCart />
               </el-icon>
-              <span>Add to Cart</span>
+              <span> {{ $t('addToCart') }}</span>
             </el-button>
 
-            <el-button class="btn-solid-primary">Buy Now</el-button>
+            <el-button class="btn-solid-primary"> {{ $t('buyNow') }}</el-button>
           </div>
         </el-col>
       </el-row>

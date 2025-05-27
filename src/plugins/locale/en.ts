@@ -18,6 +18,10 @@ export default {
   cancel: 'Cancel',
   shoppingCart: 'Shopping cart',
   searchProduct: 'Search for products',
+  addToCart: 'Add to cart',
+  quantity: 'Quantity',
+  buyNow: 'Buy now',
+  sold: 'Sold',
   all: 'All',
   validation: {
     required: '{field} is required.',
