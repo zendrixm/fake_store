@@ -19,56 +19,56 @@
       label-position="right"
       :class="isEdit ? '' : 'is-edit'"
     >
-      <el-form-item label="Username" prop="username" :required="isEdit">
+      <el-form-item :label="$t('username')" prop="username" :required="isEdit">
         <el-input v-if="isEdit" v-model="formModel.username" />
         <el-text v-else>
           {{ user.username }}
         </el-text>
       </el-form-item>
 
-      <el-form-item label="Email" prop="email" :required="isEdit">
+      <el-form-item :label="$t('email')" prop="email" :required="isEdit">
         <el-input v-if="isEdit" v-model="formModel.email" disabled />
         <el-text v-else>
           {{ user.email }}
         </el-text>
       </el-form-item>
 
-      <el-form-item label="First name" prop="firstname" :required="isEdit">
+      <el-form-item :label="$t('firstName')" prop="firstname" :required="isEdit">
         <el-input v-if="isEdit" v-model="formModel.firstname" />
         <el-text v-else>
           {{ capitalize(user.name.firstname) }}
         </el-text>
       </el-form-item>
 
-      <el-form-item label="Last name" prop="lastname" :required="isEdit">
+      <el-form-item :label="$t('lastName')" prop="lastname" :required="isEdit">
         <el-input v-if="isEdit" v-model="formModel.lastname" />
         <el-text v-else>
           {{ capitalize(user.name.lastname) }}
         </el-text>
       </el-form-item>
 
-      <el-form-item label="Phone" prop="phone" :required="isEdit">
+      <el-form-item :label="$t('phone')" prop="phone" :required="isEdit">
         <el-input v-if="isEdit" v-model="formModel.phone" />
         <el-text v-else>
           {{ user.phone }}
         </el-text>
       </el-form-item>
 
-      <el-form-item label="Street" prop="street" :required="isEdit">
+      <el-form-item :label="$t('street')" prop="street" :required="isEdit">
         <el-input v-if="isEdit" v-model="formModel.street" />
         <el-text v-else>
           {{ capitalize(user.address.street) }}
         </el-text>
       </el-form-item>
 
-      <el-form-item label="City" prop="city" :required="isEdit">
+      <el-form-item :label="$t('city')" prop="city" :required="isEdit">
         <el-input v-if="isEdit" v-model="formModel.city" />
         <el-text v-else>
           {{ capitalize(user.address.city) }}
         </el-text>
       </el-form-item>
 
-      <el-form-item label="Zipcode" prop="zipcode" :required="isEdit">
+      <el-form-item :label="$t('zipCode')" prop="zipcode" :required="isEdit">
         <el-input v-if="isEdit" v-model="formModel.zipcode" />
         <el-text v-else>
           {{ user.address.zipcode }}
@@ -78,8 +78,8 @@
 
     <div class="v-spacer-20" />
     <div v-if="isEdit" class="flex-end">
-      <el-button class="btn-solid-primary" @click="updateProfile">Save</el-button>
-      <el-button class="btn-secondary" @click="isEdit = false">Cancel</el-button>
+      <el-button class="btn-solid-primary" @click="updateProfile">{{ $t('save') }}</el-button>
+      <el-button class="btn-secondary" @click="isEdit = false">{{ $t('cancel') }}</el-button>
     </div>
   </div>
 
@@ -87,15 +87,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/stores/AuthStore'
 import { capitalize } from '@/utils/Formatter'
 import { ElMessage } from 'element-plus'
-import type { FormInstance, FormRules } from 'element-plus'
+import type { FormInstance } from 'element-plus'
 
 const authStore = useAuthStore()
 const user = computed(() => authStore.userProfile)
-
+const { t, locale } = useI18n()
 const isEdit = ref(false)
 const formRef = ref<FormInstance>()
 
@@ -110,15 +111,21 @@ const formModel = ref({
   zipcode: '',
 })
 
-const rules: FormRules = {
-  username: [{ required: true, message: 'Username is required', trigger: 'blur' }],
-  email: [{ required: true, message: 'Email is required', trigger: 'blur' }],
-  firstname: [{ required: true, message: 'First name is required', trigger: 'blur' }],
-  lastname: [{ required: true, message: 'Last name is required', trigger: 'blur' }],
-  phone: [{ required: true, message: 'Phone is required', trigger: 'blur' }],
-  street: [{ required: true, message: 'Street is required', trigger: 'blur' }],
-  city: [{ required: true, message: 'City is required', trigger: 'blur' }],
-  zipcode: [{ required: true, message: 'Postal code is required', trigger: 'blur' }],
+const requiredRule = (fieldKey: string) => ({
+  required: true,
+  message: computed(() => t('validation.required', { field: t(fieldKey) })),
+  trigger: 'blur',
+})
+
+const rules = {
+  username: [requiredRule('username')],
+  email: [requiredRule('email')],
+  firstname: [requiredRule('firstName')],
+  lastname: [requiredRule('lastName')],
+  phone: [requiredRule('phone')],
+  street: [requiredRule('street')],
+  city: [requiredRule('city')],
+  zipcode: [requiredRule('zipCode')],
 }
 
 const toggleEdit = () => {
@@ -149,6 +156,10 @@ const updateProfile = () => {
     }
   })
 }
+
+watch(locale, () => {
+  formRef.value?.validate()
+})
 
 onMounted(() => {
   authStore.fetchUserProfile().then(() => {

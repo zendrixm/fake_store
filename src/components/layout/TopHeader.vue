@@ -16,10 +16,14 @@
       </template>
 
       <!-- Navigation Links -->
-      <div class="nav-links" :class="{ 'mobile-active': isMobile && isMenuOpen }">
+      <el-row
+        type="flex"
+        align="middle"
+        class="nav-links"
+        :class="{ 'mobile-active': isMobile && isMenuOpen }"
+      >
         <router-link to="/">Home</router-link>
         <router-link to="/about">About Us</router-link>
-        <router-link to="/products">Products</router-link>
         <template v-if="isAuthenticated">
           <el-dropdown trigger="click" v-if="!isMobile">
             <span class="el-dropdown-link">Profile</span>
@@ -44,7 +48,9 @@
         <template v-else>
           <router-link to="/login">Login</router-link>
         </template>
-      </div>
+
+        <el-link @click="toggleLocale">{{ locale === 'en' ? 'FR' : 'EN' }}</el-link>
+      </el-row>
     </div>
   </div>
 </template>
@@ -54,11 +60,15 @@ import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { Close, UserFilled } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/AuthStore'
+import { useI18n } from 'vue-i18n'
+
 const isMobile = ref(false)
 const isMenuOpen = ref(false)
 
 const authStore = useAuthStore()
 const router = useRouter()
+
+const { locale } = useI18n()
 
 const isAuthenticated = computed(() => authStore.isAuthenticated)
 const username = computed(() => authStore.user?.username ?? '')
@@ -72,6 +82,10 @@ const navigateToProfile = () => {
   if (username.value) {
     router.push({ name: 'UserProfile', params: { username: username.value } })
   }
+}
+
+const toggleLocale = () => {
+  locale.value = locale.value === 'en' ? 'fr' : 'en'
 }
 
 const logout = () => {
@@ -123,7 +137,7 @@ onUnmounted(() => {
 .nav-links {
   display: flex;
   gap: 15px;
-
+  font-size: 14px;
   @include breakpoint.xs {
     display: none;
     flex-direction: column;
@@ -140,9 +154,13 @@ onUnmounted(() => {
     color: white;
     cursor: pointer;
     user-select: none;
-    font-size: 16px;
+    font-size: 14px;
     display: flex;
     align-items: center;
+  }
+
+  .el-link {
+    font-size: 14px;
   }
 }
 
