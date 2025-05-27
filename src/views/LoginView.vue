@@ -122,8 +122,7 @@ const handleLoginSignup = () => {
 const toggleLoginSignup = () => {
   isLogin.value = !isLogin.value
 
-  form.value.username = ''
-  form.value.password = ''
+  formRef.value.resetFields()
 }
 
 watch(locale, () => {
