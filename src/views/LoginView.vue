@@ -26,6 +26,8 @@
           <el-input v-model="form.confirmPassword" show-password />
         </el-form-item>
 
+        <div v-if="!isLogin" class="v-space-15" />
+
         <!-- Remember my username -->
         <el-form-item v-if="isLogin">
           <el-checkbox v-model="form.remember">{{ $t('remember') }}</el-checkbox>
@@ -256,5 +258,9 @@ watch(locale, () => {
       color: #134074;
     }
   }
+}
+
+.v-space-15 {
+  height: 15px;
 }
 </style>
