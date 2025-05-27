@@ -1,15 +1,25 @@
 export default {
   username: 'Nom d’utilisateur',
   email: 'E-mail',
+  password: 'Mot de passe',
+  confirmPassword: 'Confirmer le mot de passe',
   firstName: 'Prénom',
   lastName: 'Nom de famille',
   phone: 'Téléphone',
   street: 'Rue',
   city: 'Ville',
   zipCode: 'Code postal',
+  remember: 'Se souvenir de moi',
+  forgotUsernamePassword: 'Mot de passe ou nom d’utilisateur oublié ?',
+  alreadyHaveAcct: 'Vous avez déjà un compte',
+  login: 'Connexion',
+  signUp: 'S’inscrire',
   save: 'Enregistrer',
   cancel: 'Annuler',
   validation: {
     required: '{field} est requis.',
+    loginFailed:
+      'Échec de la connexion. Veuillez vérifier votre nom d’utilisateur et votre mot de passe.',
+    signUpFailed: 'Échec de l’inscription. Veuillez vérifier vos informations et réessayer.',
   },
 }

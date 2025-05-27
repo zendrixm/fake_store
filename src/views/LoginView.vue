@@ -7,38 +7,38 @@
 
       <el-form :model="form" :rules="rules" ref="formRef" label-position="top">
         <!-- Email (only shows if sign up)-->
-        <el-form-item v-if="!isLogin" label="Email" prop="email">
+        <el-form-item v-if="!isLogin" :label="$t('email')" prop="email">
           <el-input v-model="form.email" />
         </el-form-item>
 
         <!-- Username -->
-        <el-form-item label="Username" prop="username">
+        <el-form-item :label="$t('username')" prop="username">
           <el-input v-model="form.username" />
         </el-form-item>
 
         <!-- Password -->
-        <el-form-item label="Password" prop="password">
+        <el-form-item :label="$t('password')" prop="password">
           <el-input v-model="form.password" show-password />
         </el-form-item>
 
         <!-- Confirm Password (only shows if sign up)-->
-        <el-form-item v-if="!isLogin" label="Confirm password" prop="confirmPassword">
+        <el-form-item v-if="!isLogin" :label="$t('confirmPassword')" prop="confirmPassword">
           <el-input v-model="form.confirmPassword" show-password />
         </el-form-item>
 
         <!-- Remember my username -->
         <el-form-item v-if="isLogin">
-          <el-checkbox v-model="form.remember">Remember my username</el-checkbox>
+          <el-checkbox v-model="form.remember">{{ $t('remember') }}</el-checkbox>
         </el-form-item>
 
         <el-button class="btn-solid-primary" @click="handleLoginSignup" :loading="loading" round>
-          {{ isLogin ? 'Login' : 'Sign up' }}
+          {{ isLogin ? $t('login') : $t('signUp') }}
         </el-button>
 
         <div class="login-links">
-          <router-link to="/forgotUsernamePassword">Forgot username or password?</router-link>
+          <router-link to="">{{ $t('forgotUsernamePassword') }}</router-link>
           <br />
-          <a @click="toggleLoginSignup">{{ isLogin ? 'Sign up' : 'Already have an account' }}</a>
+          <a @click="toggleLoginSignup">{{ isLogin ? $t('signUp') : $t('alreadyHaveAcct') }}</a>
         </div>
       </el-form>
     </div>
@@ -46,13 +46,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { ElMessage } from 'element-plus'
 import { useAuthStore } from '@/stores/AuthStore'
 
 const authStore = useAuthStore()
 const router = useRouter()
+const { t, locale } = useI18n()
 const formRef = ref()
 const loading = ref(false)
 const isLogin = ref(true)
@@ -65,11 +67,17 @@ const form = ref({
   remember: false,
 })
 
+const requiredRule = (fieldKey: string) => ({
+  required: true,
+  message: computed(() => t('validation.required', { field: t(fieldKey) })),
+  trigger: 'blur',
+})
+
 const rules = {
-  email: [{ required: true, message: 'This information is required.', trigger: 'blur' }],
-  username: [{ required: true, message: 'This information is required.', trigger: 'blur' }],
-  password: [{ required: true, message: 'This information is required.', trigger: 'blur' }],
-  confirmPassword: [{ required: true, message: 'This information is required.', trigger: 'blur' }],
+  username: [requiredRule('username')],
+  email: [requiredRule('email')],
+  password: [requiredRule('password')],
+  confirmPassword: [requiredRule('confirmPassword')],
 }
 
 const handleAuth = async (action: 'login' | 'signup') => {
@@ -94,7 +102,10 @@ const handleAuth = async (action: 'login' | 'signup') => {
       if (success) {
         router.push('/')
       } else {
-        ElMessage.error(authStore.error || (action === 'login' ? 'Login failed' : 'Sign up failed'))
+        ElMessage.error(
+          authStore.error ||
+            (action === 'login' ? t('validation.loginFailed') : t('validation.signUpFailed')),
+        )
       }
     } catch {
       ElMessage.error('Invalid credentials')
@@ -114,6 +125,10 @@ const toggleLoginSignup = () => {
   form.value.username = ''
   form.value.password = ''
 }
+
+watch(locale, () => {
+  formRef.value?.validate()
+})
 </script>
 
 <style lang="scss">
