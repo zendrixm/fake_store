@@ -1,6 +1,6 @@
 <template>
   <div class="cart-wrapper">
-    <h2 class="txtDarkBlue">Shopping Cart</h2>
+    <h2 class="txtDarkBlue">{{ $t('shoppingCart') }}</h2>
 
     <!-- Scrollable Table View for Tablet and Larger -->
     <div class="table-scroll-wrapper" v-if="products.length">
@@ -12,16 +12,16 @@
         row-key="id"
       >
         <el-table-column type="selection" width="55" />
-        <el-table-column label="Image" width="120">
+        <el-table-column label="" width="120">
           <template #default="{ row }">
             <img :src="row.image" :alt="row.title" width="70" height="80" />
           </template>
         </el-table-column>
-        <el-table-column prop="title" label="Product" width="280" />
-        <el-table-column prop="price" label="Unit price" width="170">
+        <el-table-column prop="title" :label="$t('product')" width="280" />
+        <el-table-column prop="price" :label="$t('unitPrice')" width="170">
           <template #default="{ row }"> ${{ row.price.toFixed(2) }} </template>
         </el-table-column>
-        <el-table-column label="Quantity" width="220">
+        <el-table-column :label="$t('quantity')" width="220">
           <template #default="{ row }">
             <el-input-number
               v-model="row.quantity"
@@ -30,10 +30,10 @@
             />
           </template>
         </el-table-column>
-        <el-table-column label="Subtotal" width="170">
+        <el-table-column :label="$t('subtotal')" width="170">
           <template #default="{ row }"> ${{ (row.price * row.quantity).toFixed(2) }} </template>
         </el-table-column>
-        <el-table-column label="Action" align="center" width="80">
+        <el-table-column :label="$t('action')" align="center" width="80">
           <template #default="{ row }">
             <el-button class="cart-btn" @click="removeProduct(row.id)">
               <el-icon :size="18" color="#00549a">
@@ -62,12 +62,12 @@
             <div class="card-body">
               <el-text class="product-title">{{ product.title }}</el-text>
               <el-row>
-                <el-text class="txtBold">Unit Price: </el-text>
+                <el-text class="txtBold">{{ $t('unitPrice') }}</el-text>
                 <div class="spacer-5" />
                 <el-text>${{ product.price.toFixed(2) }}</el-text>
               </el-row>
               <el-row>
-                <el-text class="txtBold">Subtotal: </el-text>
+                <el-text class="txtBold">{{ $t('subtotal') }} </el-text>
                 <div class="spacer-5" />
                 <el-text>${{ (product.price * product.quantity).toFixed(2) }}</el-text>
               </el-row>
@@ -88,7 +88,7 @@
         <div class="cart-total" v-if="products.length">
           <div class="check-all-wrapper">
             <el-checkbox
-              label="All"
+              :label="$t('all')"
               :model-value="isAllSelected"
               :indeterminate="isIndeterminate"
               @change="handleCheckAll"
@@ -97,7 +97,7 @@
           </div>
           <div class="total-wrapper">
             <div class="flex">
-              <el-text>Total: </el-text>
+              <el-text>{{ $t('total') }}: </el-text>
               <el-text class="txtDarkBlue txtBold">
                 ${{
                   products
@@ -107,7 +107,9 @@
                 }}
               </el-text>
             </div>
-            <el-button class="btn-solid-primary" @click="handleCheckout"> Checkout </el-button>
+            <el-button class="btn-solid-primary" @click="handleCheckout">
+              {{ $t('checkout') }}
+            </el-button>
           </div>
         </div>
       </el-col>
@@ -347,7 +349,7 @@ const handleCheckout = async () => {
 .total-wrapper {
   display: flex;
   justify-content: flex-end;
-  gap: 30px;
+  gap: 15px;
 }
 .txtDarkBlue {
   color: #0b2545 !important;

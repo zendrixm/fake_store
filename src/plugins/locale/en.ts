@@ -27,6 +27,12 @@ export default {
   about: 'About',
   profile: 'Profile',
   logout: 'Logout',
+  product: 'Product',
+  unitPrice: 'Unit price',
+  subtotal: 'Subtotal',
+  total: 'Total',
+  action: 'Action',
+  checkout: 'Checkout',
   validation: {
     required: '{field} is required.',
     loginFailed: 'Login failed. Please check your username and password.',

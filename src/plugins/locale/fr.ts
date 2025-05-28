@@ -27,6 +27,12 @@ export default {
   about: 'À propos',
   profile: 'Profil',
   logout: 'Deconnexion',
+  product: 'Produit',
+  unitPrice: 'Prix unitaire',
+  subtotal: 'Sous-total',
+  total: 'Total',
+  action: 'Action',
+  checkout: 'Passer à la caisse',
   validation: {
     required: '{field} est requis.',
     loginFailed:
