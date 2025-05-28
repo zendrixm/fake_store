@@ -6,7 +6,7 @@
         {{ capitalize(user.name.lastname) }}
       </h3>
       <el-icon :size="16" @click="toggleEdit">
-        <img src="@/assets/icons/edit.svg" />
+        <img src="@/assets/icons/edit.svg" :width="16" :height="16" alt="edit" />
       </el-icon>
     </div>
 
