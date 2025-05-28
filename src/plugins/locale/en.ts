@@ -23,6 +23,10 @@ export default {
   buyNow: 'Buy now',
   sold: 'Sold',
   all: 'All',
+  home: 'Home',
+  about: 'About',
+  profile: 'Profile',
+  logout: 'Logout',
   validation: {
     required: '{field} is required.',
     loginFailed: 'Login failed. Please check your username and password.',

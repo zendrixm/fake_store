@@ -23,6 +23,10 @@ export default {
   buyNow: 'Acheter maintenant',
   sold: 'Vendu',
   all: 'Tout',
+  home: 'Accueil',
+  about: 'À propos',
+  profile: 'Profil',
+  logout: 'Deconnexion',
   validation: {
     required: '{field} est requis.',
     loginFailed:

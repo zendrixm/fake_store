@@ -22,22 +22,22 @@
         class="nav-links"
         :class="{ 'mobile-active': isMobile && isMenuOpen }"
       >
-        <router-link to="/">Home</router-link>
-        <router-link to="/about">About Us</router-link>
+        <router-link to="/">{{ $t('home') }}</router-link>
+        <router-link to="/about">{{ $t('about') }}</router-link>
         <template v-if="isAuthenticated">
           <el-dropdown trigger="click" v-if="!isMobile">
-            <span class="el-dropdown-link">Profile</span>
+            <span class="el-dropdown-link">{{ $t('profile') }}</span>
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item @click="navigateToProfile"
                   ><el-icon><UserFilled /></el-icon> {{ username }}</el-dropdown-item
                 >
-                <el-dropdown-item divided @click="logout">Logout</el-dropdown-item>
+                <el-dropdown-item divided @click="logout">{{ $t('logout') }}</el-dropdown-item>
               </el-dropdown-menu>
             </template>
           </el-dropdown>
           <template v-else>
-            <el-button class="btn-nav" @click="logout">Logout</el-button>
+            <el-button class="btn-nav" @click="logout">{{ $t('logout') }}</el-button>
             <el-button class="btn-nav" @click="navigateToProfile">
               <span
                 ><el-icon class="mar-5-r"><UserFilled /></el-icon>{{ username }}</span
@@ -46,7 +46,7 @@
           </template>
         </template>
         <template v-else>
-          <router-link to="/login">Login</router-link>
+          <router-link to="/login">{{ $t('login') }}</router-link>
         </template>
 
         <el-link @click="toggleLocale">{{ locale === 'en' ? 'FR' : 'EN' }}</el-link>
