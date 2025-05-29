@@ -33,6 +33,13 @@ export default {
   total: 'Total',
   action: 'Action',
   checkout: 'Checkout',
+  footer: {
+    eloura: '© 2025 Eloura',
+    allRightsReserved: 'All rights reserved.',
+    poweredBy: 'Powered by Fake Store API',
+    version: 'Version {ver}',
+    developedBy: 'Developed by',
+  },
   validation: {
     required: '{field} is required.',
     loginFailed: 'Login failed. Please check your username and password.',

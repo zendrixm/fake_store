@@ -13,7 +13,10 @@
           <slot />
         </div>
       </el-main>
-      <el-footer>Footer</el-footer>
+      <el-footer>
+        <!-- Page Footer -->
+        <PageFooter />
+      </el-footer>
     </el-container>
   </div>
 </template>
@@ -21,6 +24,7 @@
 <script lang="ts" setup>
 import TopHeader from '@/components/layout/TopHeader.vue'
 import PageHeader from '@/components/layout/PageHeader.vue'
+import PageFooter from '@/components/layout/PageFooter.vue'
 </script>
 
 <style lang="scss">
