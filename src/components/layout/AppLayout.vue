@@ -20,7 +20,7 @@
 
 <script lang="ts" setup>
 import TopHeader from '@/components/layout/TopHeader.vue'
-import PageHeader from '@/components/PageHeader.vue'
+import PageHeader from '@/components/layout/PageHeader.vue'
 </script>
 
 <style lang="scss">
