@@ -30,6 +30,16 @@ import PageFooter from '@/components/layout/PageFooter.vue'
 <style lang="scss">
 @use '@/assets/styles/breakpoint.scss' as breakpoint;
 
+html,
+body {
+  height: 100%;
+  overflow-x: hidden;
+}
+
+#app {
+  min-height: 100%;
+  overflow: hidden; /* or auto depending on your needs */
+}
 .el-header {
   height: auto !important;
   padding: 0px !important;
@@ -51,6 +61,7 @@ import PageFooter from '@/components/layout/PageFooter.vue'
 
 .el-main {
   --el-main-padding: 0px !important;
-  margin-top: 116px;
+  overflow: hidden !important;
+  margin: 106px;
 }
 </style>
