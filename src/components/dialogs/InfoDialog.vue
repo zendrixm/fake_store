@@ -1,5 +1,10 @@
 <template>
-  <el-dialog v-model="dialogVisible" :show-close="false" :width="width ? width : 400" center>
+  <el-dialog
+    v-model="dialogVisible"
+    :show-close="false"
+    :max-width="width ? width : 400"
+    class="common-dialog"
+  >
     <template #header="{ close, titleId, titleClass }">
       <div class="dialog-header">
         <h4 :id="titleId" :class="titleClass ? titleClass : ''">{{ title }}</h4>
@@ -42,24 +47,34 @@ const dialogVisible = computed({
 </script>
 
 <style lang="scss">
-.el-dialog {
-  --el-dialog-padding-primary: 0px;
-  border-radius: 10px;
-  .el-dialog__header {
-    padding: 15px 20px;
-    background: #f5f5f5;
-    border-radius: 10px 10px 0px 0px;
-    .dialog-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      h4 {
-        margin: 0px;
+@use '@/assets/styles/breakpoint.scss' as breakpoint;
+
+.common-dialog {
+  &.el-dialog {
+    --el-dialog-padding-primary: 0px;
+    border-radius: 10px;
+    width: 700px;
+    @include breakpoint.xs {
+      --el-dialog-width: 100% !important;
+      width: auto;
+      margin: 10px;
+    }
+    .el-dialog__header {
+      padding: 15px 20px;
+      background: #f5f5f5;
+      border-radius: 10px 10px 0px 0px;
+      .dialog-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        h4 {
+          margin: 0px;
+        }
       }
     }
-  }
-  .el-dialog__body {
-    padding: 20px;
+    .el-dialog__body {
+      padding: 20px;
+    }
   }
 }
 </style>

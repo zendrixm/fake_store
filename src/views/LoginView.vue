@@ -1,5 +1,4 @@
 <template>
-  <div class="v-spacer-30" />
   <div class="auth-wrapper">
     <MessageBox type="info">
       <template #message>
@@ -56,7 +55,20 @@
   </div>
   <!-- Dialog -->
   <InfoDialog v-model="showCredentialsDialog" :title="$t('testCredentials')" width="700">
-    <el-table :data="listOfUsers" style="width: 100%">
+    <div class="hidden-sm-and-up">
+      <el-row class="card-container" v-for="user in listOfUsers" :key="user.id">
+        <el-row class="card-body">
+          <el-text class="txtBlack">{{ user.fullName }}</el-text>
+          <el-text
+            ><strong>{{ $t('username') }}:</strong> {{ user.username }}</el-text
+          >
+          <el-text
+            ><strong>{{ $t('password') }}:</strong> {{ user.password }}</el-text
+          ></el-row
+        >
+      </el-row>
+    </div>
+    <el-table :data="listOfUsers" class="hidden-xs">
       <el-table-column :label="$t('name')" prop="fullName" />
       <el-table-column :label="$t('username')" prop="username" />
       <el-table-column :label="$t('password')" prop="password" />
@@ -179,7 +191,7 @@ onMounted(async () => {
   width: 400px;
   background-color: #f5f7fa;
   @include breakpoint.xs {
-    margin-top: 0px;
+    width: 100%;
   }
 }
 
@@ -312,7 +324,39 @@ onMounted(async () => {
   height: 15px;
 }
 
-.v-spacer-30 {
-  height: 30px;
+.hidden-xs {
+  display: block;
+  @include breakpoint.xs {
+    display: none;
+  }
+}
+
+.hidden-sm-and-up {
+  display: none;
+  @include breakpoint.xs {
+    display: block;
+  }
+}
+
+.card-container {
+  padding: 20px;
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 12px;
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    .el-text {
+      align-self: flex-start;
+      line-height: 18px;
+    }
+  }
+}
+
+.card-container + .card-container {
+  margin-top: 10px;
 }
 </style>
