@@ -187,7 +187,6 @@ onMounted(async () => {
   justify-content: center;
   align-items: flex-start;
   margin: 0 auto;
-  max-height: 600px;
   width: 400px;
   background-color: #f5f7fa;
   @include breakpoint.xs {
