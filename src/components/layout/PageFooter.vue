@@ -7,7 +7,7 @@
       <el-divider direction="vertical" />
       <el-text>{{ $t('footer.allRightsReserved') }}</el-text>
       <el-divider direction="vertical" />
-      <el-text>{{ $t('footer.version', { ver: '1.0.0' }) }}</el-text>
+      <el-text>{{ $t('footer.version', { ver: '1.0.3' }) }}</el-text>
     </div>
     <div class="footer-right-container">
       <el-text>{{ $t('footer.developedBy') }}</el-text>
