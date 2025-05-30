@@ -9,6 +9,7 @@ export const useAuthStore = defineStore('auth', {
     isAuthenticated: false,
     loading: false,
     error: null as string | null,
+    listOfUsers: [] as UserProfile[],
   }),
 
   actions: {
@@ -71,6 +72,16 @@ export const useAuthStore = defineStore('auth', {
       } catch (err) {
         console.error('Failed to fetch full profile:', err)
         this.userProfile = null
+      }
+    },
+
+    async fetchListOfUsers() {
+      try {
+        const { data: users } = await fetchAllUsers()
+        this.listOfUsers = users as UserProfile[]
+      } catch (err) {
+        console.error('Failed to fetch list of users:', err)
+        this.listOfUsers = []
       }
     },
 

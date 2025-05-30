@@ -3,6 +3,7 @@ export default {
   email: 'Email',
   password: 'Password',
   confirmPassword: 'Confirm password',
+  name: 'Name',
   firstName: 'First name',
   lastName: 'Last name',
   phone: 'Phone',
@@ -49,4 +50,5 @@ export default {
     loginInfo: 'You can use the following credentials to log in and test the application:',
   },
   viewTestCredentials: 'View test credentials',
+  testCredentials: 'Test credentials',
 }

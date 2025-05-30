@@ -54,14 +54,24 @@
       </el-form>
     </div>
   </div>
+  <!-- Dialog -->
+  <InfoDialog v-model="showCredentialsDialog" :title="$t('testCredentials')" width="700">
+    <el-table :data="listOfUsers" style="width: 100%">
+      <el-table-column :label="$t('name')" prop="fullName" />
+      <el-table-column :label="$t('username')" prop="username" />
+      <el-table-column :label="$t('password')" prop="password" />
+    </el-table>
+  </InfoDialog>
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue'
+import { ref, watch, computed, onMounted } from 'vue'
+import { defineAsyncComponent } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { ElMessage } from 'element-plus'
 import { useAuthStore } from '@/stores/AuthStore'
+import { capitalize } from '@/utils/Formatter'
 import MessageBox from '@/components/MessageBox.vue'
 
 const authStore = useAuthStore()
@@ -71,7 +81,16 @@ const formRef = ref()
 const loading = ref(false)
 const isLogin = ref(true)
 
+const InfoDialog = defineAsyncComponent(() => import('@/components/dialogs/InfoDialog.vue'))
+
 const showCredentialsDialog = ref(false)
+
+const listOfUsers = computed(() =>
+  authStore.listOfUsers.map((user) => ({
+    ...user,
+    fullName: `${capitalize(user.name.firstname)} ${capitalize(user.name.lastname)}`,
+  })),
+)
 
 const form = ref({
   email: '',
@@ -142,6 +161,10 @@ const toggleLoginSignup = () => {
 watch(locale, () => {
   formRef.value?.validate()
 })
+
+onMounted(async () => {
+  await authStore.fetchListOfUsers()
+})
 </script>
 
 <style lang="scss">
@@ -206,6 +229,10 @@ watch(locale, () => {
 }
 .txtBold {
   font-weight: bold;
+}
+
+.txtBlack {
+  color: #000;
 }
 
 .btn-solid-primary {

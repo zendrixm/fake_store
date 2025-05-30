@@ -3,6 +3,7 @@ export default {
   email: 'E-mail',
   password: 'Mot de passe',
   confirmPassword: 'Confirmer le mot de passe',
+  name: 'Nom',
   firstName: 'Prénom',
   lastName: 'Nom de famille',
   phone: 'Téléphone',
@@ -51,4 +52,5 @@ export default {
       'Vous pouvez utiliser les identifiants suivants pour vous connecter et tester l’application :',
   },
   viewTestCredentials: 'Voir les identifiants de test',
+  testCredentials: 'Identifiants de test',
 }
