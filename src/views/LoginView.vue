@@ -1,5 +1,14 @@
 <template>
+  <div class="v-spacer-30" />
   <div class="auth-wrapper">
+    <MessageBox type="info">
+      <template #message>
+        <el-text>{{ $t('message.loginInfo') }}</el-text>
+        <div>
+          <el-link @click="showCredentialsDialog = true">{{ $t('viewTestCredentials') }}</el-link>
+        </div>
+      </template>
+    </MessageBox>
     <div class="auth-card">
       <div class="login-header">
         <img src="@/assets/img/eloura_blue.png" alt="Eloura Logo" :height="135" :width="170" />
@@ -53,6 +62,7 @@ import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { ElMessage } from 'element-plus'
 import { useAuthStore } from '@/stores/AuthStore'
+import MessageBox from '@/components/MessageBox.vue'
 
 const authStore = useAuthStore()
 const router = useRouter()
@@ -60,6 +70,8 @@ const { t, locale } = useI18n()
 const formRef = ref()
 const loading = ref(false)
 const isLogin = ref(true)
+
+const showCredentialsDialog = ref(false)
 
 const form = ref({
   email: '',
@@ -136,11 +148,12 @@ watch(locale, () => {
 @use '@/assets/styles/breakpoint.scss' as breakpoint;
 .auth-wrapper {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  margin-top: 20px;
+  margin: 0 auto;
   max-height: 600px;
-  width: 100%;
+  width: 400px;
   background-color: #f5f7fa;
   @include breakpoint.xs {
     margin-top: 0px;
@@ -148,12 +161,12 @@ watch(locale, () => {
 }
 
 .auth-card {
+  width: 100%;
   background: #fff;
   padding: 40px;
   border-radius: 10px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
   margin: 0 auto;
-  width: 400px;
   @include breakpoint.xs {
     max-width: 100%;
     padding: 10px;
@@ -176,7 +189,7 @@ watch(locale, () => {
 
 .login-links {
   font-size: 12px;
-  color: #134074;
+  color: #00549a;
   margin-top: 15px;
 }
 .login-links a {
@@ -191,6 +204,10 @@ watch(locale, () => {
 .txtLightBlue {
   color: #134074;
 }
+.txtBold {
+  font-weight: bold;
+}
+
 .btn-solid-primary {
   width: 100%;
   background: #0b2545;
@@ -260,7 +277,15 @@ watch(locale, () => {
   }
 }
 
+.el-link {
+  --el-link-text-color: #00549a !important;
+}
+
 .v-space-15 {
   height: 15px;
+}
+
+.v-spacer-30 {
+  height: 30px;
 }
 </style>

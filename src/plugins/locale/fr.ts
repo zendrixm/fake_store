@@ -46,4 +46,9 @@ export default {
       'Échec de la connexion. Veuillez vérifier votre nom d’utilisateur et votre mot de passe.',
     signUpFailed: 'Échec de l’inscription. Veuillez vérifier vos informations et réessayer.',
   },
+  message: {
+    loginInfo:
+      'Vous pouvez utiliser les identifiants suivants pour vous connecter et tester l’application :',
+  },
+  viewTestCredentials: 'Voir les identifiants de test',
 }

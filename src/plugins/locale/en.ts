@@ -45,4 +45,8 @@ export default {
     loginFailed: 'Login failed. Please check your username and password.',
     signUpFailed: 'Sign up failed. Please check your details and try again.',
   },
+  message: {
+    loginInfo: 'You can use the following credentials to log in and test the application:',
+  },
+  viewTestCredentials: 'View test credentials',
 }
