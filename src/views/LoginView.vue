@@ -46,34 +46,54 @@
         </el-button>
 
         <div class="login-links">
-          <router-link to="">{{ $t('forgotUsernamePassword') }}</router-link>
+          <el-link @click="showForgotDialog = true">{{ $t('forgotUsernamePassword') }}</el-link>
           <br />
-          <a @click="toggleLoginSignup">{{ isLogin ? $t('signUp') : $t('alreadyHaveAcct') }}</a>
+          <el-link @click="toggleLoginSignup">{{
+            isLogin ? $t('signUp') : $t('alreadyHaveAcct')
+          }}</el-link>
         </div>
       </el-form>
     </div>
   </div>
-  <!-- Dialog -->
+  <!-- Test Credentials Dialog -->
   <InfoDialog v-model="showCredentialsDialog" :title="$t('testCredentials')" width="700">
-    <div class="hidden-sm-and-up">
-      <el-row class="card-container" v-for="user in listOfUsers" :key="user.id">
-        <el-row class="card-body">
-          <el-text class="txtBlack">{{ user.fullName }}</el-text>
-          <el-text
-            ><strong>{{ $t('username') }}:</strong> {{ user.username }}</el-text
+    <template #messageBody>
+      <div class="hidden-sm-and-up">
+        <el-row class="card-container" v-for="user in listOfUsers" :key="user.id">
+          <el-row class="card-body">
+            <el-text class="txtBlack">{{ user.fullName }}</el-text>
+            <el-text
+              ><strong>{{ $t('username') }}:</strong> {{ user.username }}</el-text
+            >
+            <el-text
+              ><strong>{{ $t('password') }}:</strong> {{ user.password }}</el-text
+            ></el-row
           >
-          <el-text
-            ><strong>{{ $t('password') }}:</strong> {{ user.password }}</el-text
-          ></el-row
-        >
-      </el-row>
-    </div>
-    <el-table :data="listOfUsers" class="hidden-xs">
-      <el-table-column :label="$t('name')" prop="fullName" />
-      <el-table-column :label="$t('username')" prop="username" />
-      <el-table-column :label="$t('password')" prop="password" />
-    </el-table>
+        </el-row>
+      </div>
+      <el-table :data="listOfUsers" class="hidden-xs">
+        <el-table-column :label="$t('name')" prop="fullName" />
+        <el-table-column :label="$t('username')" prop="username" />
+        <el-table-column :label="$t('password')" prop="password" />
+      </el-table>
+    </template>
   </InfoDialog>
+
+  <!-- Forgot username/password Dialog-->
+  <InfoDialog
+    v-model="showForgotDialog"
+    :title="$t('forgotUsernamePassword')"
+    type="warning"
+    :message="$t('message.feature', { feature: $t('forgotUsernamePassword') })"
+  />
+
+  <!-- Signup Dialog-->
+  <InfoDialog
+    v-model="showSignUpDialog"
+    :title="$t('signUp')"
+    type="warning"
+    :message="$t('message.feature', { feature: $t('signUp') })"
+  />
 </template>
 
 <script setup lang="ts">
@@ -96,6 +116,8 @@ const isLogin = ref(true)
 const InfoDialog = defineAsyncComponent(() => import('@/components/dialogs/InfoDialog.vue'))
 
 const showCredentialsDialog = ref(false)
+const showForgotDialog = ref(false)
+const showSignUpDialog = ref(false)
 
 const listOfUsers = computed(() =>
   authStore.listOfUsers.map((user) => ({
@@ -136,22 +158,24 @@ const handleAuth = async (action: 'login' | 'signup') => {
       if (action === 'login') {
         success = await authStore.login(form.value.username, form.value.password)
       } else {
-        const payload = {
-          username: form.value.username,
-          password: form.value.password,
-          email: form.value.email,
-        }
-        success = await authStore.signup(payload)
+        showSignUpDialog.value = true
+        // const payload = {
+        //   username: form.value.username,
+        //   password: form.value.password,
+        //   email: form.value.email,
+        // }
+        // success = await authStore.signup(payload)
       }
 
       if (success) {
         router.push('/')
-      } else {
-        ElMessage.error(
-          authStore.error ||
-            (action === 'login' ? t('validation.loginFailed') : t('validation.signUpFailed')),
-        )
       }
+      // else {
+      //   ElMessage.error(
+      //     authStore.error ||
+      //       (action === 'login' ? t('validation.loginFailed') : t('validation.signUpFailed')),
+      //   )
+      // }
     } catch {
       ElMessage.error('Invalid credentials')
     } finally {

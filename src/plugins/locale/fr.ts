@@ -50,6 +50,8 @@ export default {
   message: {
     loginInfo:
       'Vous pouvez utiliser les identifiants suivants pour vous connecter et tester l’application :',
+    feature:
+      "Nous sommes désolés — la fonctionnalité '{feature}' n'est actuellement pas disponible. Nous y travaillons !",
   },
   viewTestCredentials: 'Voir les identifiants de test',
   testCredentials: 'Identifiants de test',

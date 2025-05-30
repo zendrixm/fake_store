@@ -11,7 +11,7 @@ export default {
   city: 'City',
   zipCode: 'Zipcode',
   remember: 'Remember me',
-  forgotUsernamePassword: 'Forgot username or password?',
+  forgotUsernamePassword: 'Forgot username or password',
   alreadyHaveAcct: 'Already have an account',
   login: 'Login',
   signUp: 'Sign up',
@@ -48,6 +48,8 @@ export default {
   },
   message: {
     loginInfo: 'You can use the following credentials to log in and test the application:',
+    feature:
+      "We're sorry — the '{feature}' feature is currently not available. We're working on it!",
   },
   viewTestCredentials: 'View test credentials',
   testCredentials: 'Test credentials',
