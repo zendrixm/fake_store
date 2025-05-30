@@ -1,7 +1,7 @@
 <template>
   <div class="cart-wrapper">
     <h2 class="txtDarkBlue">{{ $t('shoppingCart') }}</h2>
-
+    <div class="v-spacer-15" />
     <!-- Scrollable Table View for Tablet and Larger -->
     <div class="table-scroll-wrapper" v-if="products.length">
       <el-table
@@ -175,6 +175,9 @@ const handleCheckout = async () => {
 
 <style lang="scss">
 @use '@/assets/styles/breakpoint.scss' as breakpoint;
+h2 {
+  margin: 0;
+}
 .cart-wrapper {
   margin: 0 auto;
   padding: 20px;
@@ -380,5 +383,9 @@ const handleCheckout = async () => {
     border: 1px solid #8da9c4;
     color: #fff;
   }
+}
+
+.v-spacer-15 {
+  height: 15px;
 }
 </style>

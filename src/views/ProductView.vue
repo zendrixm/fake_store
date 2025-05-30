@@ -44,6 +44,7 @@ onMounted(async () => {
 <template>
   <div v-loading="isLoading" element-loading-text="Loading... Please wait">
     <div class="product-view-wrapper">
+      <div class="v-spacer-30" />
       <el-row v-if="product">
         <el-col :md="10" class="image-column">
           <img :src="product.image" :alt="product.title" class="product-image" />
@@ -169,6 +170,9 @@ onMounted(async () => {
   height: 20px;
 }
 
+.v-spacer-30 {
+  height: 30px;
+}
 .action-buttons {
   margin-top: 30px;
   display: flex;

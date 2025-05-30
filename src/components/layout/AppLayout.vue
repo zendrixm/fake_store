@@ -33,12 +33,31 @@ import PageFooter from '@/components/layout/PageFooter.vue'
 html,
 body {
   height: 100%;
+  margin: 0;
   overflow-x: hidden;
 }
 
 #app {
-  min-height: 100%;
-  overflow: hidden; /* or auto depending on your needs */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.el-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.common-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px 30px;
+  overflow: visible;
+  @include breakpoint.xs {
+    padding: 10px;
+  }
 }
 .el-header {
   height: auto !important;
@@ -60,8 +79,15 @@ body {
 }
 
 .el-main {
-  --el-main-padding: 0px !important;
-  overflow: hidden !important;
-  margin: 106px;
+  padding: 0px !important;
+  overflow-y: auto;
+  margin-top: 106px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.el-footer {
+  padding: 0px !important;
 }
 </style>

@@ -21,21 +21,15 @@
 <style lang="scss" scoped>
 @use '@/assets/styles/breakpoint.scss' as breakpoint;
 
-.common-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 10px 30px;
-  @include breakpoint.xs {
-    padding: 10px;
-  }
-}
 .footer-container {
   display: flex;
   gap: 5px;
-  padding: 20px;
   background-color: #f5f5f5;
   color: #333;
   font-size: 14px;
+  @include breakpoint.xs {
+    padding: 20px 10px;
+  }
 
   .txtDarkBlue {
     color: #0b2545;
