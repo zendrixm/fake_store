@@ -1,11 +1,33 @@
+@use '@/assets/styles/breakpoint.scss' as breakpoint;
+
 .el-form-item {
+  &.is-required:not(.is-error) {
+    &.asterisk-left > .el-form-item__label:before {
+      color: #000;
+    }
+  }
+  &:not(.is-error) {
+    margin-bottom: 15px;
+  }
   &.is-error {
+    // Override for error message
     .el-form-item__label {
       color: red;
     }
     .el-form-item__error {
       color: red;
       padding-top: 5px;
+      &::before {
+        content: '';
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        background-image: url('@/assets/icons/error.svg');
+        background-size: contain;
+        background-repeat: no-repeat;
+        margin-right: 5px;
+        vertical-align: top;
+      }
     }
     .el-input__wrapper {
       border: 1px solid red;
@@ -13,33 +35,41 @@
       --el-input-border: red;
     }
   }
-}
 
-.el-form-item__error::before {
-  content: '';
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  background-image: url('@/assets/icons/error.svg');
-  background-size: contain;
-  background-repeat: no-repeat;
-  margin-right: 5px;
-  vertical-align: top;
-}
-
-.el-form-item__label {
-  margin-bottom: 5px;
-  font-weight: bold;
-  color: #000;
-}
-.el-form-item {
-  &.is-required:not(.is-error) {
-    &.asterisk-left > .el-form-item__label:before {
-      color: #000;
+  // Override for input
+  .el-input {
+    width: 240px;
+    @include breakpoint.xs {
+      width: 100%;
     }
+  }
+
+  // Override for form item label
+  .el-form-item__label {
+    width: 180px;
+    margin-bottom: 0px;
+    font-weight: bold;
+    color: #000;
+    @include breakpoint.xs {
+      display: flex;
+      justify-content: flex-start;
+    }
+  }
+  @include breakpoint.xs {
+    flex-direction: column;
   }
 }
 
+// Input
+.el-input-number {
+  .el-input__inner {
+    color: #0b2545;
+    font-size: 14px;
+    font-weight: bold;
+  }
+}
+
+// Checkbox
 .el-checkbox {
   &.is-checked {
     .el-checkbox__input {
@@ -55,5 +85,32 @@
     .el-checkbox__label {
       color: #134074;
     }
+  }
+}
+
+// Link
+.el-link {
+  --el-link-text-color: #00549a !important;
+  cursor: pointer;
+}
+
+//Text
+.el-text {
+  @include breakpoint.xs {
+    align-self: flex-start;
+  }
+}
+
+//Table
+// .el-table {
+//   --el-table-header-bg-color: #0b2545;
+//   --el-table-header-text-color: #fff;
+// }
+
+//Buttons
+.el-button + .el-button {
+  @include breakpoint.xs {
+    flex-direction: column;
+    margin-left: 0px;
   }
 }

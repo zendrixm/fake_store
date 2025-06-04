@@ -22,7 +22,7 @@
           </div>
           <h4 :id="title" :class="titleClass ? titleClass : ''">{{ title }}</h4>
         </div>
-        <el-icon @click="close" color="#00549a"><Close /></el-icon>
+        <el-icon @click="close" color="#00549a" :size="16"><Close /></el-icon>
       </div>
     </template>
     <el-text v-if="message">{{ message }}</el-text>
@@ -74,6 +74,7 @@ const dialogVisible = computed({
 
 <style lang="scss">
 @use '@/assets/styles/breakpoint.scss' as breakpoint;
+@use '@/assets/styles/_utilities.scss' as utilities;
 
 .common-dialog {
   &.el-dialog {
@@ -92,17 +93,12 @@ const dialogVisible = computed({
       background: #f5f5f5;
       border-radius: 10px 10px 0px 0px;
       .dialog-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        h4 {
-          margin: 0px;
-          text-align: left;
-        }
+        @include utilities.flexbox(null, space-between, center);
         .dialog-header-title {
-          display: flex;
-          align-items: center;
-          gap: 10px;
+          @include utilities.flexbox(row, center, center, 10px);
+        }
+        .dialog-icon {
+          @include utilities.flexbox();
         }
       }
     }

@@ -11,52 +11,33 @@
     </div>
     <div class="footer-right-container">
       <el-text>{{ $t('footer.developedBy') }}</el-text>
-      <el-link class="txtDarkBlue" href="mailto:zienmae@gmail.com?body=Hi Zendrix,"
-        >Zendrix Mae Caagbay</el-link
-      >
+      <el-link href="mailto:zienmae@gmail.com?body=Hi Zendrix,">Zendrix Mae Caagbay</el-link>
     </div>
   </el-row>
 </template>
 
 <style lang="scss" scoped>
 @use '@/assets/styles/breakpoint.scss' as breakpoint;
-
+@use '@/assets/styles/_utilities.scss' as utilities;
 .footer-container {
-  display: flex;
-  gap: 5px;
   background-color: #f5f5f5;
   color: #333;
-  font-size: 14px;
+  @include utilities.flexbox(null, space-between, null, 5px);
   @include breakpoint.xs {
     padding: 20px 10px;
   }
 
-  .txtDarkBlue {
-    color: #0b2545;
-  }
-
   .footer-left-container {
-    width: 100%;
     @include breakpoint.xs {
-      display: flex;
-      flex-direction: column;
-    }
-    .el-text {
-      @include breakpoint.xs {
-        align-self: flex-start;
-      }
-    }
-    .el-divider--vertical {
-      @include breakpoint.xs {
+      @include utilities.flexbox(column, flex-start, flex-start, 5px);
+      .el-divider--vertical {
         display: none;
       }
     }
   }
 
   .footer-right-container {
-    display: flex;
-    align-items: center;
-    gap: 5px;
+    @include utilities.flexbox(null, null, flex-start, 5px);
     @include breakpoint.xs {
       margin-top: 10px;
     }

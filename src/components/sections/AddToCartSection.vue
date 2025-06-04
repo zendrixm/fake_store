@@ -5,7 +5,7 @@
     <!-- Scrollable Table View for Tablet and Larger -->
     <div class="table-scroll-wrapper" v-if="products.length">
       <el-table
-        class="cart-table"
+        class="cart-table hidden-xs"
         :data="products"
         stripe
         @selection-change="handleSelectionChange"
@@ -35,7 +35,7 @@
         </el-table-column>
         <el-table-column :label="$t('action')" align="center" width="80">
           <template #default="{ row }">
-            <el-button class="cart-btn" @click="removeProduct(row.id)">
+            <el-button class="btn-icon flex-end" @click="removeProduct(row.id)">
               <el-icon :size="18" color="#00549a">
                 <Delete />
               </el-icon>
@@ -62,12 +62,12 @@
             <div class="card-body">
               <el-text class="product-title">{{ product.title }}</el-text>
               <el-row>
-                <el-text class="txtBold">{{ $t('unitPrice') }}</el-text>
+                <el-text class="font-weight-bold">{{ $t('unitPrice') }}</el-text>
                 <div class="spacer-5" />
                 <el-text>${{ product.price.toFixed(2) }}</el-text>
               </el-row>
               <el-row>
-                <el-text class="txtBold">{{ $t('subtotal') }} </el-text>
+                <el-text class="font-weight-bold">{{ $t('subtotal') }} </el-text>
                 <div class="spacer-5" />
                 <el-text>${{ (product.price * product.quantity).toFixed(2) }}</el-text>
               </el-row>
@@ -76,7 +76,7 @@
                 :min="1"
                 @change="(val: number) => handleQuantityChange(val, product)"
               />
-              <el-button class="cart-btn" @click="removeProduct(product.id)">
+              <el-button class="btn-icon flex-end" @click="removeProduct(product.id)">
                 <el-icon :size="18" color="#00549a">
                   <Delete />
                 </el-icon>
@@ -92,13 +92,13 @@
               :model-value="isAllSelected"
               :indeterminate="isIndeterminate"
               @change="handleCheckAll"
-              class="display-xs"
+              class="hidden-sm-and-up"
             />
           </div>
           <div class="total-wrapper">
-            <div class="flex">
+            <div class="flex gap-5">
               <el-text>{{ $t('total') }}: </el-text>
-              <el-text class="txtDarkBlue txtBold">
+              <el-text class="txtDarkBlue font-weight-bold">
                 ${{
                   products
                     .filter((p) => selectedIds.includes(p.id))
@@ -107,7 +107,7 @@
                 }}
               </el-text>
             </div>
-            <el-button class="btn-solid-primary" @click="handleCheckout">
+            <el-button class="btn btn-primary" @click="handleCheckout">
               {{ $t('checkout') }}
             </el-button>
           </div>
@@ -173,219 +173,78 @@ const handleCheckout = async () => {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @use '@/assets/styles/breakpoint.scss' as breakpoint;
-h2 {
-  margin: 0;
-}
+@use '@/assets/styles/_product.scss' as product;
+@use '@/assets/styles/_utilities.scss' as utilities;
+
+@include product.buttons;
+@include product.fontColors;
+@include product.fontWeights;
+@include product.spacers;
+@include product.display;
+@include product.flex;
+@include product.gaps;
+
 .cart-wrapper {
   margin: 0 auto;
   padding: 20px;
   background: #fff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  .cart-table {
+    min-width: 900px;
+  }
 }
 
-.cart-table {
-  min-width: 900px;
+.cart-card-mobile {
+  display: none;
+  @include breakpoint.xs {
+    @include utilities.flexbox(column, null, null, 16px);
+    margin: 0px 0px 20px;
+  }
+  .cart-card {
+    padding: 20px;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    @include utilities.flexbox(row, null, flex-start, 12px);
+
+    .card-header {
+      @include utilities.flexbox(row, null, flex-start, 0px);
+
+      .product-img {
+        width: 70px;
+        height: 80px;
+        object-fit: contain;
+      }
+    }
+
+    .card-body {
+      @include utilities.flexbox(column, null, null, 20px);
+      .product-title {
+        font-weight: bold;
+        color: #00549a;
+        line-height: normal;
+        white-space: pre-wrap;
+      }
+    }
+  }
 }
 
 .table-scroll-wrapper {
   overflow-x: auto;
-  margin-bottom: 20px;
-  scrollbar-color: #0b2545 #f1f1f1;
-  scrollbar-width: auto;
-
-  @include breakpoint.xs {
-    display: none; // Hide on mobile
-  }
 }
 
-.cart-card-mobile {
-  display: none;
-  @include breakpoint.xs {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    margin: 0px 0px 20px;
-  }
-
-  .cart-card {
-    padding: 20px;
-    border: 1px solid #e5e5e5;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 12px;
-
-    .card-header {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-
-      .product-img {
-        width: 70px;
-        height: 80px;
-        object-fit: contain;
-      }
-    }
-
-    .card-body {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-
-      .product-title {
-        font-weight: bold;
-        color: #00549a;
-        line-height: normal;
-      }
-
-      .el-text {
-        align-self: flex-start;
-      }
-    }
-  }
-}
-.display-xs {
-  display: none;
+.hidden-sm-and-up {
   @include breakpoint.xs {
     display: inline-flex;
-  }
-}
-.el-checkbox__input {
-  &.is-checked,
-  &.is-indeterminate {
-    .el-checkbox__inner {
-      background: #0b2545;
-      border-color: #0b2545;
-    }
-  }
-}
-
-.el-input-number {
-  .el-input__inner {
-    color: #0b2545;
-    font-size: 14px;
-    font-weight: bold;
-  }
-}
-</style>
-
-<style lang="scss" scoped>
-@use '@/assets/styles/breakpoint.scss' as breakpoint;
-
-.cart-table {
-  display: block;
-  @include breakpoint.xs {
-    display: none;
-  }
-}
-
-.cart-card-mobile {
-  display: none;
-  @include breakpoint.xs {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    margin-top: 20px;
-  }
-
-  .cart-card {
-    padding: 20px;
-    border: 1px solid #e5e5e5;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 12px;
-
-    .card-header {
-      display: flex;
-      align-items: flex-start;
-      gap: 0px;
-
-      .product-img {
-        width: 70px;
-        height: 80px;
-        object-fit: contain;
-      }
-    }
-
-    .card-body {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-
-      .product-title {
-        font-weight: bold;
-        color: #00549a;
-        line-height: normal;
-      }
-
-      .el-text {
-        align-self: flex-start;
-      }
-    }
-  }
-}
-.display-xs {
-  display: none;
-  @include breakpoint.xs {
-    display: inline-flex;
-  }
-}
-.cart-btn {
-  border: none;
-  background: transparent;
-  padding: 0;
-  @include breakpoint.xs {
-    justify-content: flex-end;
   }
 }
 
 .cart-total {
-  display: flex;
-  justify-content: space-between;
+  @include utilities.flexbox(row, space-between, center);
 }
 
 .total-wrapper {
-  display: flex;
-  justify-content: flex-end;
-  gap: 15px;
-}
-.txtDarkBlue {
-  color: #0b2545 !important;
-}
-
-.txtBold {
-  font-weight: bold;
-}
-
-.spacer-5 {
-  width: 5px;
-}
-
-.flex {
-  display: flex;
-  gap: 5px;
-}
-
-.btn-solid-primary {
-  background: #134074;
-  border: 1px solid #134074;
-  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.03);
-  color: #fff;
-  padding: 15px;
-
-  &:hover {
-    background: #8da9c4;
-    border: 1px solid #8da9c4;
-    color: #fff;
-  }
-}
-
-.v-spacer-15 {
-  height: 15px;
+  @include utilities.flexbox(row, flex-end, center, 15px);
 }
 </style>

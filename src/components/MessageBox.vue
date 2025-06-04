@@ -44,10 +44,9 @@ const iconColor =
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/styles/_utilities.scss' as utilities;
 .message-container {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
+  @include utilities.flexbox(row, null, flex-start, 10px);
   padding: 15px;
   width: 100%;
   background-color: #fff;
@@ -57,8 +56,7 @@ const iconColor =
   margin-bottom: 20px;
 
   .message-icon {
-    display: flex;
-    align-items: center;
+    @include utilities.flexbox(row, null, center);
   }
 
   .message-content {

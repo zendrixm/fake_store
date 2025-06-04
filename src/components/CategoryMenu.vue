@@ -80,10 +80,11 @@ onMounted(() => {
 
 <style lang="scss">
 @use '@/assets/styles/breakpoint.scss' as breakpoint;
+@use '@/assets/styles/_utilities.scss' as utilities;
+
 .category-wrapper {
   position: relative;
-  display: flex;
-  align-items: center;
+  @include utilities.flexbox(row, null, center);
   overflow: hidden;
   padding: 0px 30px 10px !important;
   @include breakpoint.xs {
@@ -92,8 +93,7 @@ onMounted(() => {
 }
 
 .category-container {
-  display: flex;
-  gap: 10px;
+  @include utilities.flexbox(row, null, null, 10px);
   overflow-x: auto;
   white-space: nowrap;
   scrollbar-width: none;
@@ -128,9 +128,7 @@ onMounted(() => {
   color: #fff;
   cursor: pointer;
   z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @include utilities.flexbox(row, center, center);
 
   &.right {
     right: 0;
@@ -140,7 +138,7 @@ onMounted(() => {
     left: 0;
   }
 
-  @media (min-width: 541px) {
+  @include breakpoint.sm {
     display: none;
   }
 }

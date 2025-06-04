@@ -6,6 +6,7 @@ import i18n from './plugins/i18n'
 
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
+import '@/assets/main.css'
 import '@/assets/styles/element-overrides.scss'
 
 const app = createApp(App)

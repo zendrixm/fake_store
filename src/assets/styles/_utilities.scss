@@ -1,0 +1,48 @@
+@mixin flexbox(
+  $direction: null,
+  $justify: null,
+  $align: null,
+  $gap: null,
+  $wrap: null,
+  $alignContent: null
+) {
+  display: flex;
+
+  @if $direction != null {
+    flex-direction: $direction;
+  }
+  @if $justify != null {
+    justify-content: $justify;
+  }
+  @if $align != null {
+    align-items: $align;
+  }
+  @if $gap != null {
+    gap: $gap;
+  }
+  @if $wrap != null {
+    flex-wrap: $wrap;
+  }
+  @if $alignContent != null {
+    align-content: $alignContent;
+  }
+}
+
+// Just make a flex container with default direction
+/**
+  .my-box {
+    @include flexbox();
+  }
+  // Centered row with gap
+  .my-centered-row {
+    @include flexbox(row, center, center, 20px);
+  }
+  // Column with wrapping
+  .my-col {
+    @include flexbox(column, null, null, null, wrap);
+  }
+  // Fully customized
+  .my-advanced-flex {
+    @include flexbox(row, space-between, center, 16px, wrap, center);
+  }
+*/

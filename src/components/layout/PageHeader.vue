@@ -1,11 +1,11 @@
 <template>
-  <div class="bg-dark-blue">
+  <div class="bgDarkBlue">
     <!-- Left Container -->
     <div class="common-container header-container">
-      <div :class="isDisplayed ? 'flex-space-around' : 'flex-space-around flex-start'">
+      <div :class="isDisplayed ? 'flex-space-around gap-30 w-100' : 'flex-start gap-30 w-100'">
         <div class="side-container">
           <img src="@/assets/img/eloura_white.png" :size="40" :width="40" :height="40" />
-          <h1 class="logo-text">ELOURA</h1>
+          <h1 class="txtWhite">ELOURA</h1>
         </div>
 
         <template v-if="isDisplayed">
@@ -31,12 +31,12 @@
               <el-icon :size="18" color="#FFF">
                 <ShoppingCart />
               </el-icon>
-              <span v-if="!isMobile" class="btn-label"> {{ $t('shoppingCart') }} </span>
+              <span v-if="!isMobile" class="txtWhite"> {{ $t('shoppingCart') }} </span>
             </el-button>
           </div>
         </template>
       </div>
-      <div v-if="isMobileSearch" class="flex-space-around">
+      <div v-if="isMobileSearch" class="flex-space-around gap-30 w-100">
         <el-input
           v-model="searchProduct"
           :placeholder="$t('searchProduct')"
@@ -119,42 +119,25 @@ onUnmounted(() => {
 
 <style lang="scss">
 @use '@/assets/styles/breakpoint.scss' as breakpoint;
+@use '@/assets/styles/_product.scss' as product;
+@use '@/assets/styles/_utilities.scss' as utilities;
 
-.common-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 10px 30px;
-  @include breakpoint.xs {
-    padding: 10px;
-  }
-}
-
-.bg-dark-blue {
-  background: #0b2545;
-}
-
-.logo-text {
-  margin: 0px;
-  color: #fff;
-}
+@include product.backgroundColors;
+@include product.fontColors;
+@include product.flex;
+@include product.gaps;
+@include product.width;
 
 .header-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
+  @include utilities.flexbox(row, space-between, center, 20px);
   @include breakpoint.xs {
-    flex-wrap: wrap;
-    flex-direction: column;
+    @include utilities.flexbox(column, null, null, null, wrap);
   }
 }
 
 .side-container {
-  display: inline-flex;
   max-width: 200px;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 10px;
+  @include utilities.flexbox(row, flex-end, center, 10px);
 }
 
 .middle-container {
@@ -175,22 +158,5 @@ onUnmounted(() => {
     padding: 0px !important;
     margin-left: 0px !important;
   }
-}
-
-.btn-label {
-  color: #fff;
-  margin-left: 5px;
-}
-
-.flex-space-around {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  width: 100%;
-  gap: 30px;
-}
-
-.flex-start {
-  justify-content: flex-start;
 }
 </style>

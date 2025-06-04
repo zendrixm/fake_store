@@ -42,9 +42,10 @@ onMounted(async () => {
 </script>
 
 <template>
+  <div class="v-spacer-30" />
   <div v-loading="isLoading" element-loading-text="Loading... Please wait">
     <div class="product-view-wrapper">
-      <div class="v-spacer-30" />
+      <div class="v-spacer-15" />
       <el-row v-if="product">
         <el-col :md="10" class="image-column">
           <img :src="product.image" :alt="product.title" class="product-image" />
@@ -52,26 +53,27 @@ onMounted(async () => {
 
         <el-col :md="14" class="info-column">
           <h1>{{ product.title }}</h1>
+          <div class="v-spacer-15" />
           <el-text>{{ product.description }}</el-text>
-
-          <el-row v-if="product.rating" align="middle" class="rating-section">
+          <div class="v-spacer-15" />
+          <el-row v-if="product.rating" align="middle">
             <el-rate
               :model-value="product.rating.rate"
               disabled
               show-score
               :max="5"
               :colors="['#F7BA2A', '#F7BA2A', '#F7BA2A']"
-              class="rating-stars"
+              class="txtSize16"
             />
             <el-divider direction="vertical" />
             <span class="txtSize14">{{ product.rating.count }} {{ $t('sold') }}</span>
           </el-row>
 
-          <p class="txtBlue txtBold txtSize18">${{ product.price }}</p>
+          <p class="txtBlue font-weight-bold txtSize18">${{ product.price }}</p>
 
           <!-- Quantity Selector -->
-          <el-row align="middle" class="v-spacer-15 quantity-row">
-            <span class="qty-label"
+          <el-row align="middle" class="v-spacer-15">
+            <span class="mar-r-10"
               ><strong>{{ $t('quantity') }}:</strong></span
             >
             <el-input-number v-model="quantity" :min="1" :max="100" size="small" />
@@ -80,15 +82,15 @@ onMounted(async () => {
           <div class="v-spacer-20" />
 
           <!-- Action Buttons -->
-          <div class="action-buttons">
-            <el-button class="btn-secondary" @click="handleAddToCart">
-              <el-icon :size="20" color="#134074" class="icon-align">
+          <div class="action-buttons mar-t-30">
+            <el-button class="btn btn-secondary w-auto" @click="handleAddToCart">
+              <el-icon :size="20" color="#0b2545" class="icon-align">
                 <ShoppingCart />
               </el-icon>
               <span> {{ $t('addToCart') }}</span>
             </el-button>
 
-            <el-button class="btn-solid-primary"> {{ $t('buyNow') }}</el-button>
+            <el-button class="btn btn-primary w-auto"> {{ $t('buyNow') }}</el-button>
           </div>
         </el-col>
       </el-row>
@@ -98,6 +100,15 @@ onMounted(async () => {
 
 <style lang="scss" scoped>
 @use '@/assets/styles/breakpoint.scss' as breakpoint;
+@use '@/assets/styles/_utilities.scss' as utilities;
+@use '@/assets/styles/_product.scss' as product;
+
+@include product.buttons;
+@include product.spacers;
+@include product.fontColors;
+@include product.fontSizes;
+@include product.margins;
+@include product.width;
 
 .product-view-wrapper {
   max-width: 1200px;
@@ -105,124 +116,35 @@ onMounted(async () => {
   margin: 0px auto;
   border: 1px solid #e5e5e5;
   border-radius: 4px;
-  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.12);
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.1);
   background-color: #fff;
 
-  .product-image {
-    width: 180px;
-    height: 220px;
+  .image-column {
+    @include utilities.flexbox(row, center, center);
+    .product-image {
+      width: 180px;
+      height: 220px;
+      @include breakpoint.xs {
+        padding: 30px 0px 0px;
+      }
+      @include breakpoint.sm {
+        padding: 30px 0px 0px;
+      }
+      @include breakpoint.lg {
+        padding: 0px;
+      }
+    }
+  }
+  .info-column {
+    padding: 20px 30px 30px;
+  }
+  .action-buttons {
+    @include utilities.flexbox(row, null, null, 10px);
     @include breakpoint.xs {
-      padding: 30px 0px 0px;
+      @include utilities.flexbox(column, null, null, 15px);
     }
-    @include breakpoint.sm {
-      padding: 30px 0px 0px;
-    }
-    @include breakpoint.lg {
-      padding: 0px;
-    }
-  }
-}
-
-.image-column {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.info-column {
-  padding: 20px 30px 30px;
-}
-
-.qty-label {
-  margin-right: 10px;
-}
-
-.icon-align {
-  vertical-align: middle;
-}
-
-.rating-stars {
-  font-size: 16px;
-}
-
-.txtSize14 {
-  font-size: 14px;
-}
-
-.txtSize18 {
-  font-size: 18px;
-}
-
-.txtBlue {
-  color: #00549a;
-}
-
-.txtBold {
-  font-weight: bold;
-}
-
-.v-spacer-15 {
-  height: 15px;
-  margin-top: 10px;
-}
-
-.v-spacer-20 {
-  height: 20px;
-}
-
-.v-spacer-30 {
-  height: 30px;
-}
-.action-buttons {
-  margin-top: 30px;
-  display: flex;
-  gap: 12px;
-  .el-button + .el-button {
-    @include breakpoint.xs {
-      flex-direction: column;
-      margin-left: 0px;
-    }
-  }
-  @include breakpoint.xs {
-    flex-direction: column;
-  }
-}
-
-.btn-secondary {
-  background: transparent;
-  border: 1px solid #134074;
-  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.03);
-  color: #134074;
-  padding: 15px;
-
-  &:hover {
-    background: #8da9c4 !important;
-    border: 1px solid #8da9c4;
-    color: #134074 !important;
-  }
-}
-
-.btn-solid-primary {
-  background: #134074;
-  border: 1px solid #134074;
-  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.03);
-  color: #fff;
-  padding: 15px;
-
-  &:hover {
-    background: #8da9c4;
-    border: 1px solid #8da9c4;
-    color: #fff;
-  }
-}
-</style>
-
-<style lang="scss">
-.product-view-wrapper {
-  .el-input-number {
-    .el-input__inner {
-      color: #134074;
-      font-size: 14px;
+    .icon-align {
+      vertical-align: middle;
     }
   }
 }

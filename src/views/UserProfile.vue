@@ -1,10 +1,10 @@
 <template>
-  <div class="user-profile" v-if="user">
-    <div class="space-between">
-      <h3>
+  <el-card class="user-profile" v-if="user">
+    <div class="flex-space-between">
+      <h2>
         {{ capitalize(user.name.firstname) }}
         {{ capitalize(user.name.lastname) }}
-      </h3>
+      </h2>
       <el-icon :size="16" @click="toggleEdit">
         <img src="@/assets/icons/edit.svg" :width="16" :height="16" alt="edit" />
       </el-icon>
@@ -77,11 +77,11 @@
     </el-form>
 
     <div class="v-spacer-20" />
-    <div v-if="isEdit" class="flex-end">
-      <el-button class="btn-solid-primary" @click="updateProfile">{{ $t('save') }}</el-button>
-      <el-button class="btn-secondary" @click="isEdit = false">{{ $t('cancel') }}</el-button>
+    <div v-if="isEdit" class="flex-end action-buttons">
+      <el-button class="btn btn-primary" @click="updateProfile">{{ $t('save') }}</el-button>
+      <el-button class="btn btn-secondary" @click="isEdit = false">{{ $t('cancel') }}</el-button>
     </div>
-  </div>
+  </el-card>
 
   <el-text v-else>Loading profile...</el-text>
 </template>
@@ -180,93 +180,35 @@ onMounted(() => {
 
 <style lang="scss">
 @use '@/assets/styles/breakpoint.scss' as breakpoint;
+@use '@/assets/styles/_product.scss' as product;
+@use '@/assets/styles/_utilities.scss' as utilities;
 
-h3 {
-  margin: 0px;
-}
-.v-spacer-20 {
-  height: 20px;
-}
+@include product.spacers;
+@include product.flex;
+@include product.buttons;
 
 .user-profile {
   border: 1px solid #e5e5e5;
-  border-radius: 10px;
+  border-radius: 4px;
   background: #fff;
   padding: 30px;
-  .el-form-item {
-    @include breakpoint.xs {
-      flex-direction: column;
-    }
-    &.is-error {
-      margin-bottom: 25px;
-    }
-    &:not(.is-error) {
-      margin-bottom: 15px;
-    }
-    .el-form-item__label {
-      width: 180px;
-      margin-bottom: 0px;
-      @include breakpoint.xs {
-        display: flex;
-        justify-content: flex-start;
-      }
-    }
-
-    .el-input {
-      width: 240px;
-      @include breakpoint.xs {
-        width: 100%;
-      }
-    }
-  }
 
   .is-edit {
     .el-form-item {
       margin-bottom: 0px;
     }
   }
-}
-
-.space-between {
-  display: flex;
-  justify-content: space-between;
-}
-
-.flex-end {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.el-button {
-  border-radius: 8px;
-}
-
-.btn-solid-primary {
-  background: #134074;
-  border: 1px solid #134074;
-  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.03);
-  color: #fff;
-  padding: 15px;
-  width: auto;
-
-  &:hover {
-    background: #8da9c4;
-    border: 1px solid #8da9c4;
-    color: #fff;
-  }
-}
-
-.btn-secondary {
-  background: transparent;
-  border: 1px solid #134074;
-  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.03);
-  color: #134074;
-  padding: 15px;
-
-  &:hover {
-    background: #8da9c4 !important;
-    border: 1px solid #8da9c4;
-    color: #134074 !important;
+  .action-buttons {
+    .btn {
+      width: auto;
+    }
+    @include breakpoint.xs {
+      @include utilities.flexbox(column, null, null, 10px);
+      width: 100%;
+      .btn {
+        width: 100%;
+      }
+    }
   }
 }
 </style>

@@ -1,4 +1,5 @@
 <template>
+  <div class="v-spacer-30" />
   <el-row :gutter="20">
     <el-col v-for="product in products" :key="product.id" :md="8" :sm="12" :xs="24">
       <ProductCard :product="product" />
@@ -18,3 +19,9 @@ defineProps({
   },
 })
 </script>
+
+<style lang="scss" scoped>
+@use '@/assets/styles/_product.scss' as product;
+
+@include product.spacers;
+</style>

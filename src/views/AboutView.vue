@@ -1,5 +1,5 @@
 <template>
-  <el-card shadow="hover">
+  <el-card>
     <h2>About this project</h2>
     <el-text>
       Hi, I’m <strong>Zendrix Mae Caagbay</strong> — a frontend developer passionate about creating
@@ -7,9 +7,7 @@
       built to demonstrate my frontend skills using modern tools and best practices.
     </el-text>
 
-    <el-divider content-position="left"
-      ><el-text><strong>Tech Stack</strong></el-text></el-divider
-    >
+    <el-divider content-position="left"><h3>Tech Stack</h3></el-divider>
     <ul class="tech-list">
       <li>Vue 3 + Composition API</li>
       <li>TypeScript</li>
@@ -21,9 +19,7 @@
       <li>Fake Store API (for mock data)</li>
     </ul>
 
-    <el-divider content-position="left"
-      ><el-text><strong>Key Features</strong></el-text></el-divider
-    >
+    <el-divider content-position="left"><h3>Key Features</h3></el-divider>
     <ul class="feature-list">
       <li>Login & Signup with form validation</li>
       <li>Product listing with category filtering</li>
@@ -33,18 +29,13 @@
       <li>Confirmation page after order</li>
     </ul>
 
-    <el-divider content-position="left"
-      ><el-text><strong>To-Do / Developer Notes</strong></el-text></el-divider
-    >
-    <el-text><strong>General Cleanup</strong></el-text>
+    <el-divider content-position="left"><h3>To-Do / Developer Notes</h3></el-divider>
+    <h4>General Cleanup</h4>
     <ul class="todo-list">
-      <li>Organize SCSS: move inline classes to dedicated .scss files per component</li>
-      <li>Remove unused classes and dead code</li>
-      <li>Normalize padding, margins, font sizes using variables</li>
       <li>Improve accessibility (labels, alt text, button roles)</li>
     </ul>
 
-    <el-text><strong>API & Store</strong></el-text>
+    <h4>API & Store</h4>
     <ul class="todo-list">
       <li>Centralize API base URL in config/api.ts (or use .env)</li>
       <li>Move all raw fetch calls to api/ directory</li>
@@ -52,34 +43,27 @@
       <li>Add types/interfaces for API responses</li>
     </ul>
 
-    <el-text><strong>Validation & Forms</strong></el-text>
+    <h4>Validation & Forms</h4>
     <ul class="todo-list">
-      <li>Add form validation rules (e.g. all profile fields required)</li>
       <li>Add error states for failed updates or invalid inputs</li>
     </ul>
 
-    <el-text><strong>UI Enhancements</strong></el-text>
+    <h4>UI Enhancements</h4>
     <ul class="todo-list">
       <li>Implement modals (confirmation before saving changes, deleting items, etc.)</li>
       <li>Refactor notifications: use ElNotification via utils/notification.ts</li>
-      <li>Add a reusable modal component (BaseModal.vue)</li>
       <li>Improve mobile responsiveness on profile and checkout views</li>
-      <li>Add a page footer</li>
       <li>Utilize Tailwind CSS (e.g. for responsive design and utility classes)</li>
     </ul>
 
-    <el-divider content-position="left"
-      ><el-text><strong>Purpose</strong></el-text></el-divider
-    >
+    <el-divider content-position="left"><h3>Purpose</h3></el-divider>
     <el-text>
       I built this project to sharpen my frontend skills and simulate a realistic eCommerce
       application. It helped me improve my understanding of Vue’s Composition API, UI component
       libraries, and managing user interaction with clean state logic.
     </el-text>
 
-    <el-divider content-position="left"
-      ><el-text><strong>Contact</strong></el-text></el-divider
-    >
+    <el-divider content-position="left"><h3>Contact</h3></el-divider>
     <el-text>You can reach me at:</el-text>
     <br />
     <el-link href="mailto:zienmae@gmail.com">zienmae@gmail.com</el-link><br />
@@ -100,13 +84,13 @@
 </script>
 
 <style scoped lang="scss">
-h2 {
-  margin: 10px 0px;
-}
+@use '@/assets/styles/_product.scss' as product;
+
+@include product.margins;
 ul {
   padding-left: 20px;
   li {
-    line-height: 18px;
+    line-height: 22px;
     color: #606266;
     font-size: 14px;
   }
@@ -118,17 +102,5 @@ ul {
 
 .todo-list {
   list-style-type: '✔ ';
-}
-
-a {
-  color: #134074;
-  text-decoration: none;
-  &:hover {
-    text-decoration: underline;
-  }
-}
-
-.mar-r-5 {
-  margin-right: 5px;
 }
 </style>

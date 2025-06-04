@@ -1,0 +1,246 @@
+@use '@/assets/styles/breakpoint.scss' as breakpoint;
+
+/*margins*/
+@mixin margins {
+  .mar-r-5 {
+    margin-right: 5px;
+  }
+  .mar-r-10 {
+    margin-right: 10px;
+  }
+  .mar-t-20 {
+    margin-top: 20px;
+  }
+  .mar-t-30 {
+    margin-top: 30px;
+  }
+}
+
+/*paddings*/
+@mixin paddings {
+  .padding-t-20 {
+    padding-top: 20px;
+  }
+}
+/*spacers*/
+@mixin spacers {
+  .v-spacer-15 {
+    height: 15px;
+  }
+  .v-spacer-20 {
+    height: 20px;
+  }
+  .v-spacer-30 {
+    height: 30px;
+  }
+  .spacer-5 {
+    width: 5px;
+  }
+  .spacer-10 {
+    width: 10px;
+  }
+}
+
+/*gaps*/
+@mixin gaps {
+  .gap-5 {
+    gap: 5px;
+  }
+  .gap-10 {
+    gap: 10px;
+  }
+  .gap-20 {
+    gap: 20px;
+  }
+  .gap-30 {
+    gap: 30px;
+  }
+}
+
+@mixin backgroundColors {
+  .bgDarkBlue {
+    background-color: #0b2545;
+  }
+  .bgLightBlue {
+    background-color: #e6f2ff;
+  }
+  .bgWhite {
+    background-color: #fff;
+  }
+  .bgLightGray {
+    background-color: #f5f5f5;
+  }
+  .bgDarkGray {
+    background-color: #0d0f16;
+  }
+}
+
+/*Font colors*/
+@mixin fontColors {
+  .txtBlack {
+    color: #000;
+  }
+  .txtBlue {
+    color: #00549a;
+  }
+  .txtDarkBlue {
+    color: #0b2545;
+  }
+  .txtWhite {
+    color: #fff;
+  }
+}
+
+/*Font sizes*/
+@mixin fontSizes {
+  .title-text {
+    font-size: 24px;
+    margin: 0px;
+  }
+  .txtSize14 {
+    font-size: 14px;
+  }
+  .txtSize16 {
+    font-size: 16px;
+  }
+  .txtSize18 {
+    font-size: 18px;
+  }
+}
+
+/*Font weights*/
+@mixin fontWeights {
+  .font-weight-bold {
+    font-weight: bold;
+  }
+  .font-weight-normal {
+    font-weight: normal;
+  }
+}
+
+/*Flex*/
+@mixin flex {
+  .flex-row {
+    display: flex;
+    flex-direction: row;
+  }
+  .flex-column {
+    display: flex;
+    flex-direction: column;
+  }
+  .flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .flex-start {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+  .flex-space-around {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  .flex-space-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .flex-end {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+  }
+}
+
+/*Display*/
+@mixin display {
+  .hidden-xs {
+    display: block;
+    @include breakpoint.xs {
+      display: none;
+    }
+  }
+  .hidden-sm-and-up {
+    display: none;
+    @include breakpoint.xs {
+      display: block;
+    }
+  }
+  .flex {
+    display: flex;
+  }
+  .inline-flex {
+    display: inline-flex;
+  }
+  .block {
+    display: block;
+  }
+  .inline-block {
+    display: inline-block;
+  }
+  .none {
+    display: none;
+  }
+}
+
+/*Buttons*/
+
+@mixin buttons {
+  .btn {
+    width: 100%;
+    border: 1px solid #0b2545;
+    border-radius: 8px !important;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  .btn-primary {
+    background-color: #0b2545;
+    color: #fff;
+    border-radius: 4px;
+    &:hover {
+      background-color: #0d2a5c;
+      color: #fff;
+    }
+  }
+  .btn-secondary {
+    background-color: transparent;
+    color: #0b2545;
+    &:hover {
+      background-color: transparent;
+    }
+  }
+  .btn-icon {
+    border: none !important;
+    background: transparent !important;
+    &:hover {
+      border: 1px solid #fff;
+      background: transparent;
+    }
+
+    @include breakpoint.xs {
+      padding: 0px !important;
+      margin-left: 0px !important;
+    }
+  }
+}
+
+@mixin width {
+  .w-100 {
+    width: 100%;
+  }
+  .w-50 {
+    width: 50%;
+  }
+  .w-25 {
+    width: 25%;
+  }
+  .w-75 {
+    width: 75%;
+  }
+  .w-auto {
+    width: auto;
+  }
+}

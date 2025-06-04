@@ -3,14 +3,19 @@
     <MessageBox type="info">
       <template #message>
         <el-text>{{ $t('message.loginInfo') }}</el-text>
-        <div>
-          <el-link @click="showCredentialsDialog = true">{{ $t('viewTestCredentials') }}</el-link>
-        </div>
+        <div class="inline-flex mar-r-5" />
+        <el-link @click="showCredentialsDialog = true">{{ $t('viewTestCredentials') }}</el-link>
       </template>
     </MessageBox>
     <div class="auth-card">
-      <div class="login-header">
-        <img src="@/assets/img/eloura_blue.png" alt="Eloura Logo" :height="135" :width="170" />
+      <div class="auth-card-logo">
+        <img
+          loading="lazy"
+          src="@/assets/img/eloura_blue.png"
+          alt="Eloura Logo"
+          :height="135"
+          :width="170"
+        />
       </div>
 
       <el-form :model="form" :rules="rules" ref="formRef" label-position="top">
@@ -34,24 +39,23 @@
           <el-input v-model="form.confirmPassword" show-password />
         </el-form-item>
 
-        <div v-if="!isLogin" class="v-space-15" />
+        <div v-if="!isLogin" class="v-spacer-15" />
 
         <!-- Remember my username -->
         <el-form-item v-if="isLogin">
           <el-checkbox v-model="form.remember">{{ $t('remember') }}</el-checkbox>
         </el-form-item>
 
-        <el-button class="btn-solid-primary" @click="handleLoginSignup" :loading="loading" round>
+        <el-button class="btn btn-primary" @click="handleLoginSignup" :loading="loading" round>
           {{ isLogin ? $t('login') : $t('signUp') }}
         </el-button>
 
-        <div class="login-links">
-          <el-link @click="showForgotDialog = true">{{ $t('forgotUsernamePassword') }}</el-link>
-          <br />
-          <el-link @click="toggleLoginSignup">{{
-            isLogin ? $t('signUp') : $t('alreadyHaveAcct')
-          }}</el-link>
-        </div>
+        <div class="v-spacer-15" />
+        <el-link @click="showForgotDialog = true">{{ $t('forgotUsernamePassword') }}</el-link>
+        <br />
+        <el-link @click="toggleLoginSignup">{{
+          isLogin ? $t('signUp') : $t('alreadyHaveAcct')
+        }}</el-link>
       </el-form>
     </div>
   </div>
@@ -71,7 +75,7 @@
           >
         </el-row>
       </div>
-      <el-table :data="listOfUsers" class="hidden-xs">
+      <el-table :data="listOfUsers" class="hidden-xs" stripe>
         <el-table-column :label="$t('name')" prop="fullName" />
         <el-table-column :label="$t('username')" prop="username" />
         <el-table-column :label="$t('password')" prop="password" />
@@ -205,159 +209,42 @@ onMounted(async () => {
 
 <style lang="scss">
 @use '@/assets/styles/breakpoint.scss' as breakpoint;
+@use '@/assets/styles/_product.scss' as product;
+@use '@/assets/styles/_utilities.scss' as utilities;
+
+@include product.buttons;
+@include product.display;
+@include product.fontColors;
+@include product.margins;
+@include product.spacers;
+
 .auth-wrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
+  @include utilities.flexbox(column, center, flex-start);
   margin: 0 auto;
   width: 400px;
-  background-color: #f5f7fa;
   @include breakpoint.xs {
     width: 100%;
   }
-}
-
-.auth-card {
-  width: 100%;
-  background: #fff;
-  padding: 40px;
-  border-radius: 10px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-  margin: 0 auto;
-  @include breakpoint.xs {
-    max-width: 100%;
-    padding: 10px;
-  }
-}
-
-.login-header {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.login-header img {
-  margin-bottom: 10px;
-}
-
-.login-header h2 {
-  font-size: 20px;
-  margin: 0;
-}
-
-.login-links {
-  font-size: 12px;
-  color: #00549a;
-  margin-top: 15px;
-}
-.login-links a {
-  color: #134074;
-  text-decoration: none;
-  margin-top: 10px;
-  &:hover {
-    text-decoration: underline;
-  }
-}
-
-.txtLightBlue {
-  color: #134074;
-}
-.txtBold {
-  font-weight: bold;
-}
-
-.txtBlack {
-  color: #000;
-}
-
-.btn-solid-primary {
-  width: 100%;
-  background: #0b2545;
-  border: 1px solid #0b2545;
-  border-radius: 8px !important;
-  color: #fff;
-}
-
-/** Overridden class will be move to a separate file  */
-.el-form-item {
-  &.is-error {
-    .el-form-item__label {
-      color: red;
+  .auth-card {
+    width: 100%;
+    background: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    @include breakpoint.xs {
+      padding: 10px;
     }
-    .el-form-item__error {
-      color: red;
-      padding-top: 5px;
-    }
-    .el-input__wrapper {
-      border: 1px solid red;
-      border-radius: 8px;
-      --el-input-border: red;
+    .auth-card-logo {
+      @include utilities.flexbox(row, center);
+      width: 100%;
+      margin-bottom: 30px;
     }
   }
-}
-
-.el-form-item__error::before {
-  content: '';
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  background-image: url('@/assets/icons/error.svg');
-  background-size: contain;
-  background-repeat: no-repeat;
-  margin-right: 5px;
-  vertical-align: top;
-}
-
-.el-form-item__label {
-  margin-bottom: 5px;
-  font-weight: bold;
-  color: #000;
-}
-.el-form-item {
-  &.is-required:not(.is-error) {
-    &.asterisk-left > .el-form-item__label:before {
-      color: #000;
+  .el-input {
+    width: 100%;
+    @include breakpoint.xs {
+      width: 100%;
     }
-  }
-}
-
-.el-checkbox {
-  &.is-checked {
-    .el-checkbox__input {
-      &.is-checked,
-      &.is-indeterminate {
-        .el-checkbox__inner {
-          background: #0b2545;
-          border-color: #0b2545;
-        }
-      }
-    }
-
-    .el-checkbox__label {
-      color: #134074;
-    }
-  }
-}
-
-.el-link {
-  --el-link-text-color: #00549a !important;
-}
-
-.v-space-15 {
-  height: 15px;
-}
-
-.hidden-xs {
-  display: block;
-  @include breakpoint.xs {
-    display: none;
-  }
-}
-
-.hidden-sm-and-up {
-  display: none;
-  @include breakpoint.xs {
-    display: block;
   }
 }
 
@@ -365,15 +252,11 @@ onMounted(async () => {
   padding: 20px;
   border: 1px solid #e5e5e5;
   border-radius: 10px;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  gap: 12px;
+  @include utilities.flexbox(row, null, flex-start, 12px);
   .card-body {
-    display: flex;
-    flex-direction: column;
+    @include utilities.flexbox(column);
     .el-text {
-      align-self: flex-start;
+      @include utilities.flexbox(null, null, flex-start);
       line-height: 18px;
     }
   }

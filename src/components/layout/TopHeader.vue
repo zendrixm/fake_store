@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-dark-gray">
+  <div class="bgDarkGray">
     <div class="common-container nav-header">
       <!-- Toggle Icons (mobile only) -->
       <template v-if="isMobile">
@@ -40,7 +40,7 @@
             <el-button class="btn-nav" @click="logout">{{ $t('logout') }}</el-button>
             <el-button class="btn-nav" @click="navigateToProfile">
               <span
-                ><el-icon class="mar-5-r"><UserFilled /></el-icon>{{ username }}</span
+                ><el-icon class="mar-r-5"><UserFilled /></el-icon>{{ username }}</span
               ></el-button
             >
           </template>
@@ -49,7 +49,9 @@
           <router-link to="/login">{{ $t('login') }}</router-link>
         </template>
 
-        <el-link @click="toggleLocale">{{ locale === 'en' ? 'FR' : 'EN' }}</el-link>
+        <el-link class="locale-link" @click="toggleLocale">{{
+          locale === 'en' ? 'FR' : 'EN'
+        }}</el-link>
       </el-row>
     </div>
   </div>
@@ -105,86 +107,62 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 @use '@/assets/styles/breakpoint.scss' as breakpoint;
+@use '@/assets/styles/_product.scss' as product;
+@use '@/assets/styles/_utilities.scss' as utilities;
 
-.bg-dark-gray {
-  background: #0d0f16;
-}
-
-.common-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 5px 30px;
-
-  @include breakpoint.xs {
-    padding: 10px;
-  }
-}
+@include product.backgroundColors;
+@include product.margins;
 
 .nav-header {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
+  @include utilities.flexbox(null, flex-end, flex-end, null, wrap);
   padding: 5px 30px;
-  flex-wrap: wrap;
 
   @include breakpoint.xs {
-    flex-direction: column;
-    align-items: flex-end;
+    @include utilities.flexbox(column, flex-end);
     padding: 10px;
   }
-}
 
-.nav-links {
-  display: flex;
-  gap: 15px;
-  font-size: 14px;
-  @include breakpoint.xs {
-    display: none;
-    flex-direction: column;
-    width: 100%;
-    margin-top: 10px;
-    align-items: flex-end;
-
-    &.mobile-active {
-      display: flex;
-      align-items: flex-start;
+  .nav-links {
+    @include utilities.flexbox(row, flex-end, center, 15px);
+    @include breakpoint.xs {
+      display: none;
+      &.mobile-active {
+        @include utilities.flexbox(column, flex-start, flex-start);
+        width: 100%;
+      }
+    }
+    .el-dropdown-link {
+      color: white;
+      cursor: pointer;
+      @include utilities.flexbox(row, center, center);
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+    .btn-nav {
+      padding: 0px;
+      background: transparent;
+      border: none;
+      color: #fff;
+      height: auto;
+      &.el-button + .el-button {
+        margin-left: 0px;
+      }
+    }
+    .locale-link {
+      &:hover {
+        color: #fff;
+      }
     }
   }
-  .el-dropdown-link {
-    color: white;
+
+  .menu-icon {
+    display: none;
     cursor: pointer;
-    user-select: none;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-  }
 
-  .el-link {
-    font-size: 14px;
-  }
-}
-
-.btn-nav {
-  padding: 0px;
-  background: transparent;
-  border: none;
-  color: #fff;
-  font-size: 16px;
-  height: auto;
-  &.el-button + .el-button {
-    margin-left: 0px;
-  }
-}
-
-.mar-5-r {
-  margin-right: 5px;
-}
-.menu-icon {
-  display: none;
-  cursor: pointer;
-
-  @include breakpoint.xs {
-    display: block;
+    @include breakpoint.xs {
+      display: block;
+    }
   }
 }
 </style>
