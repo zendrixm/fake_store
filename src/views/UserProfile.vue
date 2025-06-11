@@ -219,7 +219,12 @@ onMounted(() => {
   border-radius: 4px;
   background: #fff;
   padding: 30px;
-
+  @include breakpoint.xs {
+    padding: 15px;
+  }
+  .el-card__body {
+    padding: 0px;
+  }
   .is-edit {
     .el-form-item {
       margin-bottom: 0px;
