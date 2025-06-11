@@ -49,9 +49,7 @@
           <router-link to="/login">{{ $t('login') }}</router-link>
         </template>
 
-        <el-link class="locale-link" @click="toggleLocale">{{
-          locale === 'en' ? 'FR' : 'EN'
-        }}</el-link>
+        <el-link @click="toggleLocale">{{ locale === 'en' ? 'FR' : 'EN' }}</el-link>
       </el-row>
     </div>
   </div>
@@ -61,18 +59,18 @@
 import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { Close, UserFilled } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router'
-import { useAuthStore } from '@/stores/AuthStore'
+import { useAuthUserStore } from '@/stores/UserStore'
 import { useI18n } from 'vue-i18n'
 
 const isMobile = ref(false)
 const isMenuOpen = ref(false)
 
-const authStore = useAuthStore()
+const authStore = useAuthUserStore()
 const router = useRouter()
 
 const { locale } = useI18n()
 
-const isAuthenticated = computed(() => authStore.isAuthenticated)
+const isAuthenticated = computed(() => authStore.accessToken !== '')
 const username = computed(() => authStore.user?.username ?? '')
 
 const checkMobile = () => {
@@ -91,7 +89,7 @@ const toggleLocale = () => {
 }
 
 const logout = () => {
-  authStore.logout()
+  authStore.logoutUser()
   router.push('/login')
 }
 
@@ -137,6 +135,7 @@ onUnmounted(() => {
       @include utilities.flexbox(row, center, center);
       &:hover {
         text-decoration: underline;
+        color: #00549a;
       }
     }
     .btn-nav {
@@ -147,11 +146,6 @@ onUnmounted(() => {
       height: auto;
       &.el-button + .el-button {
         margin-left: 0px;
-      }
-    }
-    .locale-link {
-      &:hover {
-        color: #fff;
       }
     }
   }
