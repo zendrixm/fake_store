@@ -1,5 +1,5 @@
 <template>
-  <div class="bgDarkGray">
+  <div ref="menuRef" class="bgDarkGray">
     <div class="common-container nav-header">
       <!-- Toggle Icons (mobile only) -->
       <template v-if="isMobile">
@@ -10,9 +10,10 @@
           height="20"
           class="menu-icon"
           alt="menu"
-          @click="isMenuOpen = true"
+          @click.stop="isMenuOpen = true"
         />
-        <el-icon v-else :size="20" color="#FFF" @click="isMenuOpen = false"><Close /></el-icon>
+
+        <el-icon v-else :size="20" color="#FFF" @click.stop="isMenuOpen = false"><Close /></el-icon>
       </template>
 
       <!-- Navigation Links -->
@@ -64,6 +65,7 @@ import { useI18n } from 'vue-i18n'
 
 const isMobile = ref(false)
 const isMenuOpen = ref(false)
+const menuRef = ref<HTMLElement | null>(null)
 
 const authStore = useAuthUserStore()
 const router = useRouter()
@@ -93,13 +95,21 @@ const logout = () => {
   router.push('/login')
 }
 
+const handleClickOutside = (event: MouseEvent) => {
+  if (isMenuOpen.value && menuRef.value && !menuRef.value.contains(event.target as Node)) {
+    isMenuOpen.value = false
+  }
+}
+
 onMounted(() => {
   checkMobile()
   window.addEventListener('resize', checkMobile)
+  document.addEventListener('click', handleClickOutside)
 })
 
 onUnmounted(() => {
   window.removeEventListener('resize', checkMobile)
+  document.removeEventListener('click', handleClickOutside)
 })
 </script>
 

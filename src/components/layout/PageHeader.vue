@@ -25,7 +25,7 @@
           </div>
           <!-- Right Container -->
           <div class="side-container">
-            <el-button v-if="isMobile" class="icon-btn" @click="toggleSearch">
+            <el-button v-if="isMobile" class="icon-btn" @click.stop="toggleSearch">
               <el-icon :size="18" color="#FFF">
                 <Search />
               </el-icon>
@@ -39,7 +39,7 @@
           </div>
         </template>
       </div>
-      <div v-if="isMobileSearch" class="flex-space-around gap-30 w-100">
+      <div v-if="isMobileSearch" ref="searchRef" class="flex-space-around gap-30 w-100">
         <el-input
           v-model="searchProduct"
           :placeholder="$t('searchProduct')"
@@ -70,6 +70,8 @@ import CategoryMenu from '@/components/CategoryMenu.vue'
 
 const isMobile = ref(false)
 const isMobileSearch = ref(false)
+const searchRef = ref<HTMLElement | null>(null)
+
 const checkMobile = () => {
   isMobile.value = window.matchMedia('(max-width: 540px)').matches
 }
@@ -108,15 +110,22 @@ const handleSearchBlur = async () => {
   }
 }
 
+const handleClickOutsideSearch = (event: MouseEvent) => {
+  if (isMobileSearch.value && searchRef.value && !searchRef.value.contains(event.target as Node)) {
+    isMobileSearch.value = false
+  }
+}
 onMounted(async () => {
   await fetchAllProducts().catch((err) => console.error('Error fetching products:', err))
   await fetchProductCategories().catch((err) => console.error('Error fetching categories:', err))
   checkMobile()
   window.addEventListener('resize', checkMobile)
+  document.addEventListener('click', handleClickOutsideSearch)
 })
 
 onUnmounted(() => {
   window.removeEventListener('resize', checkMobile)
+  document.removeEventListener('click', handleClickOutsideSearch)
 })
 </script>
 
