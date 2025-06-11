@@ -1,7 +1,7 @@
 <template>
   <div class="v-spacer-30" />
-  <el-row :gutter="20">
-    <el-col v-for="product in products" :key="product.id" :md="8" :sm="12" :xs="24">
+  <el-row :gutter="10">
+    <el-col v-for="product in products" :key="product.id" :md="6" :sm="8" :xs="12">
       <ProductCard :product="product" />
     </el-col>
   </el-row>
@@ -9,12 +9,12 @@
 
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import type { Product } from '@/types/ProductContext'
+import type { DummyProduct } from '@/types/ProductContext'
 import ProductCard from './ProductCard.vue'
 
 defineProps({
   products: {
-    type: Array as PropType<Product[]>,
+    type: Array as PropType<DummyProduct[]>,
     default: () => [],
   },
 })

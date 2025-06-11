@@ -2,7 +2,6 @@
   <div class="common-container category-wrapper">
     <!-- Left Arrow -->
     <button class="scroll-arrow left" @click="scrollLeft" v-if="showLeftArrow">‹</button>
-
     <div ref="scrollContainer" class="category-container" @scroll="checkArrows">
       <div v-for="(category, id) in categories" :key="id" class="category-item">
         <el-link
@@ -38,7 +37,7 @@ defineProps({
 const emits = defineEmits(['selectedCategory'])
 
 const handleSelectedCategory = (category: string) => {
-  emits('selectedCategory', category === 'All' ? '' : category)
+  emits('selectedCategory', category)
 }
 
 const toCamelCase = (str: string) => {
@@ -136,10 +135,6 @@ onMounted(() => {
 
   &.left {
     left: 0;
-  }
-
-  @include breakpoint.sm {
-    display: none;
   }
 }
 </style>

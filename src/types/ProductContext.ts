@@ -1,29 +1,82 @@
-export interface Product {
+export interface DummyProduct {
   id: number
   title: string
-  price: number
   description: string
   category: string
-  image?: string
-  rating?: {
-    rate?: number
-    count?: number
+  price: number
+  discountPercentage: number
+  rating: number
+  stock: number
+  tags: string[]
+  sku: string
+  weight: number
+  dimensions: {
+    width: number
+    height: number
+    depth: number
   }
+  warrantyInformation: string
+  shippingInformation: string
+  availabilityStatus: string
+  reviews: {
+    rating: number
+    comment: string
+    date: string
+    reviewerName: string
+    reviewerEmail: string
+  }[]
+  returnPolicy: string
+  minimumOrderQuantity: number
+  meta: {
+    createdAt: string
+    updatedAt: string
+    barCode: string
+    qrCode: string
+  }
+  images: string[]
+  thumbnail: string
+  brand: string
+  total: number
+  skip: number
+  limit: number
+}
+
+export interface DummyCartProduct {
+  id: number
+  products: [
+    {
+      id: number
+      title?: string
+      price?: number
+      quantity: number
+      total?: number
+      discountPercentage?: number
+      discountedTotal?: number
+      thumbnail?: string
+    },
+  ]
+  total?: number
+  discountedTotal?: number
+  userId?: number
+  totalProducts?: number
+  totalQuantity?: number
+  deletedOn?: string
+  isDeleted?: boolean
+}
+
+export interface ProductSpecification {
+  label: string
+  value: string
+  showDivider?: boolean
 }
 
 export interface CartItem {
-  productId: number
-  quantity: number
-}
-
-export interface Cart {
   id: number
-  userId: number
-  date: string
-  products: CartItem[]
-}
-
-// ✅ Final CartProduct
-export interface CartProduct extends Product {
+  title: string
+  price: number
   quantity: number
+  total: number
+  discountPercentage: number
+  discountedTotal: number
+  thumbnail: string
 }

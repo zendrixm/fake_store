@@ -1,19 +1,16 @@
 <template>
-  <ProductList :products="filteredProducts" />
+  <ProductList :products="dummyProducts" />
 </template>
 
 <script setup lang="ts">
 import ProductList from '@/components/ProductList.vue'
-import { computed } from 'vue'
-import { useProductStore } from '@/stores/FakeProductStore'
+import { computed, onMounted } from 'vue'
+import { useProductStore } from '@/stores/DummyProductStore'
 
 const store = useProductStore()
+const dummyProducts = computed(() => store.getDummyProducts)
 
-// Optional: If fetchProducts might not be called already
-if (store.products.length === 0) {
-  store.fetchProducts()
-}
-
-// Default view should show all products or apply filter logic again here
-const filteredProducts = computed(() => store.filteredProducts)
+onMounted(async () => {
+  await store.fetchAllProducts()
+})
 </script>

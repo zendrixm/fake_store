@@ -18,6 +18,9 @@
               clearable
               :suffix-icon="Search"
               class="search-product"
+              @blur="handleSearchBlur"
+              @keyup.enter="handleSearchBlur"
+              @keyup.esc="() => (searchProduct = '')"
             />
           </div>
           <!-- Right Container -->
@@ -43,6 +46,9 @@
           clearable
           :suffix-icon="Search"
           class="search-product"
+          @blur="handleSearchBlur"
+          @keyup.enter="handleSearchBlur"
+          @keyup.esc="() => (searchProduct = '')"
         />
       </div>
     </div>
@@ -56,58 +62,55 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { Search, ShoppingCart } from '@element-plus/icons-vue'
-import { useProductStore } from '@/stores/FakeProductStore'
-import { useAuthStore } from '@/stores/AuthStore'
+import { useProductStore } from '@/stores/DummyProductStore'
 import { useRoute } from 'vue-router'
 import CategoryMenu from '@/components/CategoryMenu.vue'
-import { useI18n } from 'vue-i18n'
-
-const { t } = useI18n()
 
 const isMobile = ref(false)
 const isMobileSearch = ref(false)
-
 const checkMobile = () => {
   isMobile.value = window.matchMedia('(max-width: 540px)').matches
 }
 const store = useProductStore()
-const fetchProducts = store.fetchProducts
+const fetchAllProducts = store.fetchAllProducts
+const fetchProductCategories = store.fetchProductCategories
 
-const authStore = useAuthStore()
-const isAuthenticated = computed(() => authStore.isAuthenticated)
 const route = useRoute()
-const searchProduct = computed({
-  get: () => store.searchQuery,
-  set: (val) => (store.searchQuery = val),
-})
-
-const selectedCategory = computed({
-  get: () => store.selectedCategory,
-  set: (val) => (store.selectedCategory = val),
-})
-
-const productList = computed(() => store.products)
-
-const categories = computed(() => {
-  const list = new Set<string>()
-  const cats = productList.value
-    .map((p) => p.category)
-    .filter((c) => !!c && !list.has(c) && list.add(c))
-  return [t('all'), ...cats]
-})
+const searchProduct = ref('')
+const selectedCategory = ref('')
+const categories = computed(() => store.categories)
 
 const isDisplayed = computed(() => {
-  return isAuthenticated.value && !route.meta.isDisplayed
+  return !route.meta.isDisplayed
 })
 
 const toggleSearch = () => {
   isMobileSearch.value = !isMobileSearch.value
 }
 
-onMounted(() => {
-  fetchProducts().catch((err) => console.error('Error fetching products:', err))
+watch(selectedCategory, async (newCategory) => {
+  if (newCategory) {
+    store.selectedCategory = newCategory
+    await store.fetchProductsByCategory(newCategory)
+  } else {
+    store.selectedCategory = ''
+    await store.fetchAllProducts()
+  }
+})
+const handleSearchBlur = async () => {
+  console.log('Search input blurred, fetching products...', searchProduct.value)
+  if (searchProduct.value) {
+    await store.searchProducts(searchProduct.value)
+  } else {
+    await store.fetchAllProducts()
+  }
+}
+
+onMounted(async () => {
+  await fetchAllProducts().catch((err) => console.error('Error fetching products:', err))
+  await fetchProductCategories().catch((err) => console.error('Error fetching categories:', err))
   checkMobile()
   window.addEventListener('resize', checkMobile)
 })
