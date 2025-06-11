@@ -16,7 +16,7 @@
       <li>Vue Router</li>
       <li>SCSS</li>
       <li>Axios</li>
-      <li>Fake Store API (for mock data)</li>
+      <li>Dummy JSON API (for mock data)</li>
     </ul>
 
     <el-divider content-position="left"><h3>Key Features</h3></el-divider>
@@ -74,7 +74,7 @@
     <el-divider />
     <el-row type="flex" align="middle">
       <el-text class="mar-r-5"> Product data is powered by the</el-text>
-      <el-link href="https://fakestoreapi.com" target="_blank">Fake Store API</el-link>.
+      <el-link href="https://dummyjson.com/" target="_blank">Dummy JSON API</el-link>.
     </el-row>
   </el-card>
 </template>
