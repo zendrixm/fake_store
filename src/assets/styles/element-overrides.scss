@@ -10,6 +10,7 @@
     margin-bottom: 15px;
   }
   &.is-error {
+    margin-bottom: 25px;
     // Override for error message
     .el-form-item__label {
       color: red;
@@ -73,11 +74,10 @@
 .el-checkbox {
   &.is-checked {
     .el-checkbox__input {
-      &.is-checked,
-      &.is-indeterminate {
+      &.is-checked {
         .el-checkbox__inner {
-          background: #0b2545;
-          border-color: #0b2545;
+          background-color: #0b2545 !important;
+          border-color: #0b2545 !important;
         }
       }
     }
@@ -86,12 +86,26 @@
       color: #134074;
     }
   }
+  .el-checkbox__input {
+    &.is-indeterminate {
+      .el-checkbox__inner {
+        background-color: #0b2545 !important;
+        border-color: #0b2545 !important;
+      }
+    }
+  }
 }
 
 // Link
-.el-link {
+.el-link,
+a {
   --el-link-text-color: #00549a !important;
   cursor: pointer;
+  &:hover {
+    color: #00549a !important;
+    --el-link-hover-text-color: #00549a !important;
+    text-underline-offset: 3px;
+  }
 }
 
 //Text
@@ -113,4 +127,9 @@
     flex-direction: column;
     margin-left: 0px;
   }
+}
+
+//Divider
+.el-divider--horizontal {
+  margin: 20px 0px;
 }

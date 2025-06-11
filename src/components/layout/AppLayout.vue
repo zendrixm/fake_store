@@ -52,6 +52,10 @@ import PageFooter from '@/components/layout/PageFooter.vue'
     white-space: nowrap;
     &:hover {
       text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    &.el-link:hover {
+      text-decoration: none;
     }
   }
 }
