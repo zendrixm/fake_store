@@ -33,6 +33,9 @@
     <h4>General Cleanup</h4>
     <ul class="todo-list">
       <li>Improve accessibility (labels, alt text, button roles)</li>
+      <li>Optimize codebase for better performance and maintainability</li>
+      <li>Remove unused components and assets</li>
+      <li>Do caching for API calls to reduce load times</li>
     </ul>
 
     <h4>API & Store</h4>
