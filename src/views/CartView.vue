@@ -9,34 +9,39 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import type { CartProduct } from '@/types/ProductContext'
-import { useProductStore } from '@/stores/FakeProductStore'
+import type { CartItem } from '@/types/ProductContext'
+import { useCartStore } from '@/stores/CartStore'
+import { useAuthUserStore } from '@/stores/UserStore'
 import AddToCartSection from '@/components/sections/AddToCartSection.vue'
 
 const selectedProductIds = ref<number[]>([])
-// TEMP: Replace with dynamic user ID from auth later
-const userId = 2
-const productStore = useProductStore()
-const cartList = computed(() => productStore.cartList)
+
+const cartStore = useCartStore()
+const authStore = useAuthUserStore()
+
+const cartList = computed(() => {
+  if (!cartStore.cart) {
+    return {}
+  }
+  return cartStore.cart
+})
+
+const userId = computed(() => authStore.user?.id || 0)
 
 const handleSelected = (ids: number[]) => {
   selectedProductIds.value = ids
 }
 
-const handleQtyChange = async (val: number, row: CartProduct) => {
-  console.log('Row', row)
-  if (!row) return
-
-  row.quantity = val
-  await productStore.updateCartProduct(userId, row.id, val)
+const handleQtyChange = async ({ value, product }: { value: number; product: CartItem }) => {
+  await cartStore.updateCartQuantity({ id: product.id, quantity: value })
 }
 
 const handleRemove = async (id: number) => {
   selectedProductIds.value = selectedProductIds.value.filter((pid) => pid !== id)
-  await productStore.removeFromCartAndSync(userId, id)
+  await cartStore.removeProduct(id)
 }
 
-onMounted(() => {
-  productStore.fetchCart(userId)
+onMounted(async () => {
+  await cartStore.fetchCart(userId.value)
 })
 </script>

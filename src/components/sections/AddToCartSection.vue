@@ -3,10 +3,10 @@
     <h2 class="txtDarkBlue">{{ $t('shoppingCart') }}</h2>
     <div class="v-spacer-15" />
     <!-- Scrollable Table View for Tablet and Larger -->
-    <div class="table-scroll-wrapper" v-if="products.length">
+    <div class="table-scroll-wrapper" v-if="dummyProducts?.length">
       <el-table
         class="cart-table hidden-xs"
-        :data="products"
+        :data="dummyProducts"
         stripe
         @selection-change="handleSelectionChange"
         row-key="id"
@@ -14,7 +14,7 @@
         <el-table-column type="selection" width="55" />
         <el-table-column label="" width="120">
           <template #default="{ row }">
-            <img :src="row.image" :alt="row.title" width="70" height="80" />
+            <img :src="row.thumbnail" :alt="row.title" width="70" height="80" />
           </template>
         </el-table-column>
         <el-table-column prop="title" :label="$t('product')" width="280" />
@@ -26,7 +26,7 @@
             <el-input-number
               v-model="row.quantity"
               :min="1"
-              @change="(val: number) => $emit('handleQuantityChange', val, row)"
+              @change="(val: number) => handleQuantityChange(val, row)"
             />
           </template>
         </el-table-column>
@@ -49,15 +49,15 @@
       <el-col :xs="24">
         <!-- Card View for Mobile -->
         <el-checkbox-group
-          v-if="products.length"
+          v-if="products?.length"
           v-model="selectedIds"
           class="cart-card-mobile"
           @change="() => emits('selectionChange', selectedIds)"
         >
-          <div class="cart-card" v-for="product in products" :key="product.id">
+          <div class="cart-card" v-for="product in dummyProducts" :key="product.id">
             <div class="card-header">
               <el-checkbox :value="product.id" />
-              <img :src="product.image" alt="Product Image" class="product-img" />
+              <img :src="product.thumbnail" alt="Product Image" class="product-img" />
             </div>
             <div class="card-body">
               <el-text class="product-title">{{ product.title }}</el-text>
@@ -76,6 +76,7 @@
                 :min="1"
                 @change="(val: number) => handleQuantityChange(val, product)"
               />
+
               <el-button class="btn-icon flex-end" @click="removeProduct(product.id)">
                 <el-icon :size="18" color="#00549a">
                   <Delete />
@@ -85,7 +86,7 @@
           </div>
         </el-checkbox-group>
 
-        <div class="cart-total" v-if="products.length">
+        <div class="cart-total" v-if="dummyProducts?.length">
           <div class="check-all-wrapper">
             <el-checkbox
               :label="$t('all')"
@@ -98,14 +99,7 @@
           <div class="total-wrapper">
             <div class="flex gap-5">
               <el-text>{{ $t('total') }}: </el-text>
-              <el-text class="txtDarkBlue font-weight-bold">
-                ${{
-                  products
-                    .filter((p) => selectedIds.includes(p.id))
-                    .reduce((sum, p) => sum + p.price * p.quantity, 0)
-                    .toFixed(2)
-                }}
-              </el-text>
+              <el-text class="txtDarkBlue font-weight-bold"> ${{ total }} </el-text>
             </div>
             <el-button class="btn btn-primary" @click="handleCheckout">
               {{ $t('checkout') }}
@@ -118,37 +112,43 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, type PropType, computed } from 'vue'
-import type { CartProduct } from '@/types/ProductContext'
+import { ref, computed } from 'vue'
+import type { CartItem } from '@/types/ProductContext'
 import { Delete } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { useProductStore } from '@/stores/FakeProductStore'
 
 const router = useRouter()
-const store = useProductStore()
 
 const props = defineProps({
   products: {
-    type: Array as PropType<CartProduct[]>,
-    default: () => [],
+    type: Object,
   },
 })
 
 const emits = defineEmits(['handleQuantityChange', 'removeProduct', 'selectionChange'])
 
 const selectedIds = ref<number[]>([])
-const userId = ref(2) // Replace with value from auth store when ready
-const isAllSelected = computed(() => selectedIds.value.length === props.products.length)
+const dummyProducts = computed<CartItem[]>(() => props.products?.products)
+
+const total = computed(() => {
+  return dummyProducts.value
+    .filter((p: CartItem) => selectedIds.value.includes(p.id))
+    .reduce((sum, p) => sum + p.price * p.quantity, 0)
+    .toFixed(2)
+})
+
+const isAllSelected = computed(() => selectedIds.value.length === dummyProducts.value?.length)
 const isIndeterminate = computed(() => selectedIds.value.length > 0 && !isAllSelected.value)
 
-const handleSelectionChange = (rows: CartProduct[]) => {
+const handleSelectionChange = (rows: CartItem[]) => {
   selectedIds.value = rows.map((r) => r.id)
   emits('selectionChange', selectedIds.value)
 }
 
-const handleQuantityChange = (val: number, row: CartProduct) => {
-  emits('handleQuantityChange', { value: val, product: row })
+const handleQuantityChange = (val: number, product: CartItem) => {
+  console.log('handleQuantityChange', val, product)
+  emits('handleQuantityChange', { value: val, product })
 }
 
 const removeProduct = (id: number) => {
@@ -156,7 +156,7 @@ const removeProduct = (id: number) => {
 }
 
 const handleCheckAll = (val: boolean) => {
-  selectedIds.value = val ? props.products.map((p) => p.id) : []
+  selectedIds.value = val ? (dummyProducts.value?.map((p: CartItem) => p.id) ?? []) : []
   emits('selectionChange', selectedIds.value)
 }
 
@@ -165,8 +165,6 @@ const handleCheckout = async () => {
     ElMessage.warning('Please select at least one product to checkout.')
     return
   }
-
-  await store.checkoutSelectedProducts(userId.value, selectedIds.value)
 
   // Navigate to confirmation page or show a message
   router.push('/confirmation')
@@ -220,6 +218,7 @@ const handleCheckout = async () => {
 
     .card-body {
       @include utilities.flexbox(column, null, null, 20px);
+      width: 100%;
       .product-title {
         font-weight: bold;
         color: #00549a;
@@ -241,6 +240,7 @@ const handleCheckout = async () => {
 }
 
 .cart-total {
+  margin-top: 30px;
   @include utilities.flexbox(row, space-between, center);
 }
 
