@@ -49,7 +49,7 @@
       <el-col :xs="24">
         <!-- Card View for Mobile -->
         <el-checkbox-group
-          v-if="products?.length"
+          v-if="dummyProducts?.length"
           v-model="selectedIds"
           class="cart-card-mobile"
           @change="() => emits('selectionChange', selectedIds)"
