@@ -7,6 +7,7 @@
         <el-link @click="showCredentialsDialog = true">{{ $t('viewTestCredentials') }}</el-link>
       </template>
     </MessageBox>
+
     <div class="auth-card">
       <div class="auth-card-logo">
         <img
@@ -101,16 +102,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed, onMounted } from 'vue'
-import { defineAsyncComponent } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, watch, computed, onMounted, defineAsyncComponent } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { ElMessage } from 'element-plus'
-import { useAuthStore } from '@/stores/AuthStore'
+import { useAuthUserStore } from '@/stores/UserStore'
 import { capitalize } from '@/utils/Formatter'
+import { useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
 import MessageBox from '@/components/MessageBox.vue'
 
-const authStore = useAuthStore()
+const authStore = useAuthUserStore()
 const router = useRouter()
 const { t, locale } = useI18n()
 const formRef = ref()
@@ -124,9 +124,9 @@ const showForgotDialog = ref(false)
 const showSignUpDialog = ref(false)
 
 const listOfUsers = computed(() =>
-  authStore.listOfUsers.map((user) => ({
+  authStore.allUser.map((user) => ({
     ...user,
-    fullName: `${capitalize(user.name.firstname)} ${capitalize(user.name.lastname)}`,
+    fullName: `${capitalize(user.firstName)} ${capitalize(user.lastName)}`,
   })),
 )
 
@@ -154,13 +154,19 @@ const rules = {
 const handleAuth = async (action: 'login' | 'signup') => {
   await formRef.value.validate(async (valid: boolean) => {
     if (!valid) return
-
     loading.value = true
-    try {
-      let success = false
 
+    try {
       if (action === 'login') {
-        success = await authStore.login(form.value.username, form.value.password)
+        const res = await authStore.loginUser(form.value.username, form.value.password)
+        console.log('Test user login:', res)
+
+        if (res) {
+          router.push('/')
+        } else {
+          ElMessage.error(t('validation.loginFailed'))
+          return
+        }
       } else {
         showSignUpDialog.value = true
         // const payload = {
@@ -170,18 +176,10 @@ const handleAuth = async (action: 'login' | 'signup') => {
         // }
         // success = await authStore.signup(payload)
       }
-
-      if (success) {
-        router.push('/')
-      }
-      // else {
-      //   ElMessage.error(
-      //     authStore.error ||
-      //       (action === 'login' ? t('validation.loginFailed') : t('validation.signUpFailed')),
-      //   )
-      // }
     } catch {
-      ElMessage.error('Invalid credentials')
+      ElMessage.error(
+        action === 'login' ? t('validation.loginFailed') : t('validation.signUpFailed'),
+      )
     } finally {
       loading.value = false
     }
@@ -203,7 +201,7 @@ watch(locale, () => {
 })
 
 onMounted(async () => {
-  await authStore.fetchListOfUsers()
+  await authStore.fetchAllUsers()
 })
 </script>
 

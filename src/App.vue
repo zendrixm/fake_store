@@ -8,8 +8,8 @@
 
 <script setup lang="ts">
 import AppLayout from '@/components/layout/AppLayout.vue'
-import { useAuthStore } from '@/stores/AuthStore'
+import { useAuthUserStore } from '@/stores/UserStore'
 
-const authStore = useAuthStore()
+const authStore = useAuthUserStore()
 authStore.loadFromStorage()
 </script>

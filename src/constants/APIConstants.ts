@@ -1,1 +1,1 @@
-export const API_BASE = 'https://fakestoreapi.com'
+export const DUMMY_API_BASE = 'https://dummyjson.com'
