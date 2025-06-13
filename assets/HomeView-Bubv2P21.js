@@ -1,0 +1,1 @@
+import{P as e}from"./ProductList-DsyvdViv.js";import{d as s,y as c,g as r,h as u,s as a,o as n}from"./index-DLnUSDzh.js";const i=s({__name:"HomeView",setup(d){const o=c(),t=r(()=>o.getDummyProduct);return u(async()=>{await o.fetchAllProducts()}),(m,p)=>(n(),a(e,{products:t.value},null,8,["products"]))}});export{i as default};

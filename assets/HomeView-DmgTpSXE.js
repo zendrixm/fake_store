@@ -1,1 +1,0 @@
-import{P as s}from"./ProductList-C-j3XRlq.js";import{d as e,y as c,g as r,h as u,s as a,o as n}from"./index-DxJcn1B2.js";const i=e({__name:"HomeView",setup(d){const o=c(),t=r(()=>o.getDummyProducts);return u(async()=>{await o.fetchAllProducts()}),(m,p)=>(n(),a(s,{products:t.value},null,8,["products"]))}});export{i as default};
