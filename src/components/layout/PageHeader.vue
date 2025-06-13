@@ -2,42 +2,40 @@
   <div class="bgDarkBlue">
     <!-- Left Container -->
     <div class="common-container header-container">
-      <div :class="isDisplayed ? 'flex-space-around gap-30 w-100' : 'flex-start gap-30 w-100'">
+      <div :class="isDisplayed ? 'flex-space-around' : 'flex-space-between'" class="gap-30 w-100">
         <div class="side-container">
           <img src="@/assets/img/eloura_white.png" :size="40" :width="40" :height="40" />
           <h1 class="txtWhite">ELOURA</h1>
         </div>
 
-        <template v-if="isDisplayed">
-          <!-- Middle Container -->
-          <div class="middle-container">
-            <el-input
-              v-if="!isMobile"
-              v-model="searchProduct"
-              :placeholder="$t('searchProduct')"
-              clearable
-              :suffix-icon="Search"
-              class="search-product"
-              @blur="handleSearchBlur"
-              @keyup.enter="handleSearchBlur"
-              @keyup.esc="() => (searchProduct = '')"
-            />
-          </div>
-          <!-- Right Container -->
-          <div class="side-container">
-            <el-button v-if="isMobile" class="icon-btn" @click.stop="toggleSearch">
-              <el-icon :size="18" color="#FFF">
-                <Search />
-              </el-icon>
-            </el-button>
-            <el-button class="icon-btn" @click="$router.push('/cart')">
-              <el-icon :size="18" color="#FFF">
-                <ShoppingCart />
-              </el-icon>
-              <span v-if="!isMobile" class="txtWhite"> {{ $t('shoppingCart') }} </span>
-            </el-button>
-          </div>
-        </template>
+        <!-- Middle Container -->
+        <div v-if="isDisplayed" class="middle-container">
+          <el-input
+            v-if="!isMobile"
+            v-model="searchProduct"
+            :placeholder="$t('searchProduct')"
+            clearable
+            :suffix-icon="Search"
+            class="search-product"
+            @blur="handleSearchBlur"
+            @keyup.enter="handleSearchBlur"
+            @keyup.esc="() => (searchProduct = '')"
+          />
+        </div>
+        <!-- Right Container -->
+        <div class="side-container">
+          <el-button v-if="isMobile" class="icon-btn" @click.stop="toggleSearch">
+            <el-icon :size="18" color="#FFF">
+              <Search />
+            </el-icon>
+          </el-button>
+          <el-button class="icon-btn" @click="handleShoppingCart">
+            <el-icon :size="18" color="#FFF">
+              <ShoppingCart />
+            </el-icon>
+            <span v-if="!isMobile" class="txtWhite"> {{ $t('shoppingCart') }} </span>
+          </el-button>
+        </div>
       </div>
       <div v-if="isMobileSearch" ref="searchRef" class="flex-space-around gap-30 w-100">
         <el-input
@@ -52,6 +50,7 @@
         />
       </div>
     </div>
+
     <CategoryMenu
       v-if="isDisplayed"
       :categories="categories"
@@ -65,7 +64,8 @@
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { Search, ShoppingCart } from '@element-plus/icons-vue'
 import { useProductStore } from '@/stores/DummyProductStore'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { useAuthUserStore } from '@/stores/UserStore'
 import CategoryMenu from '@/components/CategoryMenu.vue'
 
 const isMobile = ref(false)
@@ -79,10 +79,14 @@ const store = useProductStore()
 const fetchAllProducts = store.fetchAllProducts
 const fetchProductCategories = store.fetchProductCategories
 
+const authStore = useAuthUserStore()
+const isAuthenticated = computed(() => authStore.authenticated)
+
 const route = useRoute()
+const router = useRouter()
 const searchProduct = ref('')
 const selectedCategory = ref('')
-const categories = computed(() => store.categories)
+const categories = computed(() => store.getCategories)
 
 const isDisplayed = computed(() => {
   return !route.meta.isDisplayed
@@ -107,6 +111,14 @@ const handleSearchBlur = async () => {
     await store.searchProducts(searchProduct.value)
   } else {
     await store.fetchAllProducts()
+  }
+}
+
+const handleShoppingCart = () => {
+  if (isAuthenticated.value) {
+    router.push({ name: 'Cart' })
+  } else {
+    router.push({ name: 'Login' })
   }
 }
 
@@ -149,6 +161,7 @@ onUnmounted(() => {
 
 .side-container {
   max-width: 200px;
+  height: auto;
   @include utilities.flexbox(row, flex-end, center, 10px);
 }
 

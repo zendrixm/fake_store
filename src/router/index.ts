@@ -18,6 +18,7 @@ const routes = [
     path: '/product/:id',
     name: 'ProductDetails',
     component: () => import('../views/ProductView.vue'),
+    meta: { isDisplayed: true },
   },
   {
     path: '/cart',
