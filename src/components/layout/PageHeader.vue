@@ -23,7 +23,7 @@
           />
         </div>
         <!-- Right Container -->
-        <div class="side-container">
+        <div v-if="isShoppingCartVisible" class="side-container">
           <el-button v-if="isMobile" class="icon-btn" @click.stop="toggleSearch">
             <el-icon :size="18" color="#FFF">
               <Search />
@@ -90,6 +90,10 @@ const categories = computed(() => store.getCategories)
 
 const isDisplayed = computed(() => {
   return !route.meta.isDisplayed
+})
+
+const isShoppingCartVisible = computed(() => {
+  return route.name != 'Login'
 })
 
 const toggleSearch = () => {
