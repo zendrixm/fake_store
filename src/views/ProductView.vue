@@ -19,7 +19,11 @@ const productDetails = computed(() => {
   return productStore.singleProduct
 })
 const similarProducts = computed(() => {
-  return productStore.getDummyProducts
+  return productStore.getDummyProduct.filter(
+    (product) =>
+      product.category === productDetails.value?.category &&
+      product.id !== productDetails.value?.id,
+  )
 })
 const isLoading = ref(false)
 const productId = computed(() => route.params.id)
@@ -66,8 +70,6 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="v-spacer-30" />
-
   <div v-loading="isLoading" element-loading-text="Loading... Please wait">
     <!-- Product Details -->
     <ProductSectionWrapper :show-title="false">

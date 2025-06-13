@@ -12,10 +12,8 @@ export const useProductStore = defineStore('product', {
   state: () => ({
     dummyProducts: [] as DummyProduct[],
     singleProduct: {} as DummyProduct | null,
-    searchProduct: [] as DummyProduct[],
     categories: [] as string[],
     selectedCategory: '' as string,
-    productsCategorized: [] as DummyProduct[],
   }),
 
   actions: {
@@ -41,7 +39,8 @@ export const useProductStore = defineStore('product', {
     async searchProducts(query: string) {
       try {
         const results = await fetchSearchProduct(query)
-        this.searchProduct = results.products
+        this.dummyProducts = results.products
+        this.selectedCategory = ''
       } catch (error) {
         console.error('Error searching products:', error)
       }
@@ -60,7 +59,7 @@ export const useProductStore = defineStore('product', {
     async fetchProductsByCategory(category: string) {
       try {
         const data = await fetchProductsByCategory(category)
-        this.productsCategorized = data.products
+        this.dummyProducts = data.products
         this.selectedCategory = category
       } catch (error) {
         console.error('Error fetching products by category:', error)
@@ -70,16 +69,6 @@ export const useProductStore = defineStore('product', {
   getters: {
     getDummyProduct: (state) => state.dummyProducts,
     getSingleProduct: (state) => state.singleProduct,
-    getSearchProduct: (state) => state.searchProduct,
     getCategories: (state) => state.categories,
-    getDummyProducts: (state) => {
-      if (state.selectedCategory) {
-        return state.productsCategorized
-      } else if (state.searchProduct.length > 0) {
-        return state.searchProduct
-      } else {
-        return state.dummyProducts
-      }
-    },
   },
 })

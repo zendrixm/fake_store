@@ -8,7 +8,7 @@ import { computed, onMounted } from 'vue'
 import { useProductStore } from '@/stores/DummyProductStore'
 
 const store = useProductStore()
-const dummyProducts = computed(() => store.getDummyProducts)
+const dummyProducts = computed(() => store.getDummyProduct)
 
 onMounted(async () => {
   await store.fetchAllProducts()
