@@ -7,11 +7,21 @@
       <el-divider direction="vertical" />
       <el-text>{{ $t('footer.allRightsReserved') }}</el-text>
       <el-divider direction="vertical" />
-      <!--Update to version 1.0.4-->
-      <!-- Replaced Fake Store API with Dummy JSON API-->
-      <!-- Improve product card and product view details page (Adding discount price/percentage, wishlist icon,)-->
-      <!--Improve UI and mobile layout -->
-      <el-text>{{ $t('footer.version', { ver: '1.0.4' }) }}</el-text>
+      <!-- Update to version 1.0.4:
+        - Replaced Fake Store API with Dummy JSON API
+        - Improve product card and product view details page:
+          - Adding discount price/percentage
+          - Adding wishlist icon
+        - Improve UI and mobile layout
+      -->
+
+      <!-- Update ver. 1.0.5:
+        - Handle click outside
+        - Change logic on displaying products
+        - Add tooltip for wishlist
+        - Handle shopping cart
+      -->
+      <el-text>{{ $t('footer.version', { ver: '1.0.5' }) }}</el-text>
     </div>
     <div class="footer-right-container">
       <el-text>{{ $t('footer.developedBy') }}</el-text>
