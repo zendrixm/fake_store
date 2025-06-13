@@ -8,20 +8,25 @@ export const useAuthUserStore = defineStore('authUser', {
     accessToken: '',
     allUser: [] as DummyUser[],
     userDetails: {} as DummyUser,
+    authenticated: false,
   }),
   actions: {
     async loginUser(username: string, password: string) {
       try {
         const data = await userLogin(username, password)
-        console.log('Data from userLogin:', data) // Debug this
+        console.log('Data from userLogin:', data)
         this.user = data
         this.accessToken = data.accessToken
+        if (data.accessToken) {
+          this.authenticated = true
+        }
         localStorage.setItem('token', this.accessToken)
         localStorage.setItem('userId', data.id)
         localStorage.setItem('username', data.username)
         return data
       } catch (err) {
         console.error('loginUser failed:', err)
+        this.authenticated = false
         throw err
       }
     },
@@ -52,7 +57,7 @@ export const useAuthUserStore = defineStore('authUser', {
       try {
         this.user = {} as DummyUsers
         this.accessToken = ''
-
+        this.authenticated = false
         localStorage.removeItem('token')
       } catch (err) {
         console.error('logoutUser failed:', err)
