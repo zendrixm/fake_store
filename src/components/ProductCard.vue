@@ -3,7 +3,12 @@
     <el-card class="product-card">
       <div class="product-content">
         <div>
-          <img class="product-image" :src="product.thumbnail" :alt="`${product.title}`" />
+          <img
+            class="product-image"
+            loading="lazy"
+            :src="product.thumbnail"
+            :alt="`${product.title}`"
+          />
           <div class="v-spacer-10" />
 
           <h6 class="product-title">{{ product.title }}</h6>
@@ -19,9 +24,16 @@
           <div class="v-spacer-5" />
           <div class="flex-space-between">
             <div class="price-unit">${{ product.price }}</div>
-            <el-icon class="wishlist-icon">
-              <Heart :size="20" color="#FF0000" class="icon-align" title="Heart" />
-            </el-icon>
+            <el-tooltip
+              :content="$t('message.wish')"
+              placement="right"
+              effect="light"
+              popper-class="wishlist-tooltip"
+            >
+              <el-icon class="wishlist-icon">
+                <Heart :size="20" color="#FF0000" class="icon-align" title="Heart" />
+              </el-icon>
+            </el-tooltip>
           </div>
         </div>
       </div>
@@ -148,6 +160,17 @@ const computeOriginalPrice = (price: number, discountPercentage: number): number
         }
       }
     }
+  }
+}
+
+.el-popper {
+  &.wishlist-tooltip {
+    color: #555;
+    line-height: normal;
+    max-width: 170px;
+    padding: 10px;
+    box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.12);
+    border-radius: 8px;
   }
 }
 </style>
