@@ -52,7 +52,11 @@ export default {
     loginInfo: 'You can use the following credentials to log in and test the application:',
     feature:
       "We're sorry — the '{feature}' feature is currently not available. We're working on it!",
+    wish: 'This is not functional, for ui purposes only.',
   },
   viewTestCredentials: 'View test credentials',
   testCredentials: 'Test credentials',
+  sku: 'SKU',
+  shippingInformation: 'Shipping information',
+  stock: 'stock',
 }

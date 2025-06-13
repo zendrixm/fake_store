@@ -17,7 +17,7 @@
       <div class="product-details">
         <h4 v-if="details.brand">{{ details.brand }}</h4>
         <div v-if="details.sku">
-          <el-text class="font-weight-bold">SKU: </el-text>
+          <el-text class="font-weight-bold">{{ $t('sku') }}: </el-text>
           <el-text>{{ details.sku }}</el-text>
         </div>
         <div v-if="details.availabilityStatus" class="availability-status">
@@ -58,7 +58,7 @@
 
       <div class="v-spacer-20" />
 
-      <el-text class="font-weight-bold mar-r-5"> Shipping information:</el-text>
+      <el-text class="font-weight-bold mar-r-5"> {{ $t('shippingInformation') }}</el-text>
       <el-text>
         {{ productDetails.shippingInformation }}
       </el-text>

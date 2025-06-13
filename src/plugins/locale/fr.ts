@@ -57,4 +57,7 @@ export default {
   },
   viewTestCredentials: 'Voir les identifiants de test',
   testCredentials: 'Identifiants de test',
+  sku: 'SKU',
+  shippingInformation: 'Informations de livraison',
+  stock: 'stock',
 }
