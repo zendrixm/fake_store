@@ -74,7 +74,7 @@ const computeOriginalPrice = (price: number, discountPercentage: number): number
       @include breakpoint.xs {
         padding: 10px 0px;
         margin-bottom: 10px;
-        height: 300px;
+        height: 320px;
       }
       .product-content {
         @include utilities.flexbox(column, space-between);
